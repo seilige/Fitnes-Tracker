@@ -11,7 +11,7 @@ public class User
     public int IdUser { get; set; }
     public string? Name { get; set; }
     public string? Lastname { get; set; }
-    public bool Author = false; // can user create an offical traning program
+    public bool Author = false; // Can user create an offical traning program
 }
 
 public class StandardProgram
@@ -27,7 +27,7 @@ public class StandardProgram
 public class CustomProgram
 {
     public int CustProgId { get; set; }
-    public int? CreatorId { get; set; } // link to user
+    public int? CreatorId { get; set; } // Link to user
     public bool IsPublic { get; set; }
     public string? Descripltion { get; set; }
     public ICollection<Exercise> Exercises { get; set; }
@@ -41,7 +41,7 @@ public class Exercise
     public int? Reps { get; set; }
 }
 
-// large number of this class = mtm between user and custProg
+// Large number of this class = mtm between user and custProg
 public class UserStandardProgram
 {
     public User User { get; set; }
