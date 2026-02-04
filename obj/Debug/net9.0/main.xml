@@ -4,5 +4,17 @@
         <name>main</name>
     </assembly>
     <members>
+        <member name="T:main.Migrations.CreateModels">
+            <inheritdoc />
+        </member>
+        <member name="M:main.Migrations.CreateModels.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:main.Migrations.CreateModels.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:main.Migrations.CreateModels.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

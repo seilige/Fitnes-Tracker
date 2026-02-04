@@ -5,6 +5,7 @@ public enum Level { Beginner, Intermediate, Advanced }
 public enum Goal { Mass, Cut, Strength }
 public enum WorkoutType { Circuit, Strength, Cardio }
 public enum Split { FullBody, UpperLower, PPL, BroSplit }
+public enum MuscleGroup { Chest, Back, Legs }
 
 public class User
 {
@@ -39,6 +40,7 @@ public class Exercise
     public string? Title { get; set; }
     public int? Sets { get; set; }
     public int? Reps { get; set; }
+    public MuscleGroup MuscleGroup { get; set; }
 }
 
 // Large number of this class = mtm between user and custProg
