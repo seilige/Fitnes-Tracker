@@ -12,6 +12,10 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddScoped<ICustomProgramRepository, CustomProgramRepository>();
+        builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+        builder.Services.AddScoped<IStandardProgramRepository, StandardProgramRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
