@@ -1,6 +1,6 @@
 namespace FitnesTracker;
 
-public interface IProgramCustomRepository : IRepository<CustomProgram>
+public interface ICustomProgramRepository : IRepository<CustomProgram>
 {
     Task<User?> GetCreatorAsync(int custProgId);
     Task<IEnumerable<Exercise>> GetExercisesAsync(int custProgId);

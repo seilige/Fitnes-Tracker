@@ -4,7 +4,7 @@ namespace FitnesTracker;
 
 public class Repository<T> : IRepository<T> where T : class
 {
-    private ApplicationDbContext _context;
+    protected readonly ApplicationDbContext _context;
 
     public Repository(ApplicationDbContext context)
     {

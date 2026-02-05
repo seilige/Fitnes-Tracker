@@ -32,6 +32,7 @@ public class CustomProgram
     public bool IsPublic { get; set; }
     public string? Descripltion { get; set; }
     public ICollection<Exercise> Exercises { get; set; }
+    public User? Creator { get; set; }
 }
 
 public class Exercise
