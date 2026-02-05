@@ -17,7 +17,7 @@ public class Program
         builder.Services.AddScoped<IStandardProgramRepository, StandardProgramRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-        builder.Services.AddAutoMapper(typeof(Mapper));
+        builder.Services.AddAutoMapper(cfg => cfg.AddProfile<Mapper>());
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
