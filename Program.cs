@@ -17,6 +17,8 @@ public class Program
         builder.Services.AddScoped<IStandardProgramRepository, StandardProgramRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+        builder.Services.AddAutoMapper(typeof(Mapper));
+
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>

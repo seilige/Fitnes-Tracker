@@ -123,3 +123,13 @@ C:\Users\Acer\Desktop\main\obj\Debug\net9.0\main.xml
 C:\Users\Acer\Desktop\main\obj\Debug\net9.0\main.pdb
 C:\Users\Acer\Desktop\main\obj\Debug\net9.0\main.genruntimeconfig.cache
 C:\Users\Acer\Desktop\main\obj\Debug\net9.0\ref\main.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net9.0\AutoMapper.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net9.0\System.Diagnostics.DiagnosticSource.dll

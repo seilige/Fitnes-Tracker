@@ -25,4 +25,3 @@ public class CustomProgramUpdateDTO
     public bool IsPublic { get; set; }
     public ICollection<int> ExerciseIDs { get; set; }
 }
-
