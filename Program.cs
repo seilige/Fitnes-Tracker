@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 namespace FitnesTracker;
 
@@ -17,8 +17,21 @@ public class Program
         builder.Services.AddScoped<IStandardProgramRepository, StandardProgramRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-        // builder.Services.AddFluentValidationAutoValidation();
-        // builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new() { 
+                Title = "Weather API", 
+                Version = "v1",
+                Description = "API для получения прогнозов погоды"
+            });
+    
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
+        });
+
+        builder.Services.AddFluentValidationAutoValidation();
+        builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
         builder.Services.AddAutoMapper(cfg => cfg.AddProfile<Mapper>());
 
@@ -35,6 +48,8 @@ public class Program
         });
 
         var app = builder.Build();
+
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseHttpsRedirection();
         app.UseSwagger();

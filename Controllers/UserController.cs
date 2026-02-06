@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FitnesTracker;
 
 [ApiController]
-[Route("api/[controllers]")]
+[Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     private IUserService _service;

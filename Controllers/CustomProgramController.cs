@@ -19,8 +19,8 @@ public class CustomProgramController : ControllerBase
         return Ok(await _service.GetAllAsync());
     }
 
-    [HttpPost]
-    public async Task<ActionResult> CreateAsync([FromBody] CustomProgramCreateDTO dto, [FromBody] int creatorId)
+    [HttpPost("{creatorId}")]
+    public async Task<ActionResult> CreateAsync([FromBody] CustomProgramCreateDTO dto, [FromRoute] int creatorId)
     {
         return Ok(await _service.CreateAsync(dto, creatorId));
     }

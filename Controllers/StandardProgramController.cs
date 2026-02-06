@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FitnesTracker;
 
 [ApiController]
-[Route("api/[controllers]")]
+[Route("api/[controller]")]
 public class StandardProgramController : ControllerBase
 {
     private IStandardProgramService _service;
