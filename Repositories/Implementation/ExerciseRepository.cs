@@ -8,6 +8,38 @@ public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
     {
     }
 
+    public async Task<PagedResult<Exercise>> GetFilteredExercisesAsync(ExerciseQueryParameters parameters)
+    {
+        var query = _context.Exercises.AsQueryable();
+
+        if (!string.IsNullOrEmpty(parameters.Title))
+            query = query.Where(e => e.Title.Contains(parameters.Title));
+        
+        if (parameters.MuscleGroup != null)
+            query = query.Where(e => e.MuscleGroup == parameters.MuscleGroup);
+        
+        var totalCount = await query.CountAsync();
+        
+        var items = await query
+            .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+            .Take(parameters.PageSize)
+            .ToListAsync();
+        
+        return new PagedResult<Exercise>(items, totalCount, parameters.PageNumber, parameters.PageSize);
+    }
+
+    public async Task<PagedResult<Exercise>> GetPagedAsync(PaginationParams paginationParams)
+    {
+        var count = await _context.Exercises.CountAsync();
+        var exercise = await _context.Exercises
+            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
+            .ToListAsync();
+
+        return new PagedResult<Exercise>(
+            exercise, count, paginationParams.PageNumber, paginationParams.PageSize);
+    }
+
     public async Task<Exercise?> GetByTitleAsync(string title)
     {
         return await _context.Exercises.Where(x => x.Title == title).FirstOrDefaultAsync();

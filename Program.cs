@@ -36,6 +36,7 @@ public class Program
         builder.Services.AddAutoMapper(cfg => cfg.AddProfile<Mapper>());
 
         builder.Services.AddScoped<IStandardProgramService, StandardProgramService>();
+        builder.Services.AddScoped<IExerciseService, ExerciseService>();
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 

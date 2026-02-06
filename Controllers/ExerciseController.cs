@@ -13,6 +13,13 @@ public class ExerciseController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("filter")]
+    public async Task<ActionResult<PagedResult<ExerciseResponseDTO>>> GetFilteredExercises([FromQuery] ExerciseQueryParameters parameters)
+    {
+        var result = await _service.GetPagedAsync(parameters);
+        return Ok(result);
+    }
+
     [HttpGet("muscle_group/{group}")]
     public async Task<ActionResult> GetByMuscleGroupAsync(MuscleGroup group)
     {

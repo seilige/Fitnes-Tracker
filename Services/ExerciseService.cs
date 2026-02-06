@@ -13,6 +13,35 @@ public class ExerciseService : IExerciseService
         _mapper = mapper;
     }
 
+    public async Task<PagedResult<ExerciseResponseDTO>> GetPagedAsync(PaginationParams paginationParams)
+    {
+        var result = await _repository.GetPagedAsync(paginationParams);
+        
+        var mappedItems = _mapper.Map<List<ExerciseResponseDTO>>(result.Items);
+        
+        return new PagedResult<ExerciseResponseDTO>(
+            mappedItems, 
+            result.TotalCount,
+            result.PageNumber,
+            result.PageSize
+        );
+    }
+
+    public async Task<PagedResult<ExerciseResponseDTO>> GetFilteredExercisesAsync(ExerciseQueryParameters parameters)
+    {
+        var result = await _repository.GetFilteredExercisesAsync(parameters);
+
+        var mappedItems = _mapper.Map<List<ExerciseResponseDTO>>(result.Items);
+
+        return new PagedResult<ExerciseResponseDTO>(
+            mappedItems, 
+            result.TotalCount,
+            result.PageNumber,
+            result.PageSize
+        );
+    }
+
+
     public async Task<ExerciseResponseDTO?> GetByTitleAsync(string title)
     {
         var exercise = await _repository.GetByTitleAsync(title);
