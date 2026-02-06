@@ -16,6 +16,9 @@ C:\Users\Acer\Desktop\main\bin\Debug\net10.0\main.dll
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\main.pdb
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\main.xml
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\AutoMapper.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net10.0\FluentValidation.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net10.0\FluentValidation.AspNetCore.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net10.0\FluentValidation.DependencyInjectionExtensions.dll
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Humanizer.dll
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.Build.Framework.dll

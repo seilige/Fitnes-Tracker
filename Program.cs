@@ -17,6 +17,9 @@ public class Program
         builder.Services.AddScoped<IStandardProgramRepository, StandardProgramRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+        // builder.Services.AddFluentValidationAutoValidation();
+        // builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
         builder.Services.AddAutoMapper(cfg => cfg.AddProfile<Mapper>());
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
