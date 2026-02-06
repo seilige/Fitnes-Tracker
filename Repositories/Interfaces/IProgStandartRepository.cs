@@ -5,4 +5,5 @@ public interface IStandardProgramRepository : IRepository<StandardProgram>
     Task<IEnumerable<StandardProgram>> GetByLevelAsync(Level level);
     Task<IEnumerable<StandardProgram>> GetByWorkoutTypeAsync(WorkoutType workoutType);
     Task<IEnumerable<StandardProgram>> GetByCategoryAsync(Category category);
+    Task<PagedResult<StandardProgram>> GetPagedAsync(PaginationParams paginationParams);
 }

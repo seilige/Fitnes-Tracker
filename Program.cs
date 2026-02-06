@@ -35,6 +35,8 @@ public class Program
 
         builder.Services.AddAutoMapper(cfg => cfg.AddProfile<Mapper>());
 
+        builder.Services.AddScoped<IStandardProgramService, StandardProgramService>();
+
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>

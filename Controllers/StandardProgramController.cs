@@ -15,6 +15,13 @@ public class StandardProgramController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("paged")]
+    public async Task<ActionResult<PagedResult<StandardProgramResponseDTO>>> GetPaged([FromQuery] PaginationParams paginationParams)
+    {
+        var result = await _service.GetPagedAsync(paginationParams);
+        return Ok(result);
+    }
+
     [HttpGet]
     public async Task<ActionResult> GetAllAsync()
     {

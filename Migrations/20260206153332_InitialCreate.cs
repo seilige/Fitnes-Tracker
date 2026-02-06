@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace main.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateModels : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,8 +17,8 @@ namespace main.Migrations
                 {
                     ProgId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "text", nullable: true),
-                    Descripltion = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
                     Category = table.Column<int>(type: "integer", nullable: false),
                     Level = table.Column<int>(type: "integer", nullable: false),
                     WorkoutType = table.Column<int>(type: "integer", nullable: false)
@@ -50,7 +50,9 @@ namespace main.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatorId = table.Column<int>(type: "integer", nullable: true),
                     IsPublic = table.Column<bool>(type: "boolean", nullable: false),
-                    Descripltion = table.Column<string>(type: "text", nullable: true)
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CreatorIdUser = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,6 +60,11 @@ namespace main.Migrations
                     table.ForeignKey(
                         name: "FK_CustomPrograms_Users_CreatorId",
                         column: x => x.CreatorId,
+                        principalTable: "Users",
+                        principalColumn: "IdUser");
+                    table.ForeignKey(
+                        name: "FK_CustomPrograms_Users_CreatorIdUser",
+                        column: x => x.CreatorIdUser,
                         principalTable: "Users",
                         principalColumn: "IdUser");
                 });
@@ -119,7 +126,9 @@ namespace main.Migrations
                     Title = table.Column<string>(type: "text", nullable: true),
                     Sets = table.Column<int>(type: "integer", nullable: true),
                     Reps = table.Column<int>(type: "integer", nullable: true),
-                    CustomProgramCustProgId = table.Column<int>(type: "integer", nullable: true)
+                    MuscleGroup = table.Column<int>(type: "integer", nullable: false),
+                    CustomProgramCustProgId = table.Column<int>(type: "integer", nullable: true),
+                    StandardProgramProgId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -129,6 +138,11 @@ namespace main.Migrations
                         column: x => x.CustomProgramCustProgId,
                         principalTable: "CustomPrograms",
                         principalColumn: "CustProgId");
+                    table.ForeignKey(
+                        name: "FK_Exercises_StandardPrograms_StandardProgramProgId",
+                        column: x => x.StandardProgramProgId,
+                        principalTable: "StandardPrograms",
+                        principalColumn: "ProgId");
                 });
 
             migrationBuilder.CreateTable(
@@ -190,6 +204,11 @@ namespace main.Migrations
                 column: "CreatorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomPrograms_CreatorIdUser",
+                table: "CustomPrograms",
+                column: "CreatorIdUser");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CustomProgramUsers_CustProgId",
                 table: "CustomProgramUsers",
                 column: "CustProgId");
@@ -198,6 +217,11 @@ namespace main.Migrations
                 name: "IX_Exercises_CustomProgramCustProgId",
                 table: "Exercises",
                 column: "CustomProgramCustProgId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Exercises_StandardProgramProgId",
+                table: "Exercises",
+                column: "StandardProgramProgId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StandardProgramExercises_ExId",
@@ -229,10 +253,10 @@ namespace main.Migrations
                 name: "Exercises");
 
             migrationBuilder.DropTable(
-                name: "StandardPrograms");
+                name: "CustomPrograms");
 
             migrationBuilder.DropTable(
-                name: "CustomPrograms");
+                name: "StandardPrograms");
 
             migrationBuilder.DropTable(
                 name: "Users");

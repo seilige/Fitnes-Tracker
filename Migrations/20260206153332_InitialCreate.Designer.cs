@@ -11,15 +11,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace main.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260204065558_CreateModels")]
-    partial class CreateModels
+    [Migration("20260206153332_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "10.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -35,15 +35,23 @@ namespace main.Migrations
                     b.Property<int?>("CreatorId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Descripltion")
+                    b.Property<int?>("CreatorIdUser")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
                     b.HasKey("CustProgId");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("CreatorIdUser");
 
                     b.ToTable("CustomPrograms");
                 });
@@ -89,10 +97,16 @@ namespace main.Migrations
                     b.Property<int?>("CustomProgramCustProgId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("MuscleGroup")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("Reps")
                         .HasColumnType("integer");
 
                     b.Property<int?>("Sets")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("StandardProgramProgId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -101,6 +115,8 @@ namespace main.Migrations
                     b.HasKey("ExId");
 
                     b.HasIndex("CustomProgramCustProgId");
+
+                    b.HasIndex("StandardProgramProgId");
 
                     b.ToTable("Exercises");
                 });
@@ -116,13 +132,15 @@ namespace main.Migrations
                     b.Property<int>("Category")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Descripltion")
+                    b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Level")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("WorkoutType")
@@ -187,6 +205,12 @@ namespace main.Migrations
                     b.HasOne("FitnesTracker.User", null)
                         .WithMany()
                         .HasForeignKey("CreatorId");
+
+                    b.HasOne("FitnesTracker.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorIdUser");
+
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("FitnesTracker.CustomProgramExercise", b =>
@@ -232,6 +256,10 @@ namespace main.Migrations
                     b.HasOne("FitnesTracker.CustomProgram", null)
                         .WithMany("Exercises")
                         .HasForeignKey("CustomProgramCustProgId");
+
+                    b.HasOne("FitnesTracker.StandardProgram", null)
+                        .WithMany("Exercises")
+                        .HasForeignKey("StandardProgramProgId");
                 });
 
             modelBuilder.Entity("FitnesTracker.StandardProgramExercise", b =>
@@ -273,6 +301,11 @@ namespace main.Migrations
                 });
 
             modelBuilder.Entity("FitnesTracker.CustomProgram", b =>
+                {
+                    b.Navigation("Exercises");
+                });
+
+            modelBuilder.Entity("FitnesTracker.StandardProgram", b =>
                 {
                     b.Navigation("Exercises");
                 });

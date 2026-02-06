@@ -13,6 +13,20 @@ public class StandardProgramService : IStandardProgramService
         _mapper = mapper;
     }
 
+    public async Task<PagedResult<StandardProgramResponseDTO>> GetPagedAsync(PaginationParams paginationParams)
+    {
+        var result = await _repository.GetPagedAsync(paginationParams);
+        
+        var mappedItems = _mapper.Map<List<StandardProgramResponseDTO>>(result.Items);
+        
+        return new PagedResult<StandardProgramResponseDTO>(
+            mappedItems, 
+            result.TotalCount, 
+            result.PageNumber, 
+            result.PageSize
+        );
+    }
+
     public async Task<IEnumerable<StandardProgramResponseDTO>> GetAllAsync()
     {
         var programs = await _repository.GetAllAsync();
