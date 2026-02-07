@@ -6,4 +6,5 @@ public class User
     public string? Name { get; set; }
     public string? Lastname { get; set; }
     public bool Author = false; // Can user create an offical traning program
+    public ICollection<WorkoutSession> WorkoutSessions { get; set; }
 }

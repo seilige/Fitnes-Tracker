@@ -1,0 +1,50 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Session;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+
+namespace FitnesTracker;
+
+[ApiController]
+[Route("api/[controller]")]
+public class WorkoutExerciseSetController : ControllerBase
+{
+    private IWorkoutExerciseService _service;
+
+    public WorkoutExerciseSetController(IWorkoutExerciseService service)
+    {
+        _service = service;
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<WorkoutExerciseSetResponseDTO>> AddSetAsync([FromBody] WorkoutExerciseSetCreateDTO dto)
+    {
+        var res = await _service.AddSetAsync(dto);
+
+        return Ok(res);
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<WorkoutExerciseSetResponseDTO>> GetById(int id)
+    {
+        return Ok(await _service.GetSetByIdAsync(id));
+    }
+
+    [HttpGet("session/{sessionId:int}")]
+    public async Task<ActionResult<IEnumerable<WorkoutExerciseSetResponseDTO>>> GetSeesionById(int sessionId)
+    {
+        return Ok(await _service.GetSessionSetsAsync(sessionId));
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<WorkoutExerciseSetResponseDTO>> UpdateSet(int id, [FromBody] WorkoutExerciseSetUpdateDTO dto)
+    {
+        return Ok(await _service.UpdateSetAsync(id, dto));
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeleteSet(int id)
+    {
+        await _service.DeleteSetAsync(id);
+        return Ok();
+    }
+}

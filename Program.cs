@@ -10,12 +10,19 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
         builder.Services.AddControllers();
+        
         builder.Services.AddEndpointsApiExplorer();
+
         builder.Services.AddScoped<ICustomProgramRepository, CustomProgramRepository>();
         builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
         builder.Services.AddScoped<IStandardProgramRepository, StandardProgramRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IStandardProgramService, StandardProgramService>();
+        builder.Services.AddScoped<IExerciseService, ExerciseService>();
+        builder.Services.AddScoped<IWorkoutSessionService, WorkoutSessionService>();
+        builder.Services.AddScoped<IWorkoutSessionRepository, WorkoutSessionRepository>();
 
         builder.Services.AddSwaggerGen(c =>
         {
@@ -34,9 +41,6 @@ public class Program
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
         builder.Services.AddAutoMapper(cfg => cfg.AddProfile<Mapper>());
-
-        builder.Services.AddScoped<IStandardProgramService, StandardProgramService>();
-        builder.Services.AddScoped<IExerciseService, ExerciseService>();
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 

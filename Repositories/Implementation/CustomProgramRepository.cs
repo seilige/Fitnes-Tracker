@@ -30,6 +30,7 @@ public class CustomProgramRepository : Repository<CustomProgram>, ICustomProgram
 
     public async Task<IEnumerable<CustomProgram>> GetPublicProgramsAsync()
     {
+        // all cust prog with exercises and programs must be public
         return await _context.CustomPrograms.Include(x => x.Exercises).Where(c => c.IsPublic).ToListAsync();
     }
 }

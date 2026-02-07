@@ -7,4 +7,5 @@ public class Exercise
     public int? Sets { get; set; }
     public int? Reps { get; set; }
     public MuscleGroup MuscleGroup { get; set; }
+    public ICollection<WorkoutExerciseSet> WorkoutExerciseSets { get; set; }
 }

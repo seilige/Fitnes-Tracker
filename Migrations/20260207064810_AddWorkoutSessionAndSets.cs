@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -6,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace main.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AddWorkoutSessionAndSets : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -146,6 +147,41 @@ namespace main.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "WorkoutSessions",
+                columns: table => new
+                {
+                    SessionId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    StandardProgramId = table.Column<int>(type: "integer", nullable: true),
+                    CustomProgramId = table.Column<int>(type: "integer", nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkoutSessions", x => x.SessionId);
+                    table.ForeignKey(
+                        name: "FK_WorkoutSessions_CustomPrograms_CustomProgramId",
+                        column: x => x.CustomProgramId,
+                        principalTable: "CustomPrograms",
+                        principalColumn: "CustProgId",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_WorkoutSessions_StandardPrograms_StandardProgramId",
+                        column: x => x.StandardProgramId,
+                        principalTable: "StandardPrograms",
+                        principalColumn: "ProgId",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_WorkoutSessions_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "IdUser",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CustomProgramExercises",
                 columns: table => new
                 {
@@ -193,6 +229,35 @@ namespace main.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WorkoutExerciseSets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ExerciseId = table.Column<int>(type: "integer", nullable: false),
+                    Sets = table.Column<int>(type: "integer", nullable: false),
+                    Reps = table.Column<int>(type: "integer", nullable: false),
+                    Weight = table.Column<double>(type: "double precision", nullable: false),
+                    WorkoutSessionId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkoutExerciseSets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkoutExerciseSets_Exercises_ExerciseId",
+                        column: x => x.ExerciseId,
+                        principalTable: "Exercises",
+                        principalColumn: "ExId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WorkoutExerciseSets_WorkoutSessions_WorkoutSessionId",
+                        column: x => x.WorkoutSessionId,
+                        principalTable: "WorkoutSessions",
+                        principalColumn: "SessionId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CustomProgramExercises_ExId",
                 table: "CustomProgramExercises",
@@ -232,6 +297,31 @@ namespace main.Migrations
                 name: "IX_UserStandardPrograms_ProgId",
                 table: "UserStandardPrograms",
                 column: "ProgId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutExerciseSets_ExerciseId",
+                table: "WorkoutExerciseSets",
+                column: "ExerciseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutExerciseSets_WorkoutSessionId",
+                table: "WorkoutExerciseSets",
+                column: "WorkoutSessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutSessions_CustomProgramId",
+                table: "WorkoutSessions",
+                column: "CustomProgramId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutSessions_StandardProgramId",
+                table: "WorkoutSessions",
+                column: "StandardProgramId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutSessions_UserId",
+                table: "WorkoutSessions",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -250,7 +340,13 @@ namespace main.Migrations
                 name: "UserStandardPrograms");
 
             migrationBuilder.DropTable(
+                name: "WorkoutExerciseSets");
+
+            migrationBuilder.DropTable(
                 name: "Exercises");
+
+            migrationBuilder.DropTable(
+                name: "WorkoutSessions");
 
             migrationBuilder.DropTable(
                 name: "CustomPrograms");

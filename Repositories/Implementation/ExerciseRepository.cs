@@ -4,6 +4,7 @@ namespace FitnesTracker;
 
 public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
 {
+    // context contains all DbSets
     public ExerciseRepository(ApplicationDbContext context) : base(context)
     {
     }
@@ -12,22 +13,24 @@ public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
     {
         var query = _context.Exercises.AsQueryable();
 
+        // catch title if string != null so if string == null we may fillter exercise via muscle group 
         if (!string.IsNullOrEmpty(parameters.Title))
             query = query.Where(e => e.Title.Contains(parameters.Title));
-        
+
         if (parameters.MuscleGroup != null)
             query = query.Where(e => e.MuscleGroup == parameters.MuscleGroup);
-        
+
         var totalCount = await query.CountAsync();
-        
+
         var items = await query
             .Skip((parameters.PageNumber - 1) * parameters.PageSize)
             .Take(parameters.PageSize)
             .ToListAsync();
-        
+
         return new PagedResult<Exercise>(items, totalCount, parameters.PageNumber, parameters.PageSize);
     }
 
+    // base logic of paginaiton - skip pages
     public async Task<PagedResult<Exercise>> GetPagedAsync(PaginationParams paginationParams)
     {
         var count = await _context.Exercises.CountAsync();

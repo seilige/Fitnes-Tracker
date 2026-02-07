@@ -4,7 +4,7 @@ public class CustomProgramCreateDTO
 {
     public string? Title { get; set; }
     public string? Description { get; set; }
-    public bool IsPublic { get; set; }
+    public bool IsPublic { get; set; } // custom program show other users, if IsPublic == true
     public ICollection<int> ExerciseIDs { get; set; }
 }
 

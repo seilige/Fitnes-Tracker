@@ -10,11 +10,11 @@ public class ExceptionHandlingMiddleware
 
     public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
     {
-        _next = next;
+        _next = next; // call next middleware container
         _logger = logger;
     }
 
-    public async Task InvokeAsync(HttpContext context)
+    public async Task InvokeAsync(HttpContext context) // This method is called on every HTTP request
     {
         try
         {
@@ -27,6 +27,7 @@ public class ExceptionHandlingMiddleware
         }
     }
 
+    // helper method for exceptions
     private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
         int statusCode;
@@ -53,13 +54,13 @@ public class ExceptionHandlingMiddleware
         }
         
         context.Response.StatusCode = statusCode;
-        context.Response.ContentType = "application/json";
+        context.Response.ContentType = "application/json"; // format of responce
 
         var response = new ErrorResponse 
         { 
             StatusCode = statusCode,
             Message = message,
-            Details = ex.Message // или ex.StackTrace для dev окружения
+            Details = ex.Message
         };
 
         var json = JsonSerializer.Serialize(response);

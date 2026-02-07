@@ -16,10 +16,11 @@ public class ApplicationDbContext : DbContext
     public DbSet<CustomProgramUser> CustomProgramUsers { get; set; }
     public DbSet<StandardProgramExercise> StandardProgramExercises { get; set; }
     public DbSet<CustomProgramExercise> CustomProgramExercises { get; set; }
+    public DbSet<WorkoutSession> WorkoutSessions { get; set; }
+    public DbSet<WorkoutExerciseSet> WorkoutExerciseSets { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -94,5 +95,36 @@ public class ApplicationDbContext : DbContext
             .HasOne(x => x.Exercise)
             .WithMany()
             .HasForeignKey(x => x.ExId);
+
+        // Workout session and exercise conntection:
+        modelBuilder.Entity<WorkoutExerciseSet>()
+            .HasOne(x => x.WorkoutSession)
+            .WithMany(x => x.WorkoutExerciseSets)
+            .HasForeignKey(x => x.WorkoutSessionId);
+    
+        modelBuilder.Entity<WorkoutExerciseSet>()
+            .HasOne(x => x.Exercise)
+            .WithMany(x => x.WorkoutExerciseSets)
+            .HasForeignKey(x => x.ExerciseId);
+
+        modelBuilder.Entity<WorkoutSession>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.WorkoutSessions)
+            .HasForeignKey(x => x.UserId);
+
+        modelBuilder.Entity<WorkoutSession>()
+            .HasOne(x => x.StandardProgram)
+            .WithMany()
+            .HasForeignKey(x => x.StandardProgramId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<WorkoutSession>()
+            .HasOne(x => x.CustomProgram)
+            .WithMany()
+            .HasForeignKey(x => x.CustomProgramId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<WorkoutSession>()
+            .HasKey(x => x.SessionId);
     }
 }

@@ -32,7 +32,7 @@ public class Repository<T> : IRepository<T> where T : class
     {
         var entity = await _context.Set<T>().FindAsync(id);
         _context.Set<T>().Remove(entity);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(); // if changes have occurred we must save their
     }
 
     public async Task AddAsync(T entity)

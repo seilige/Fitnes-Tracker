@@ -4,16 +4,16 @@
         <name>main</name>
     </assembly>
     <members>
-        <member name="T:main.Migrations.InitialCreate">
+        <member name="T:main.Migrations.AddWorkoutSessionAndSets">
             <inheritdoc />
         </member>
-        <member name="M:main.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:main.Migrations.AddWorkoutSessionAndSets.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:main.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:main.Migrations.AddWorkoutSessionAndSets.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:main.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:main.Migrations.AddWorkoutSessionAndSets.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
