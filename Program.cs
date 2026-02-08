@@ -23,13 +23,14 @@ public class Program
         builder.Services.AddScoped<IExerciseService, ExerciseService>();
         builder.Services.AddScoped<IWorkoutSessionService, WorkoutSessionService>();
         builder.Services.AddScoped<IWorkoutSessionRepository, WorkoutSessionRepository>();
+        builder.Services.AddScoped<IWorkoutExerciseSetRepository, WorkoutExerciseSetRepository>();
 
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new() { 
-                Title = "Weather API", 
+                Title = "API", 
                 Version = "v1",
-                Description = "API для получения прогнозов погоды"
+                Description = "API"
             });
     
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

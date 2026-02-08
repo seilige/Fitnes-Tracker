@@ -28,5 +28,15 @@ public class Mapper : Profile
         CreateMap<WorkoutSessionCreateDTO, WorkoutSession>();
         CreateMap<WorkoutSession, WorkoutSessionResponseDTO>();
         CreateMap<WorkoutSessionUpdateDTO, WorkoutSession>();
+
+        CreateMap<SetUpdateDTO, WorkoutExerciseSet>();
+        CreateMap<WorkoutExerciseSet, SetUpdateDTO>();
+    
+        CreateMap<WorkoutSession, WorkoutSessionResponseDTO>()
+            .ForMember(dest => dest.SessionId, opt => opt.MapFrom(x => x.SessionId));
+
+        CreateMap<WorkoutExerciseSet, ExerciseSetDTO>()
+            .ForMember(dest => dest.SetId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.ExerciseName, opt => opt.MapFrom(src => src.Exercise.Title));
     }
 }

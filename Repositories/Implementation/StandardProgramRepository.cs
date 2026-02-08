@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,14 @@ public class StandardProgramRepository : Repository<StandardProgram>, IStandardP
 
         return new PagedResult<StandardProgram>(
             standardProg, count, paginationParams.PageNumber, paginationParams.PageSize);
+    }
+
+    public async Task<IEnumerable<Exercise>> GetExercisesAsync(int standardProgramId)
+    {
+        return await _context.StandardProgramExercises
+                                .Where(x => x.ProgId == standardProgramId)
+                                .Include(x => x.Exercise)
+                                .Select(x => x.Exercise).ToListAsync();
     }
 
     public async Task<IEnumerable<StandardProgram>> GetByLevelAsync(Level level)

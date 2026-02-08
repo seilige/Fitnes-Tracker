@@ -4,18 +4,6 @@
         <name>main</name>
     </assembly>
     <members>
-        <member name="T:main.Migrations.AddWorkoutSessionAndSets">
-            <inheritdoc />
-        </member>
-        <member name="M:main.Migrations.AddWorkoutSessionAndSets.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:main.Migrations.AddWorkoutSessionAndSets.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:main.Migrations.AddWorkoutSessionAndSets.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
         <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
             <summary>
             Generates a documentation comment ID for a type.

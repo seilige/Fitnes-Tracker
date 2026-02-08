@@ -2,12 +2,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnesTracker;
 
-public class WorkoutExerciseRepository : Repository<WorkoutSession>, IWorkoutExerciseRepository
+// public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWorkoutExerciseRepository
+public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWorkoutExerciseSetRepository
 {
-    public WorkoutExerciseRepository(ApplicationDbContext context) : base(context)
+    public WorkoutExerciseSetRepository (ApplicationDbContext context) : base(context)
     {
     }
 
+    public async Task<WorkoutExerciseSet?> GetSetByIdWithSessionAsync(int id)
+    {
+        return await _context.WorkoutExerciseSets
+                    .Include(x => x.WorkoutSession)
+                    .FirstAsync(x => x.Id == id);
+    }
     public new async Task<WorkoutExerciseSet> AddAsync(WorkoutExerciseSet set)
     {
         await _context.WorkoutExerciseSets.AddAsync(set);
@@ -20,7 +27,7 @@ public class WorkoutExerciseRepository : Repository<WorkoutSession>, IWorkoutExe
         return await _context.WorkoutExerciseSets.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IEnumerable<WorkoutExerciseSet>> GetBySessionIdAsync(int sessionId)
+    public async Task<IEnumerable<WorkoutExerciseSet>> GetByWorkoutSessionIdAsync(int sessionId)
     {
         return await _context.WorkoutExerciseSets.Where(x => x.WorkoutSessionId == sessionId).ToListAsync(); // cuz method returns IEnumerable
     }

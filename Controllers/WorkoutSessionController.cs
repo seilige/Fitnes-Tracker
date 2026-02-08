@@ -14,6 +14,30 @@ public class WorkoutSessionController : ControllerBase
         _service = service;
     }
 
+    [HttpPatch("session/{sessionId}/complete")]
+    public async Task<ActionResult<WorkoutSessionResponseDTO>> CompleteSession(int sessionId)
+    {
+        var result = await _service.CompleteSessionAsync(sessionId);
+        return Ok(result);
+    }
+
+    [HttpPatch("set/update")]
+    public async Task<ActionResult<SetUpdateDTO>> UpdateSet(SetUpdateDTO dto)
+    {
+        var result = await _service.UpdateSetAsync(dto);
+        return Ok(result);
+    }
+
+    [HttpGet("history/{userId}")]
+    public async Task<ActionResult<PagedResult<WorkoutSessionResponseDTO>>> GetUserHistory(
+        int userId,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        var history = await _service.GetUserHistoryAsync(userId, pageNumber, pageSize);
+        return Ok(history);
+    }
+
     [HttpPost("session_create")]
     public async Task<ActionResult> SessionCreate(WorkoutSessionCreateDTO dto)
     {

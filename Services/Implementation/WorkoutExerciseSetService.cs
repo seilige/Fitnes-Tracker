@@ -41,8 +41,8 @@ public class WorkoutExerciseService : IWorkoutExerciseService
         entity.Weight = dto.Weight;
         entity.Reps = dto.Reps;
         
-        var updated = await _repository.UpdateAsync(entity);
-        return _mapper.Map<WorkoutExerciseSetResponseDTO>(updated);
+        await _repository.UpdateAsync(entity);
+        return _mapper.Map<WorkoutExerciseSetResponseDTO>(entity); // замени updated на entity
     }
 
     public async Task DeleteSetAsync(int id)

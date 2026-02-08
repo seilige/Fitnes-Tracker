@@ -8,6 +8,28 @@ public class WorkoutSessionRepository :  Repository<WorkoutSession>, IWorkoutSes
     {
     }
 
+    public async Task<PagedResult<WorkoutSession>> GetUserSessionsAsync(int userId, int pageNumber, int pageSize)
+    {
+        var query = _context.WorkoutSessions
+            .Include(x => x.WorkoutExerciseSets)
+            .ThenInclude(s => s.Exercise)
+            .Where(x => x.UserId == userId);
+        
+        var totalCount = await query.CountAsync();
+        
+        var sessions = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
+        return new PagedResult<WorkoutSession>(
+            items: sessions,
+            totalCount: totalCount,
+            pageNumber: pageNumber,
+            pageSize: pageSize
+        );
+    }
+
     public async Task<IEnumerable<WorkoutSession>> GetByUserIdAsync(int userId)
     {
         return await _context.WorkoutSessions
