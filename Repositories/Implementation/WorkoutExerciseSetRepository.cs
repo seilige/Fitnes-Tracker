@@ -2,13 +2,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnesTracker;
 
-// public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWorkoutExerciseRepository
 public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWorkoutExerciseSetRepository
 {
-    public WorkoutExerciseSetRepository (ApplicationDbContext context) : base(context)
+    public WorkoutExerciseSetRepository(ApplicationDbContext context) : base(context)
     {
     }
 
+    public async Task<ICollection<WorkoutExerciseSet>> GetAllAsync()
+    {
+        return await _context.WorkoutExerciseSets
+            .Include(x => x.Exercise)
+            .Include(x => x.WorkoutSession)
+            .ToListAsync();
+    }
     public async Task<WorkoutExerciseSet?> GetSetByIdWithSessionAsync(int id)
     {
         return await _context.WorkoutExerciseSets
@@ -18,7 +24,7 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
     public new async Task<WorkoutExerciseSet> AddAsync(WorkoutExerciseSet set)
     {
         await _context.WorkoutExerciseSets.AddAsync(set);
-        await _context.SaveChangesAsync();
+        // await _context.SaveChangesAsync();
         return set;
     }
 
@@ -35,14 +41,14 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
     public async Task UpdateAsync(WorkoutExerciseSet set)
     {
         _context.WorkoutExerciseSets.Update(set);
-        await _context.SaveChangesAsync();
+        // await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id)
     {
         var item = await _context.WorkoutExerciseSets.FirstOrDefaultAsync(x => x.Id == id);
         _context.WorkoutExerciseSets.Remove(item);
-        await _context.SaveChangesAsync();
+        // await _context.SaveChangesAsync();
     }
 }
 

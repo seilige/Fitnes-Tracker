@@ -5,8 +5,9 @@ public class WorkoutSessionCreateDTO
     public int UserId { get; set; }
     public DateTime Date { get; set; }
     public int? StandardProgramId { get; set; }
-    public int? CustomProgramId { get; set; }  
-    public ICollection<WorkoutExerciseSet> WorkoutExerciseSets { get; set; }
+    public int? CustomProgramId { get; set; }
+
+    public ICollection<WorkoutExerciseSetCreateDTO> WorkoutExerciseSets { get; set; }
 }
 
 public class WorkoutSessionResponseDTO
@@ -15,7 +16,6 @@ public class WorkoutSessionResponseDTO
     public WorkoutStatus Status { get; set; }
     public int SessionId { get; set; }
     public DateTime Date { get; set; } // when was session carried out
-    // public ICollection<WorkoutExerciseSet> WorkoutExerciseSets { get; set; }
     public ICollection<ExerciseSetDTO> ExerciseSets { get; set; }
 }
 

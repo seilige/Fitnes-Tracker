@@ -15,10 +15,5 @@ public class WorkoutExerciseSetCreateDTOValidation : AbstractValidator<WorkoutEx
             .NotEmpty()
             .GreaterThan(0)
             .WithMessage("Weight must be greater then 0");
-
-        RuleFor(x => x.WorkoutSessionId)
-            .NotEmpty()
-            .GreaterThan(0)
-            .WithMessage("Incorrect data");
     }
 }

@@ -41,7 +41,6 @@ public class ExerciseService : IExerciseService
         );
     }
 
-
     public async Task<ExerciseResponseDTO?> GetByTitleAsync(string title)
     {
         var exercise = await _repository.GetByTitleAsync(title);
@@ -64,6 +63,7 @@ public class ExerciseService : IExerciseService
     {
         var item = _mapper.Map<Exercise>(dto);
         await _repository.AddAsync(item);
+        await _repository.SaveChangesAsync();
         return _mapper.Map<ExerciseResponseDTO>(item);
     }
 
@@ -78,12 +78,14 @@ public class ExerciseService : IExerciseService
         var item = _mapper.Map<Exercise>(dto);
         item.ExId = id;
         var entity = await _repository.UpdateAsync(item);
+        await _repository.SaveChangesAsync();
         return _mapper.Map<ExerciseResponseDTO>(entity);
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
         await _repository.DeleteByIDAsync(id);
+        await _repository.SaveChangesAsync();
         return true;
     }
 }

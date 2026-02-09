@@ -9,6 +9,11 @@ public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
     {
     }
 
+    public async Task<ICollection<Exercise>> GetAllAsync()
+    {
+        return await _context.Exercises.Include(x => x.WorkoutExerciseSets).ToListAsync();
+    }
+
     public async Task<PagedResult<Exercise>> GetFilteredExercisesAsync(ExerciseQueryParameters parameters)
     {
         var query = _context.Exercises.AsQueryable();

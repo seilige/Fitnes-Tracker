@@ -8,6 +8,12 @@ public class CustomProgramRepository : Repository<CustomProgram>, ICustomProgram
     {
     }
 
+    // n + 1 fix
+    public async Task<ICollection<User>> GetAllAsync()
+    {
+        return await _context.Users.Include(x => x.WorkoutSessions).ToListAsync();
+    }
+
     public async Task<User?> GetCreatorAsync(int custProgId)
     {
         var prog = await _context.CustomPrograms.Include(x => x.Creator).Where(x => x.CustProgId == custProgId).FirstOrDefaultAsync();

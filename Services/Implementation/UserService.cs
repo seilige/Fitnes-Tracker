@@ -23,6 +23,7 @@ public class UserService : IUserService
     {
         var user = _mapper.Map<User>(dto);
         await _userRepository.AddAsync(user);
+        await _userRepository.SaveChangesAsync();
         return _mapper.Map<UserResponseDTO>(user);
     }
 
@@ -37,12 +38,14 @@ public class UserService : IUserService
         var user = _mapper.Map<User>(dto);
         user.IdUser = id;
         var updated = await _userRepository.UpdateAsync(user);
+        await _userRepository.SaveChangesAsync();
         return _mapper.Map<UserResponseDTO>(updated);
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
         await _userRepository.DeleteByIDAsync(id);
+        await _userRepository.SaveChangesAsync();
         return true;
     }
 }

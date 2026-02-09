@@ -8,6 +8,11 @@ public class UserRepository : Repository<User>, IUserRepository
     { // User gets context and provide to base class
     }
 
+    public async Task<ICollection<User>> GetAllAsync()
+    {
+        return await _context.Users.Include(x => x.WorkoutSessions).ToListAsync();
+    }
+
     public async Task<IEnumerable<User>> GetAllAuthorsAsync()
     {
         return await _context.Users.Where(x => x.Author).ToListAsync(); // protected _context from base class 

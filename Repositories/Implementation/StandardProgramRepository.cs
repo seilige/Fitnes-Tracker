@@ -10,6 +10,13 @@ public class StandardProgramRepository : Repository<StandardProgram>, IStandardP
     {
     }
 
+    public async Task<ICollection<StandardProgram>> GetAllAsync()
+    {
+        return await _context.StandardPrograms
+            .Include(x => x.Exercises)
+            .ToListAsync();
+    }
+
     public async Task<PagedResult<StandardProgram>> GetPagedAsync(PaginationParams paginationParams)
     {
         var count = await _context.StandardPrograms.CountAsync();
@@ -32,12 +39,12 @@ public class StandardProgramRepository : Repository<StandardProgram>, IStandardP
 
     public async Task<IEnumerable<StandardProgram>> GetByLevelAsync(Level level)
     {
-        return await _context.StandardPrograms.Where(x => x.Level == level).ToListAsync();
+        return await _context.StandardPrograms.Where(x => x.Level == level).ToListAsync(); // potential n + 1 problem
     }
 
     public async Task<IEnumerable<StandardProgram>> GetByWorkoutTypeAsync(WorkoutType workoutType)
     {
-        return await _context.StandardPrograms.Where(x => x.WorkoutType == workoutType).ToListAsync();
+        return await _context.StandardPrograms.Where(x => x.WorkoutType == workoutType).ToListAsync(); // potential n + 1 problem
     }
 
     public async Task<IEnumerable<StandardProgram>> GetByCategoryAsync(Category category)

@@ -11,6 +11,12 @@ public class Repository<T> : IRepository<T> where T : class
         _context = context;
     }
 
+    // SaveChanges must be present in every transaction for atomicity
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _context.Set<T>().ToListAsync();
@@ -24,7 +30,7 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task<T> UpdateAsync(T entity)
     {
         _context.Set<T>().Update(entity);
-        await _context.SaveChangesAsync();
+        // await _context.SaveChangesAsync();
         return entity;
     }
 
@@ -32,12 +38,12 @@ public class Repository<T> : IRepository<T> where T : class
     {
         var entity = await _context.Set<T>().FindAsync(id);
         _context.Set<T>().Remove(entity);
-        await _context.SaveChangesAsync(); // if changes have occurred we must save their
+        // await _context.SaveChangesAsync(); // if changes have occurred we must save their
     }
 
     public async Task AddAsync(T entity)
     {
         _context.Set<T>().Add(entity);
-        await _context.SaveChangesAsync();
+        // await _context.SaveChangesAsync();
     }
 }

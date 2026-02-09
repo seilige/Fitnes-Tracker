@@ -11,7 +11,7 @@ public class UserController : ControllerBase
 {
     private IUserService _service;
 
-    public UserController(UserService service)
+    public UserController(IUserService service)
     {
         _service = service;
     }

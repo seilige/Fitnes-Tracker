@@ -8,5 +8,7 @@ public class StandardProgramResponseDTO
     public Category Category { get; set; }
     public Level Level { get; set; }
     public WorkoutType WorkoutType { get; set; }
-    public ICollection<Exercise> Exercises { get; set; }
+    // N + 1 guaranteed + the entire object graph is loaded
+    // public ICollection<Exercise> Exercises { get; set; }
+    
 }

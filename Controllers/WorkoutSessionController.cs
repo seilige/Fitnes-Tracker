@@ -41,7 +41,7 @@ public class WorkoutSessionController : ControllerBase
     [HttpPost("session_create")]
     public async Task<ActionResult> SessionCreate(WorkoutSessionCreateDTO dto)
     {
-        var result = await _service.CreateSessionAsync(dto); // 
+        var result = await _service.CreateSessionAsync(dto);
         return Ok(result);
     }
 

@@ -24,6 +24,7 @@ public class CustomProgramService : ICustomProgramService
         var program = _mapper.Map<CustomProgram>(dto);
         program.CreatorId = creatorId;
         await _repository.AddAsync(program);
+        await _repository.SaveChangesAsync();
         return _mapper.Map<CustomProgramResponseDTO>(program);
     }
 
@@ -38,12 +39,14 @@ public class CustomProgramService : ICustomProgramService
         var program = _mapper.Map<CustomProgram>(dto);
         program.CustProgId = id;
         var updated = await _repository.UpdateAsync(program);
+        await _repository.SaveChangesAsync(); // on every transaction
         return _mapper.Map<CustomProgramResponseDTO>(updated);
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
         await _repository.DeleteByIDAsync(id);
+        await _repository.SaveChangesAsync();
         return true;
     }
 }

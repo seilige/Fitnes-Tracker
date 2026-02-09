@@ -111,6 +111,15 @@ public class ApplicationDbContext : DbContext
             .HasOne(x => x.User)
             .WithMany(x => x.WorkoutSessions)
             .HasForeignKey(x => x.UserId);
+        
+        modelBuilder.Entity<WorkoutSession>()
+            .Property(w => w.SessionId)
+            .ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<WorkoutSession>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.WorkoutSessions)
+            .HasForeignKey(x => x.UserId);
 
         modelBuilder.Entity<WorkoutSession>()
             .HasOne(x => x.StandardProgram)

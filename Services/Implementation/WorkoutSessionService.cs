@@ -31,10 +31,7 @@ public class WorkoutSessionService : IWorkoutSessionService
         var dtos = _mapper.Map<List<WorkoutSessionResponseDTO>>(pagedSessions.Items);
         
         return new PagedResult<WorkoutSessionResponseDTO>(
-            dtos, 
-            pagedSessions.TotalCount, 
-            pageNumber, 
-            pageSize
+            dtos, pagedSessions.TotalCount, pageNumber, pageSize
         );
     }
 
@@ -48,6 +45,7 @@ public class WorkoutSessionService : IWorkoutSessionService
         session.Status = WorkoutStatus.Completed;
 
         await _repository.UpdateAsync(session);
+        await _repository.SaveChangesAsync();
 
         return _mapper.Map<WorkoutSessionResponseDTO>(session);
     }
@@ -61,6 +59,7 @@ public class WorkoutSessionService : IWorkoutSessionService
         set.Weight = dto.Weight;
 
         await _setRepository.UpdateAsync(set);
+        await _repository.SaveChangesAsync();
 
         return _mapper.Map<SetUpdateDTO>(set);
     }
@@ -68,11 +67,10 @@ public class WorkoutSessionService : IWorkoutSessionService
     public async Task<WorkoutSessionResponseDTO> CreateSessionAsync(WorkoutSessionCreateDTO dto)
     {
         var entity = _mapper.Map<WorkoutSession>(dto); // session
-        await _repository.AddAsync(entity);
         entity.Status = WorkoutStatus.InProgress;
+        await _repository.AddAsync(entity);
 
         // session need exersice sets:
-
         foreach(var exer in dto.WorkoutExerciseSets)
         {
             var set = new WorkoutExerciseSet
@@ -85,6 +83,8 @@ public class WorkoutSessionService : IWorkoutSessionService
 
             await _setRepository.AddAsync(set);
         }
+
+        await _repository.SaveChangesAsync();
 
         return _mapper.Map<WorkoutSessionResponseDTO>(entity);
     }
@@ -106,6 +106,7 @@ public class WorkoutSessionService : IWorkoutSessionService
         var session = await _repository.GetByIDAsync(id);
         session.Status = status;
         await _repository.UpdateAsync(session);
+        await _repository.SaveChangesAsync();
         return _mapper.Map<WorkoutSessionResponseDTO>(session);
     }
 }

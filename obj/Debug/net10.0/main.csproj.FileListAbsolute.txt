@@ -33,10 +33,6 @@ C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Abstr
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.Extensions.DependencyModel.dll
-C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
-C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
-C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
-C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.OpenApi.dll
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Microsoft.VisualStudio.SolutionPersistence.dll
 C:\Users\Acer\Desktop\main\bin\Debug\net10.0\Mono.TextTemplating.dll
@@ -133,3 +129,4 @@ C:\Users\Acer\Desktop\main\obj\Debug\net10.0\main.xml
 C:\Users\Acer\Desktop\main\obj\Debug\net10.0\main.pdb
 C:\Users\Acer\Desktop\main\obj\Debug\net10.0\main.genruntimeconfig.cache
 C:\Users\Acer\Desktop\main\obj\Debug\net10.0\ref\main.dll
+C:\Users\Acer\Desktop\main\bin\Debug\net10.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

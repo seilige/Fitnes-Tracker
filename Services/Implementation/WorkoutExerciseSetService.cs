@@ -19,6 +19,7 @@ public class WorkoutExerciseService : IWorkoutExerciseService
     {
         var entity = _mapper.Map<WorkoutExerciseSet>(dto);
         var result = await _repository.AddAsync(entity);
+        await _repository.SaveChangesAsync();
         return _mapper.Map<WorkoutExerciseSetResponseDTO>(result);
     }
 
@@ -42,11 +43,13 @@ public class WorkoutExerciseService : IWorkoutExerciseService
         entity.Reps = dto.Reps;
         
         await _repository.UpdateAsync(entity);
+        await _repository.SaveChangesAsync();
         return _mapper.Map<WorkoutExerciseSetResponseDTO>(entity); // замени updated на entity
     }
 
     public async Task DeleteSetAsync(int id)
     {
         await _repository.DeleteByIDAsync(id);
+        await _repository.SaveChangesAsync();
     }
 }
