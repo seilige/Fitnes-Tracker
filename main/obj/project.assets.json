@@ -2814,11 +2814,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Acer\\Desktop\\main\\main.csproj",
+      "projectUniqueName": "C:\\Users\\Acer\\Desktop\\solution\\main\\main.csproj",
       "projectName": "main",
-      "projectPath": "C:\\Users\\Acer\\Desktop\\main\\main.csproj",
+      "projectPath": "C:\\Users\\Acer\\Desktop\\solution\\main\\main.csproj",
       "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Acer\\Desktop\\main\\obj\\",
+      "outputPath": "C:\\Users\\Acer\\Desktop\\solution\\main\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config"

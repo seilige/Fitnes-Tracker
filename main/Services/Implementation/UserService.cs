@@ -30,6 +30,9 @@ public class UserService : IUserService
     public async Task<UserResponseDTO?> GetByIdAsync(int id)
     {
         var user = await _userRepository.GetByIDAsync(id);
+
+        if(user == null) throw new KeyNotFoundException($"User with id: {id} not found");
+
         return _mapper.Map<UserResponseDTO?>(user);
     }
 
@@ -38,12 +41,19 @@ public class UserService : IUserService
         var user = _mapper.Map<User>(dto);
         user.IdUser = id;
         var updated = await _userRepository.UpdateAsync(user);
+
+        if(updated == null) throw new KeyNotFoundException($"User with id: {id} not found");
+
         await _userRepository.SaveChangesAsync();
         return _mapper.Map<UserResponseDTO>(updated);
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
+        var entity = await _userRepository.GetByIDAsync(id);
+
+        if(entity == null) throw new KeyNotFoundException("Not found");
+
         await _userRepository.DeleteByIDAsync(id);
         await _userRepository.SaveChangesAsync();
         return true;

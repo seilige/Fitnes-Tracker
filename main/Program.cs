@@ -75,7 +75,6 @@ public class Program
             SeedData.Initialize(context);
         }
 
-
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseHttpsRedirection();

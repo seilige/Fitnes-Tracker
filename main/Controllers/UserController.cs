@@ -22,7 +22,6 @@ public class UserController : ControllerBase
         return Ok(await _service.GetAllAsync());
     }
 
-    // обработка ошибок будет добавлена позже
     [HttpGet("{id:int}")]
     public async Task<ActionResult> GetByIdAsync(int id)
     {

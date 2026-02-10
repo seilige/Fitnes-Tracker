@@ -16,11 +16,13 @@ public class ExerciseService : IExerciseService
     public async Task<PagedResult<ExerciseResponseDTO>> GetPagedAsync(PaginationParams paginationParams)
     {
         var result = await _repository.GetPagedAsync(paginationParams);
-        
+
+        if(result == null) throw new KeyNotFoundException($"Program not found");
+
         var mappedItems = _mapper.Map<List<ExerciseResponseDTO>>(result.Items);
         
         return new PagedResult<ExerciseResponseDTO>(
-            mappedItems, 
+            mappedItems,
             result.TotalCount,
             result.PageNumber,
             result.PageSize
@@ -30,6 +32,8 @@ public class ExerciseService : IExerciseService
     public async Task<PagedResult<ExerciseResponseDTO>> GetFilteredExercisesAsync(ExerciseQueryParameters parameters)
     {
         var result = await _repository.GetFilteredExercisesAsync(parameters);
+
+        if(result == null) throw new KeyNotFoundException($"Exerice not found");
 
         var mappedItems = _mapper.Map<List<ExerciseResponseDTO>>(result.Items);
 
@@ -44,16 +48,22 @@ public class ExerciseService : IExerciseService
     public async Task<ExerciseResponseDTO?> GetByTitleAsync(string title)
     {
         var exercise = await _repository.GetByTitleAsync(title);
+
+        if(exercise == null) throw new KeyNotFoundException($"Exercise not found");
+
         return _mapper.Map<ExerciseResponseDTO?>(exercise);
     }
 
     public async Task<IEnumerable<ExerciseResponseDTO>> GetByMuscleGroupAsync(MuscleGroup group)
     {
         var exercises = await _repository.GetByMuscleGroupAsync(group);
+
+        if(exercises == null) throw new KeyNotFoundException($"Exercise not found");
+
         return _mapper.Map<IEnumerable<ExerciseResponseDTO>>(exercises);
     }
 
-    public async Task<IEnumerable<ExerciseResponseDTO>> GetAllAsync()
+    public async Task<IEnumerable<ExerciseResponseDTO>> GetAllAsync() // may returns void list
     {
         var Exercise = await _repository.GetAllAsync();
         return _mapper.Map<IEnumerable<ExerciseResponseDTO>>(Exercise);
@@ -70,6 +80,9 @@ public class ExerciseService : IExerciseService
     public async Task<ExerciseResponseDTO?> GetByIdAsync(int id)
     {
         var entity = await _repository.GetByIDAsync(id);
+
+        if(entity == null) throw new KeyNotFoundException($"Exercise not found");
+
         return _mapper.Map<ExerciseResponseDTO?>(entity);
     }
 
@@ -84,6 +97,10 @@ public class ExerciseService : IExerciseService
 
     public async Task<bool> DeleteAsync(int id)
     {
+        var entity = await _repository.GetByIDAsync(id);
+
+        if(entity == null) throw new KeyNotFoundException("Not found");
+
         await _repository.DeleteByIDAsync(id);
         await _repository.SaveChangesAsync();
         return true;

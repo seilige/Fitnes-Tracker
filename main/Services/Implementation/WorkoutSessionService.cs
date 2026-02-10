@@ -7,19 +7,13 @@ public class WorkoutSessionService : IWorkoutSessionService
 {
     private readonly IWorkoutSessionRepository _repository;
     private readonly IMapper _mapper;
-    private readonly ICustomProgramRepository _customProgramRepository;
-    private readonly IStandardProgramRepository _standardProgramRepository;
     private readonly IWorkoutExerciseSetRepository _setRepository;
 
     public WorkoutSessionService(IWorkoutSessionRepository repository,
-                                ICustomProgramRepository customProgramRepository,
-                                IStandardProgramRepository standardProgramRepository,
                                 IWorkoutExerciseSetRepository setRepository,
                                 IMapper mapper)
     {
         _repository = repository;
-        _customProgramRepository = customProgramRepository;
-        _standardProgramRepository = standardProgramRepository;
         _setRepository = setRepository;
         _mapper = mapper;
     }
@@ -27,7 +21,7 @@ public class WorkoutSessionService : IWorkoutSessionService
     public async Task<PagedResult<WorkoutSessionResponseDTO>> GetUserHistoryAsync(int userId, int pageNumber, int pageSize)
     {
         var pagedSessions = await _repository.GetUserSessionsAsync(userId, pageNumber, pageSize);
-        
+
         var dtos = _mapper.Map<List<WorkoutSessionResponseDTO>>(pagedSessions.Items);
         
         return new PagedResult<WorkoutSessionResponseDTO>(
@@ -40,7 +34,7 @@ public class WorkoutSessionService : IWorkoutSessionService
         var session = await _repository.GetByIdWithDetailsAsync(sessionId);
 
         if (session.Status == WorkoutStatus.Completed)
-            throw new InvalidOperationException("Сессия уже завершена");
+            throw new InvalidOperationException("Session is already completed");
 
         session.Status = WorkoutStatus.Completed;
 
@@ -55,6 +49,8 @@ public class WorkoutSessionService : IWorkoutSessionService
         // get session
         var set = await _setRepository.GetSetByIdWithSessionAsync(dto.Id);
  
+        if(set == null) throw new KeyNotFoundException($"Set with id: {dto.Id} not found");
+
         set.Reps = dto.Reps;
         set.Weight = dto.Weight;
 
@@ -92,6 +88,7 @@ public class WorkoutSessionService : IWorkoutSessionService
     public async Task<WorkoutSessionResponseDTO> GetSessionByIdAsync(int id)
     {
         var item = await _repository.GetByIDAsync(id);
+        if(item == null) throw new KeyNotFoundException($"Session with id: {id} not found");
         return _mapper.Map<WorkoutSessionResponseDTO>(item);
     }
 
@@ -104,6 +101,9 @@ public class WorkoutSessionService : IWorkoutSessionService
     public async Task<WorkoutSessionResponseDTO> UpdateSessionStatusAsync(int id, WorkoutStatus status)
     {
         var session = await _repository.GetByIDAsync(id);
+        
+        if(session == null) throw new KeyNotFoundException($"Session with id: {id} not found");
+
         session.Status = status;
         await _repository.UpdateAsync(session);
         await _repository.SaveChangesAsync();
