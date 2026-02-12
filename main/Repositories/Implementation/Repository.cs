@@ -29,8 +29,9 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task<T> UpdateAsync(T entity)
     {
+        if(entity == null) throw new KeyNotFoundException("Entity not found");
+
         _context.Set<T>().Update(entity);
-        // await _context.SaveChangesAsync();
         return entity;
     }
 
@@ -38,12 +39,10 @@ public class Repository<T> : IRepository<T> where T : class
     {
         var entity = await _context.Set<T>().FindAsync(id);
         _context.Set<T>().Remove(entity);
-        // await _context.SaveChangesAsync(); // if changes have occurred we must save their
     }
 
     public async Task AddAsync(T entity)
     {
         _context.Set<T>().Add(entity);
-        // await _context.SaveChangesAsync();
     }
 }

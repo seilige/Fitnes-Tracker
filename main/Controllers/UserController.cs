@@ -1,6 +1,3 @@
-using System.ComponentModel.Design.Serialization;
-using System.Data.Common;
-using System.Runtime.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitnesTracker;
@@ -43,6 +40,8 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreateAsync([FromBody] UserCreateDTO dto)
     {
-        return Ok(await _service.CreateAsync(dto));
+        var res = await _service.CreateAsync(dto);
+
+        return CreatedAtAction(nameof(GetByIdAsync), new { id = res.IdUser }, res);
     }
 }

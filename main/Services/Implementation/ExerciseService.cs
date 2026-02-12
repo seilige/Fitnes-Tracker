@@ -4,8 +4,8 @@ namespace FitnesTracker;
 
 public class ExerciseService : IExerciseService
 {
-    private IExerciseRepository _repository;
-    private IMapper _mapper;
+    private readonly IExerciseRepository _repository;
+    private readonly IMapper _mapper;
 
     public ExerciseService(IExerciseRepository repository, IMapper mapper)
     {

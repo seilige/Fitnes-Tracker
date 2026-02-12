@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Xml;
 using AutoMapper;
 
@@ -8,11 +9,14 @@ public class WorkoutSessionService : IWorkoutSessionService
     private readonly IWorkoutSessionRepository _repository;
     private readonly IMapper _mapper;
     private readonly IWorkoutExerciseSetRepository _setRepository;
+    private readonly IUserRepository _userRepository;
 
     public WorkoutSessionService(IWorkoutSessionRepository repository,
                                 IWorkoutExerciseSetRepository setRepository,
+                                IUserRepository userRepository,
                                 IMapper mapper)
     {
+        _userRepository = userRepository;
         _repository = repository;
         _setRepository = setRepository;
         _mapper = mapper;
@@ -20,6 +24,8 @@ public class WorkoutSessionService : IWorkoutSessionService
 
     public async Task<PagedResult<WorkoutSessionResponseDTO>> GetUserHistoryAsync(int userId, int pageNumber, int pageSize)
     {
+        if(await _userRepository.GetByIDAsync(userId) == null) throw new KeyNotFoundException($"User with id: {userId} not found");
+ 
         var pagedSessions = await _repository.GetUserSessionsAsync(userId, pageNumber, pageSize);
 
         var dtos = _mapper.Map<List<WorkoutSessionResponseDTO>>(pagedSessions.Items);

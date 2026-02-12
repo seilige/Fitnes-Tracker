@@ -58,6 +58,7 @@ public class ExerciseController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreateAsync([FromBody] ExerciseRequestDTO dto)
     {
-        return Ok(await _service.CreateAsync(dto));
+        var result = await _service.CreateAsync(dto);
+        return CreatedAtAction(nameof(GetByIdAsync), new { id = result.ExId }, result);
     }
 }

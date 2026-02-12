@@ -18,6 +18,9 @@ public class WorkoutSessionController : ControllerBase
     public async Task<ActionResult<WorkoutSessionResponseDTO>> CompleteSession(int sessionId)
     {
         var result = await _service.CompleteSessionAsync(sessionId);
+
+        if(result == null) return NoContent();
+
         return Ok(result);
     }
 
@@ -25,16 +28,16 @@ public class WorkoutSessionController : ControllerBase
     public async Task<ActionResult<SetUpdateDTO>> UpdateSet(SetUpdateDTO dto)
     {
         var result = await _service.UpdateSetAsync(dto);
+
+        if(result == null) return NoContent();
+
         return Ok(result);
     }
 
     [HttpGet("history/{userId}")]
-    public async Task<ActionResult<PagedResult<WorkoutSessionResponseDTO>>> GetUserHistory(
-        int userId,
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10)
+    public async Task<ActionResult<PagedResult<WorkoutSessionResponseDTO>>> GetUserHistory(int userId, [FromQuery] PaginationParams paginationParams)
     {
-        var history = await _service.GetUserHistoryAsync(userId, pageNumber, pageSize);
+        var history = await _service.GetUserHistoryAsync(userId, paginationParams.PageNumber, paginationParams.PageSize);
         return Ok(history);
     }
 
@@ -42,7 +45,7 @@ public class WorkoutSessionController : ControllerBase
     public async Task<ActionResult> SessionCreate(WorkoutSessionCreateDTO dto)
     {
         var result = await _service.CreateSessionAsync(dto);
-        return Ok(result);
+        return CreatedAtAction(nameof(GetSessionId), new { id = result.UserId }, result);
     }
 
     [HttpGet("session/{id}")]

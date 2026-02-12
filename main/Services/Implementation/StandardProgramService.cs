@@ -4,8 +4,8 @@ namespace FitnesTracker;
 
 public class StandardProgramService : IStandardProgramService
 {
-    private IStandardProgramRepository _repository;
-    private IMapper _mapper;
+    private readonly IStandardProgramRepository _repository;
+    private readonly IMapper _mapper;
 
     public StandardProgramService(IStandardProgramRepository repository, IMapper mapper)
     {

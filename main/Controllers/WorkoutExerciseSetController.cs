@@ -20,7 +20,7 @@ public class WorkoutExerciseSetController : ControllerBase
     {
         var res = await _service.AddSetAsync(dto);
 
-        return Ok(res);
+        return CreatedAtAction(nameof(GetById), new { id = res.Id }, res);
     }
 
     [HttpGet("{id:int}")]
@@ -44,7 +44,10 @@ public class WorkoutExerciseSetController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteSet(int id)
     {
-        await _service.DeleteSetAsync(id);
-        return Ok();
+        bool res = await _service.DeleteSetAsync(id);
+
+        if(res == true) return Ok();
+
+        return NoContent();
     }
 }

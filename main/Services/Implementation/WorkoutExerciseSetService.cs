@@ -53,7 +53,7 @@ public class WorkoutExerciseService : IWorkoutExerciseService
         return _mapper.Map<WorkoutExerciseSetResponseDTO>(entity);
     }
 
-    public async Task DeleteSetAsync(int id)
+    public async Task<bool> DeleteSetAsync(int id)
     {
         var exercise = await _repository.GetByIDAsync(id);
 
@@ -61,5 +61,6 @@ public class WorkoutExerciseService : IWorkoutExerciseService
 
         await _repository.DeleteByIDAsync(id);
         await _repository.SaveChangesAsync();
+        return true;
     }
 }

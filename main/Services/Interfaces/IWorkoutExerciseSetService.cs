@@ -6,5 +6,5 @@ public interface IWorkoutExerciseService
     Task<WorkoutExerciseSetResponseDTO> GetSetByIdAsync(int id);
     Task<IEnumerable<WorkoutExerciseSetResponseDTO>> GetSessionSetsAsync(int sessionId);
     Task<WorkoutExerciseSetResponseDTO> UpdateSetAsync(int id, WorkoutExerciseSetUpdateDTO dto);
-    Task DeleteSetAsync(int id);
+    Task<bool> DeleteSetAsync(int id);
 }

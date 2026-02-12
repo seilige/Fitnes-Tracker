@@ -22,7 +22,8 @@ public class CustomProgramController : ControllerBase
     [HttpPost("{creatorId}")]
     public async Task<ActionResult> CreateAsync([FromBody] CustomProgramCreateDTO dto, [FromRoute] int creatorId)
     {
-        return Ok(await _service.CreateAsync(dto, creatorId));
+        var result = await _service.CreateAsync(dto, creatorId);
+        return CreatedAtAction(nameof(GetByIdAsync), new { id = result.CustProgId }, result);
     }
 
     [HttpGet("{id:int}")]

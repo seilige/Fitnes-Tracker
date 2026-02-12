@@ -6,11 +6,13 @@ public class CustomProgramService : ICustomProgramService
 {
     private readonly ICustomProgramRepository _repository;
     private readonly IMapper _mapper;
+    private readonly ILogger<ExerciseService> _logger;
 
-    public CustomProgramService(ICustomProgramRepository repository, IMapper mapper)
+    public CustomProgramService(ICustomProgramRepository repository, IMapper mapper, ILogger<ExerciseService> logger)
     {
         _repository = repository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<CustomProgramResponseDTO>> GetAllAsync() // may returns void list
@@ -22,12 +24,10 @@ public class CustomProgramService : ICustomProgramService
     public async Task<CustomProgramResponseDTO> CreateAsync(CustomProgramCreateDTO dto, int creatorId)
     {
         var program = _mapper.Map<CustomProgram>(dto);
-        
-        if(program == null) throw new KeyNotFoundException($"Program not found");
-
         program.CreatorId = creatorId;
         await _repository.AddAsync(program);
         await _repository.SaveChangesAsync();
+        _logger.LogInformation("Program already added");
         return _mapper.Map<CustomProgramResponseDTO>(program);
     }
 
@@ -35,7 +35,11 @@ public class CustomProgramService : ICustomProgramService
     {
         var program = await _repository.GetByIDAsync(id);
 
-        if(program == null) throw new KeyNotFoundException($"Program {id} not found");
+        if(program == null)
+        {
+            _logger.LogInformation($"Program with id: {id} not found");
+            throw new KeyNotFoundException($"Program {id} not found");
+        }
 
         return _mapper.Map<CustomProgramResponseDTO?>(program);
     }
@@ -46,7 +50,11 @@ public class CustomProgramService : ICustomProgramService
         program.CustProgId = id;
         var updated = await _repository.UpdateAsync(program);
 
-        if(updated == null) throw new KeyNotFoundException("Updated program not found");
+        if(updated == null)
+        {
+            _logger.LogInformation("Program not found");
+            throw new KeyNotFoundException("Updated program not found");
+        }
 
         await _repository.SaveChangesAsync(); // on every transaction
         return _mapper.Map<CustomProgramResponseDTO>(updated);
@@ -56,7 +64,11 @@ public class CustomProgramService : ICustomProgramService
     {
         var entity = await _repository.GetByIDAsync(id);
 
-        if(entity == null) throw new KeyNotFoundException("Not found");
+        if(entity == null)
+        {
+            _logger.LogInformation($"Program with id: {id} not found");
+            throw new KeyNotFoundException("Not found");
+        }
 
         await _repository.DeleteByIDAsync(id);
         await _repository.SaveChangesAsync();

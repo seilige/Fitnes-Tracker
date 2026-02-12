@@ -31,27 +31,8 @@ public class Program
 
         builder.Services.AddAutoMapper(typeof(FitnesTracker.Mapper).Assembly);
 
-        builder.Services.AddSwaggerGen(c =>
-        {
-            c.SwaggerDoc("v1", new() { 
-                Title = "API", 
-                Version = "v1",
-                Description = "API"
-            });
-    
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            c.IncludeXmlComments(xmlPath);
-        });
-
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(connectionString));
-
 
         builder.Services.AddSwaggerGen(c =>
         {

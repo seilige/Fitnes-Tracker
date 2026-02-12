@@ -41,14 +41,12 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
     public async Task UpdateAsync(WorkoutExerciseSet set)
     {
         _context.WorkoutExerciseSets.Update(set);
-        // await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id)
     {
         var item = await _context.WorkoutExerciseSets.FirstOrDefaultAsync(x => x.Id == id);
         _context.WorkoutExerciseSets.Remove(item);
-        // await _context.SaveChangesAsync();
     }
 }
 
