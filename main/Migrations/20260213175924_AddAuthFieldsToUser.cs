@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace main.Migrations
 {
     /// <inheritdoc />
-    public partial class initMig : Migration
+    public partial class AddAuthFieldsToUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,7 +37,9 @@ namespace main.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Lastname = table.Column<string>(type: "text", nullable: true),
-                    Author = table.Column<bool>(type: "boolean", nullable: false)
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    Author = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

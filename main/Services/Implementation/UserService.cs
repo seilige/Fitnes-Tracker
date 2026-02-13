@@ -6,11 +6,13 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
+    private readonly ILogger<ExerciseService> _logger;
 
-    public UserService(IUserRepository userRepository, IMapper mapper)
+    public UserService(IUserRepository userRepository, IMapper mapper, ILogger<ExerciseService> logger)
     {
         _userRepository = userRepository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
@@ -24,6 +26,7 @@ public class UserService : IUserService
         var user = _mapper.Map<User>(dto);
         await _userRepository.AddAsync(user);
         await _userRepository.SaveChangesAsync();
+        _logger.LogInformation("User already added");
         return _mapper.Map<UserResponseDTO>(user);
     }
 
@@ -31,7 +34,11 @@ public class UserService : IUserService
     {
         var user = await _userRepository.GetByIDAsync(id);
 
-        if(user == null) throw new KeyNotFoundException($"User with id: {id} not found");
+        if(user == null)
+        {
+            _logger.LogInformation($"User with id: {id} not found");
+            throw new KeyNotFoundException($"User with id: {id} not found");
+        }
 
         return _mapper.Map<UserResponseDTO?>(user);
     }
@@ -42,7 +49,11 @@ public class UserService : IUserService
         user.IdUser = id;
         var updated = await _userRepository.UpdateAsync(user);
 
-        if(updated == null) throw new KeyNotFoundException($"User with id: {id} not found");
+        if(updated == null)
+        {
+            _logger.LogInformation($"User with id: {id} not found");
+            throw new KeyNotFoundException($"User with id: {id} not found");
+        }
 
         await _userRepository.SaveChangesAsync();
         return _mapper.Map<UserResponseDTO>(updated);
@@ -52,7 +63,12 @@ public class UserService : IUserService
     {
         var entity = await _userRepository.GetByIDAsync(id);
 
-        if(entity == null) throw new KeyNotFoundException("Not found");
+        if(entity == null)
+        {
+            _logger.LogInformation($"User with id: {id} not found");
+
+            throw new KeyNotFoundException("Not found");
+        }
 
         await _userRepository.DeleteByIDAsync(id);
         await _userRepository.SaveChangesAsync();

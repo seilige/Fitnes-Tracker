@@ -10,16 +10,19 @@ public class WorkoutSessionService : IWorkoutSessionService
     private readonly IMapper _mapper;
     private readonly IWorkoutExerciseSetRepository _setRepository;
     private readonly IUserRepository _userRepository;
+    private readonly ILogger<ExerciseService> _logger;
 
     public WorkoutSessionService(IWorkoutSessionRepository repository,
                                 IWorkoutExerciseSetRepository setRepository,
                                 IUserRepository userRepository,
-                                IMapper mapper)
+                                IMapper mapper,
+                                ILogger<ExerciseService> logger)
     {
         _userRepository = userRepository;
         _repository = repository;
         _setRepository = setRepository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<PagedResult<WorkoutSessionResponseDTO>> GetUserHistoryAsync(int userId, int pageNumber, int pageSize)
@@ -62,6 +65,7 @@ public class WorkoutSessionService : IWorkoutSessionService
 
         await _setRepository.UpdateAsync(set);
         await _repository.SaveChangesAsync();
+        _logger.LogInformation($"Set with id: {dto.Id} already updated");
 
         return _mapper.Map<SetUpdateDTO>(set);
     }
@@ -113,6 +117,8 @@ public class WorkoutSessionService : IWorkoutSessionService
         session.Status = status;
         await _repository.UpdateAsync(session);
         await _repository.SaveChangesAsync();
+        _logger.LogInformation($"Session status with id: {id} already updated");
+
         return _mapper.Map<WorkoutSessionResponseDTO>(session);
     }
 }

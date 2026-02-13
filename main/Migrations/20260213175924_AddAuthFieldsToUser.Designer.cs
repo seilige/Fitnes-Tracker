@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace main.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260209155233_initMig")]
-    partial class initMig
+    [Migration("20260213175924_AddAuthFieldsToUser")]
+    partial class AddAuthFieldsToUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -178,10 +178,16 @@ namespace main.Migrations
                     b.Property<bool>("Author")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<string>("Lastname")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
                     b.HasKey("IdUser");

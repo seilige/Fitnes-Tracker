@@ -6,11 +6,13 @@ public class StandardProgramService : IStandardProgramService
 {
     private readonly IStandardProgramRepository _repository;
     private readonly IMapper _mapper;
+    private readonly ILogger<ExerciseService> _logger;
 
-    public StandardProgramService(IStandardProgramRepository repository, IMapper mapper)
+    public StandardProgramService(IStandardProgramRepository repository, IMapper mapper, ILogger<ExerciseService> logger)
     {
         _repository = repository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<PagedResult<StandardProgramResponseDTO>> GetPagedAsync(PaginationParams paginationParams)
@@ -39,7 +41,11 @@ public class StandardProgramService : IStandardProgramService
     {
         var program = await _repository.GetByIDAsync(id);
 
-        if(program == null) throw new KeyNotFoundException($"Program with id: {id} not found");
+        if(program == null) 
+        {
+            _logger.LogInformation($"Program with id: {id} not found");
+            throw new KeyNotFoundException($"Program with id: {id} not found");
+        }
 
         return _mapper.Map<StandardProgramResponseDTO?>(program);
     }

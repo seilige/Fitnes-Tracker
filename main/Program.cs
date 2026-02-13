@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
 
 namespace FitnesTracker;
 
@@ -28,6 +32,7 @@ public class Program
         builder.Services.AddScoped<IExerciseService, ExerciseService>();
         builder.Services.AddScoped<IWorkoutSessionService, WorkoutSessionService>();
         builder.Services.AddScoped<IWorkoutExerciseService, WorkoutExerciseService>();
+        builder.Services.AddScoped<IAuthentication, Authentication>();
 
         builder.Services.AddAutoMapper(typeof(FitnesTracker.Mapper).Assembly);
 
@@ -40,6 +45,22 @@ public class Program
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             c.IncludeXmlComments(xmlPath);
         });
+
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+                };
+            });
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
@@ -61,6 +82,9 @@ public class Program
         app.UseHttpsRedirection();
         app.UseSwagger();
         app.UseSwaggerUI();
+    
+        app.UseAuthentication();
+
         app.UseAuthorization();
         app.MapControllers();
 

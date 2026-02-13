@@ -4,16 +4,16 @@
         <name>main</name>
     </assembly>
     <members>
-        <member name="T:main.Migrations.initMig">
+        <member name="T:main.Migrations.AddAuthFieldsToUser">
             <inheritdoc />
         </member>
-        <member name="M:main.Migrations.initMig.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:main.Migrations.AddAuthFieldsToUser.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:main.Migrations.initMig.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:main.Migrations.AddAuthFieldsToUser.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:main.Migrations.initMig.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:main.Migrations.AddAuthFieldsToUser.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">

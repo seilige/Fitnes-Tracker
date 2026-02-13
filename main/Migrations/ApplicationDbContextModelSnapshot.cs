@@ -175,10 +175,16 @@ namespace main.Migrations
                     b.Property<bool>("Author")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<string>("Lastname")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
                     b.HasKey("IdUser");
