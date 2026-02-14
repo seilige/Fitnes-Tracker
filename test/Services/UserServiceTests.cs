@@ -9,13 +9,15 @@ public class UserServiceTests
 {
     private Mock<IUserRepository> _mockRepo;
     private Mock<IMapper> _mockMapper;
-    private UserService _service;
+    private readonly UserService _service;
+    private readonly Mock<ILogger<ExerciseService>> _mockLogger;
 
     public UserServiceTests()
     {
+        _mockLogger = new Mock<ILogger<ExerciseService>>();
         _mockRepo = new Mock<IUserRepository>();
         _mockMapper = new Mock<IMapper>();
-        _service = new UserService(_mockRepo.Object, _mockMapper.Object);
+        _service = new UserService(_mockRepo.Object, _mockMapper.Object, _mockLogger.Object);
     }
  
     [Fact]
@@ -59,15 +61,15 @@ public class UserServiceTests
     [Fact]
     public async Task UserUpdateErrorTest()
     {
-    var dto = new UserUpdateDTO { Name = "Updated" };
-    
-    _mockMapper.Setup(m => m.Map<User>(dto)).Returns(new User());
-    _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<User>()))
-        .ThrowsAsync(new Exception("DB error"));
-    
-    var act = async () => await _service.UpdateAsync(1, dto);
-    
-    await act.Should().ThrowAsync<Exception>()
-        .WithMessage("DB error");
+        var dto = new UserUpdateDTO { Name = "Updated" };
+        
+        _mockMapper.Setup(m => m.Map<User>(dto)).Returns(new User());
+        _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<User>()))
+            .ThrowsAsync(new Exception("DB error"));
+        
+        var act = async () => await _service.UpdateAsync(1, dto);
+        
+        await act.Should().ThrowAsync<Exception>()
+            .WithMessage("DB error");
     }
 }

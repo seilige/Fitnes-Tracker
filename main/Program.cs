@@ -4,8 +4,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Net.Http.Headers;
 using Microsoft.IdentityModel.Tokens;
-
 
 namespace FitnesTracker;
 
@@ -68,7 +68,21 @@ public class Program
                 .EnableSensitiveDataLogging()
                 .EnableDetailedErrors());
 
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowClient", policy =>
+            {
+                policy.WithOrigins("http://127.0.0.1:5501") // allow the client from this port read servers responce
+                    .WithMethods("GET", "POST", "PUT", "DELETE") // allow this http methods
+                    .WithHeaders(HeaderNames.ContentType, "x-custom-header");
+                policy.WithOrigins("http://127.0.0.1:5501", "http://localhost:5501");
+            });
+        });
+
         var app = builder.Build();
+
+        app.UseCors("AllowClient");
 
         // custom data seed
         using (var scope = app.Services.CreateScope())
@@ -80,6 +94,7 @@ public class Program
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseHttpsRedirection();
+
         app.UseSwagger();
         app.UseSwaggerUI();
     

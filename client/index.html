@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fitness Tracker Client</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <input id="username" placeholder="Username"/>
+    <input id="password" type="password" placeholder="Password"/>
+    <button onclick="login()">Login</button>
+
+    <h2>Register</h2>
+    <input id="reg-name" placeholder="Name"/>
+    <input id="reg-lastname" placeholder="Lastname"/>
+    <input id="reg-email" placeholder="Email"/>
+    <input id="reg-password" type="password" placeholder="Password"/>
+
+    <button onclick="register()">Register</button>
+
+    <script>
+        let token = "";
+
+        async function login() {
+            const email = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+        const response = await fetch("http://localhost:5291/api/Authentication/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+            token = data.token;
+            document.getElementById("result").innerText = "Token: " + token;
+        }
+
+        async function register() {
+            const name = document.getElementById("reg-name").value;
+            const lastname = document.getElementById("reg-lastname").value;
+            const email = document.getElementById("reg-email").value;
+            const password = document.getElementById("reg-password").value;
+
+            const response = await fetch("http://localhost:5291/api/Authentication/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password, name, lastname })
+            });
+
+            token = await response.text();
+            document.getElementById("result").innerText = "Token: " + token;
+        }
+  </script>
+</body>
+</html>
