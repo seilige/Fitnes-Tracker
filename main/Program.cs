@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Net.Http.Headers;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace FitnesTracker;
 
@@ -80,6 +81,22 @@ public class Program
             });
         });
 
+        builder.Services.AddRateLimiter(options =>
+        {
+            options.AddFixedWindowLimiter("Fixed", opt => // in each windows client can request N times
+            {
+                opt.Window = TimeSpan.FromMinutes(1);
+                opt.PermitLimit = 2;
+                opt.QueueLimit = 0;
+            });
+
+            options.OnRejected = async (context, token) =>
+            {
+                context.HttpContext.Response.StatusCode = 429;
+                await context.HttpContext.Response.WriteAsync("To many requests, please wait.");
+            };
+        });
+
         var app = builder.Build();
 
         app.UseCors("AllowClient");
@@ -99,9 +116,10 @@ public class Program
         app.UseSwaggerUI();
     
         app.UseAuthentication();
-
         app.UseAuthorization();
         app.MapControllers();
+
+        app.UseRateLimiter();
 
         app.Run();
     }

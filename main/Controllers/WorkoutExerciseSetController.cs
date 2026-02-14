@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Session;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace FitnesTracker;
 

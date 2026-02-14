@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
 namespace FitnesTracker;
 
 public class User

@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace FitnesTracker;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableRateLimiting("Fixed")]
 public class AuthenticationController : ControllerBase
 {
     private readonly IAuthentication _auth;

@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Xml;
 using AutoMapper;
 
 namespace FitnesTracker;

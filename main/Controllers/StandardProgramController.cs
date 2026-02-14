@@ -1,5 +1,3 @@
-using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitnesTracker;
