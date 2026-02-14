@@ -9,4 +9,5 @@ public interface IWorkoutSessionService
     Task<PagedResult<WorkoutSessionResponseDTO>> GetUserHistoryAsync(int userId, int pageNumber, int pageSize);
     Task<WorkoutSessionResponseDTO> CompleteSessionAsync(int sessionId);
     Task<SetUpdateDTO> UpdateSetAsync(SetUpdateDTO dto);
+    Task<PagedResult<WorkoutSessionResponseDTO>> GetAllAsync(int pageNumber, int pageSize);
 }

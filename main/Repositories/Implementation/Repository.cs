@@ -22,6 +22,20 @@ public class Repository<T> : IRepository<T> where T : class
         return await _context.Set<T>().ToListAsync();
     }
 
+    public async Task<PagedResult<T>> GetAllAsync(int pageNum, int pageSize)
+    {
+        var query = _context.Set<T>().AsNoTracking();
+        
+        var totalCount = await query.CountAsync();
+        
+        var items = await query
+            .Skip((pageNum - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
+        return new PagedResult<T>(items, totalCount, pageNum, pageSize);
+    }
+
     public async Task<T> GetByIDAsync(int id)
     {
         return await _context.Set<T>().FindAsync(id);

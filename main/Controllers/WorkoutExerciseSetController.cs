@@ -13,6 +13,13 @@ public class WorkoutExerciseSetController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("all")]
+    public async Task<ActionResult<PagedResult<UserResponseDTO>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var result = await _service.GetAllAsync(pageNumber, pageSize);
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<ActionResult<WorkoutExerciseSetResponseDTO>> AddSetAsync([FromBody] WorkoutExerciseSetCreateDTO dto)
     {

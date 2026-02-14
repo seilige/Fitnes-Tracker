@@ -15,6 +15,13 @@ public class AuthenticationController : ControllerBase
         _auth = auth;
     }
 
+    [HttpGet("all")]
+    public async Task<ActionResult<PagedResult<UserResponseDTO>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var result = await _auth.GetAllAsync(pageNumber, pageSize);
+        return Ok(result);
+    }
+
     [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody] UserLoginDTO dto)
     {

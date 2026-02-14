@@ -13,6 +13,13 @@ public class WorkoutSessionController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("all")]
+    public async Task<ActionResult<PagedResult<UserResponseDTO>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var result = await _service.GetAllAsync(pageNumber, pageSize);
+        return Ok(result);
+    }
+
     [HttpPatch("session/{sessionId}/complete")]
     public async Task<ActionResult<WorkoutSessionResponseDTO>> CompleteSession(int sessionId)
     {

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnesTracker;
@@ -8,11 +9,19 @@ public class WorkoutSessionRepository :  Repository<WorkoutSession>, IWorkoutSes
     {
     }
 
-    public async Task<ICollection<WorkoutSession>> GetAllAsync()
+    public async Task<PagedResult<WorkoutSession>> GetAllAsync(int pageNum, int pageSize)
     {
-        return await _context.WorkoutSessions
-            .Include(x => x.WorkoutExerciseSets)
-            .ToListAsync();
+        var workoutSessions = _context.WorkoutSessions.Include(x => x.WorkoutExerciseSets);
+
+        var count = await workoutSessions.CountAsync();
+        var sessions = await workoutSessions.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return new PagedResult<WorkoutSession>(
+            items: sessions,
+            totalCount: count,
+            pageNumber: pageNum,
+            pageSize: pageSize
+        );
     }
 
     public async Task<PagedResult<WorkoutSession>> GetUserSessionsAsync(int userId, int pageNumber, int pageSize)

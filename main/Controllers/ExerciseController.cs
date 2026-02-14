@@ -12,6 +12,14 @@ public class ExerciseController : ControllerBase
         _service = service;
     }
 
+
+    [HttpGet("all")]
+    public async Task<ActionResult<PagedResult<UserResponseDTO>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var result = await _service.GetAllAsync(pageNumber, pageSize);
+        return Ok(result);
+    }
+
     [HttpGet("filter")]
     public async Task<ActionResult<PagedResult<ExerciseResponseDTO>>> GetFilteredExercises([FromQuery] ExerciseQueryParameters parameters)
     {
@@ -35,12 +43,6 @@ public class ExerciseController : ControllerBase
     public async Task<ActionResult> GetByIdAsync(int id)
     {
         return Ok(await _service.GetByIdAsync(id));
-    }
-
-    [HttpGet("all")]
-    public async Task<ActionResult> GetAllAsync()
-    {
-        return Ok(await _service.GetAllAsync());
     }
 
     [HttpPut("{id:int}")]

@@ -12,11 +12,12 @@ public class CustomProgramController : ControllerBase
     {
         _service = service;
     }
-
-    [HttpGet]
-    public async Task<ActionResult> GetAllAsync()
+    
+    [HttpGet("all")]
+    public async Task<ActionResult<PagedResult<UserResponseDTO>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(await _service.GetAllAsync());
+        var result = await _service.GetAllAsync(pageNumber, pageSize);
+        return Ok(result);
     }
 
     [HttpPost("{creatorId}")]

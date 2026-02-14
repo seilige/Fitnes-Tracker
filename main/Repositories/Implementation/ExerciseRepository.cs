@@ -9,9 +9,19 @@ public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
     {
     }
 
-    public async Task<ICollection<Exercise>> GetAllAsync()
+    public async Task<PagedResult<Exercise>> GetAllAsync(int pageNum, int pageSize)
     {
-        return await _context.Exercises.Include(x => x.WorkoutExerciseSets).ToListAsync();
+        var exercises = _context.Exercises.Include(x => x.WorkoutExerciseSets);
+
+        var count = await exercises.CountAsync();
+        var items = await exercises.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return new PagedResult<Exercise>(
+            items: items,
+            totalCount: count,
+            pageNumber: pageNum,
+            pageSize: pageSize
+        );
     }
 
     public async Task<PagedResult<Exercise>> GetFilteredExercisesAsync(ExerciseQueryParameters parameters)

@@ -8,11 +8,19 @@ public class WorkoutExerciseService : IWorkoutExerciseService
     private readonly IMapper _mapper;
     private readonly ILogger<ExerciseService> _logger;
 
+
     public WorkoutExerciseService(IWorkoutExerciseSetRepository repository, IMapper mapper, ILogger<ExerciseService> logger)
     {
         _repository = repository;
         _mapper = mapper;
         _logger = logger;
+    }
+
+    public async Task<PagedResult<WorkoutExerciseSetResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
+    {
+        var pagedUsers = await _repository.GetAllAsync(pageNumber, pageSize);
+        var dtos = _mapper.Map<List<WorkoutExerciseSetResponseDTO>>(pagedUsers.Items);
+        return new PagedResult<WorkoutExerciseSetResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
     }
 
     public async Task<WorkoutExerciseSetResponseDTO> AddSetAsync(WorkoutExerciseSetCreateDTO dto)

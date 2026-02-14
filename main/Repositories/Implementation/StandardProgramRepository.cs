@@ -8,11 +8,19 @@ public class StandardProgramRepository : Repository<StandardProgram>, IStandardP
     {
     }
 
-    public async Task<ICollection<StandardProgram>> GetAllAsync()
+    public async Task<PagedResult<StandardProgram>> GetAllAsync(int pageNum, int pageSize)
     {
-        return await _context.StandardPrograms
-            .Include(x => x.Exercises)
-            .ToListAsync();
+        var stProgs = _context.StandardPrograms.Include(x => x.Exercises);
+
+        var count = await stProgs.CountAsync();
+        var items = await stProgs.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return new PagedResult<StandardProgram>(
+            items: items,
+            totalCount: count,
+            pageNumber: pageNum,
+            pageSize: pageSize
+        );
     }
 
     public async Task<PagedResult<StandardProgram>> GetPagedAsync(PaginationParams paginationParams)

@@ -15,6 +15,13 @@ public class StandardProgramService : IStandardProgramService
         _logger = logger;
     }
 
+    public async Task<PagedResult<StandardProgramResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
+    {
+        var pagedUsers = await _repository.GetAllAsync(pageNumber, pageSize);
+        var dtos = _mapper.Map<List<StandardProgramResponseDTO>>(pagedUsers.Items);
+        return new PagedResult<StandardProgramResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
+    }
+
     public async Task<PagedResult<StandardProgramResponseDTO>> GetPagedAsync(PaginationParams paginationParams)
     {
         var result = await _repository.GetPagedAsync(paginationParams);

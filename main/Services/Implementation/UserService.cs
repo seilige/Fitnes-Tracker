@@ -15,10 +15,11 @@ public class UserService : IUserService
         _logger = logger;
     }
 
-    public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
+    public async Task<PagedResult<UserResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
     {
-        var users = await _userRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<UserResponseDTO>>(users);
+        var pagedUsers = await _userRepository.GetAllAsync(pageNumber, pageSize);
+        var dtos = _mapper.Map<List<UserResponseDTO>>(pagedUsers.Items);
+        return new PagedResult<UserResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
     }
 
     public async Task<UserResponseDTO> CreateAsync(UserCreateDTO dto)

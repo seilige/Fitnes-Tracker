@@ -14,6 +14,12 @@ public class ExerciseService : IExerciseService
         _mapper = mapper;
         _logger = logger;
     }
+    public async Task<PagedResult<ExerciseResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
+    {
+        var pagedUsers = await _repository.GetAllAsync(pageNumber, pageSize);
+        var dtos = _mapper.Map<List<ExerciseResponseDTO>>(pagedUsers.Items);
+        return new PagedResult<ExerciseResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
+    }
 
     public async Task<PagedResult<ExerciseResponseDTO>> GetPagedAsync(PaginationParams paginationParams)
     {

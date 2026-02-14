@@ -8,10 +8,19 @@ public class CustomProgramRepository : Repository<CustomProgram>, ICustomProgram
     {
     }
 
-    // n + 1 fix
-    public async Task<ICollection<User>> GetAllAsync()
+    public async Task<PagedResult<User>> GetAllAsync(int pageNum, int pageSize)
     {
-        return await _context.Users.Include(x => x.WorkoutSessions).ToListAsync();
+        var users = _context.Users.Include(x => x.WorkoutSessions);
+
+        var count = await users.CountAsync();
+        var items = await users.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return new PagedResult<User>(
+            items: items,
+            totalCount: count,
+            pageNumber: pageNum,
+            pageSize: pageSize
+        );
     }
 
     public async Task<User?> GetCreatorAsync(int custProgId)

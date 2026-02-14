@@ -23,6 +23,13 @@ public class WorkoutSessionService : IWorkoutSessionService
         _logger = logger;
     }
 
+    public async Task<PagedResult<WorkoutSessionResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
+    {
+        var pagedUsers = await _repository.GetAllAsync(pageNumber, pageSize);
+        var dtos = _mapper.Map<List<WorkoutSessionResponseDTO>>(pagedUsers.Items);
+        return new PagedResult<WorkoutSessionResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
+    }
+
     public async Task<PagedResult<WorkoutSessionResponseDTO>> GetUserHistoryAsync(int userId, int pageNumber, int pageSize)
     {
         if(await _userRepository.GetByIDAsync(userId) == null) throw new KeyNotFoundException($"User with id: {userId} not found");

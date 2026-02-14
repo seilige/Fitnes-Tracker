@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using AutoMapper;
+
 namespace FitnesTracker;
 
 public class Authentication : IAuthentication
@@ -10,12 +11,21 @@ public class Authentication : IAuthentication
     private readonly IUserRepository _repository;
     private readonly IConfiguration _configuration;
     private readonly ILogger<ExerciseService> _logger;
+    private readonly IMapper _mapper;
 
-    public Authentication(IUserRepository repository, IConfiguration configuration, ILogger<ExerciseService> logger)
+    public Authentication(IUserRepository repository, IConfiguration configuration, ILogger<ExerciseService> logger, IMapper mapper)
     {
         _repository = repository;
         _configuration = configuration;
         _logger = logger;
+        _mapper = mapper;
+    }
+
+    public async Task<PagedResult<UserResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
+    {
+        var pagedUsers = await _repository.GetAllAsync(pageNumber, pageSize);
+        var dtos = _mapper.Map<List<UserResponseDTO>>(pagedUsers.Items);
+        return new PagedResult<UserResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
     }
 
     public async Task<string> Register(string email, string password, string name, string lastname)

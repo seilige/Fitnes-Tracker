@@ -14,6 +14,12 @@ public class CustomProgramService : ICustomProgramService
         _mapper = mapper;
         _logger = logger;
     }
+    public async Task<PagedResult<CustomProgramResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
+    {
+        var pagedUsers = await _repository.GetAllAsync(pageNumber, pageSize);
+        var dtos = _mapper.Map<List<CustomProgramResponseDTO>>(pagedUsers.Items);
+        return new PagedResult<CustomProgramResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
+    }
 
     public async Task<IEnumerable<CustomProgramResponseDTO>> GetAllAsync() // may returns void list
     {

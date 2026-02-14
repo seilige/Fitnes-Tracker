@@ -7,4 +7,5 @@ public interface IWorkoutExerciseService
     Task<IEnumerable<WorkoutExerciseSetResponseDTO>> GetSessionSetsAsync(int sessionId);
     Task<WorkoutExerciseSetResponseDTO> UpdateSetAsync(int id, WorkoutExerciseSetUpdateDTO dto);
     Task<bool> DeleteSetAsync(int id);
+    Task<PagedResult<WorkoutExerciseSetResponseDTO>> GetAllAsync(int pageNumber, int pageSize);
 }

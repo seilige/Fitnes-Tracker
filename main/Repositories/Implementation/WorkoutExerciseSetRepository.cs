@@ -8,12 +8,21 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
     {
     }
 
-    public async Task<ICollection<WorkoutExerciseSet>> GetAllAsync()
+    public async Task<PagedResult<WorkoutExerciseSet>> GetAllAsync(int pageNum, int pageSize)
     {
-        return await _context.WorkoutExerciseSets
+        var workoutExercises = _context.WorkoutExerciseSets
             .Include(x => x.Exercise)
-            .Include(x => x.WorkoutSession)
-            .ToListAsync();
+            .Include(x => x.WorkoutSession);
+
+        var count = await workoutExercises.CountAsync();
+        var exercises = await workoutExercises.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return new PagedResult<WorkoutExerciseSet>(
+            items: exercises,
+            totalCount: count,
+            pageNumber: pageNum,
+            pageSize: pageSize
+        );
     }
     public async Task<WorkoutExerciseSet?> GetSetByIdWithSessionAsync(int id)
     {
@@ -24,7 +33,6 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
     public new async Task<WorkoutExerciseSet> AddAsync(WorkoutExerciseSet set)
     {
         await _context.WorkoutExerciseSets.AddAsync(set);
-        // await _context.SaveChangesAsync();
         return set;
     }
 
