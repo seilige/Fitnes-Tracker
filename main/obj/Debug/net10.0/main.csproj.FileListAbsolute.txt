@@ -271,3 +271,4 @@ C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Microsoft.IdentityModel.Pr
 C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\HealthChecks.NpgSql.dll

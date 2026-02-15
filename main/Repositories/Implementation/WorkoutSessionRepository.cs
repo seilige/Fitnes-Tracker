@@ -11,7 +11,7 @@ public class WorkoutSessionRepository :  Repository<WorkoutSession>, IWorkoutSes
 
     public async Task<PagedResult<WorkoutSession>> GetAllAsync(int pageNum, int pageSize)
     {
-        var workoutSessions = _context.WorkoutSessions.Include(x => x.WorkoutExerciseSets);
+        var workoutSessions = _context.WorkoutSessions.AsNoTracking().Include(x => x.WorkoutExerciseSets);
 
         var count = await workoutSessions.CountAsync();
         var sessions = await workoutSessions.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
@@ -27,6 +27,7 @@ public class WorkoutSessionRepository :  Repository<WorkoutSession>, IWorkoutSes
     public async Task<PagedResult<WorkoutSession>> GetUserSessionsAsync(int userId, int pageNumber, int pageSize)
     {
         var query = _context.WorkoutSessions
+            .AsNoTracking()
             .Include(x => x.WorkoutExerciseSets)
             .ThenInclude(s => s.Exercise)
             .Where(x => x.UserId == userId);
@@ -49,6 +50,7 @@ public class WorkoutSessionRepository :  Repository<WorkoutSession>, IWorkoutSes
     public async Task<IEnumerable<WorkoutSession>> GetByUserIdAsync(int userId)
     {
         return await _context.WorkoutSessions
+            .AsNoTracking()
             .Where(x => x.UserId == userId)
             .ToListAsync();
     }
@@ -56,6 +58,7 @@ public class WorkoutSessionRepository :  Repository<WorkoutSession>, IWorkoutSes
     public async Task<WorkoutSession?> GetByIdWithDetailsAsync(int id)
     {
         return await _context.WorkoutSessions
+        .AsNoTracking()
             .Include(x => x.WorkoutExerciseSets)
                 .ThenInclude(set => set.Exercise)
             .FirstOrDefaultAsync(x => x.SessionId == id);

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Net.Http.Headers;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.RateLimiting;
+using HealthChecks.NpgSql;
+
 
 namespace FitnesTracker;
 
@@ -15,6 +17,8 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection"));
 
         builder.Services.AddControllers(options =>
         {
@@ -114,6 +118,8 @@ public class Program
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseHttpsRedirection();
+
+        app.MapHealthChecks("/health");
 
         app.UseSwagger();
         app.UseSwaggerUI();

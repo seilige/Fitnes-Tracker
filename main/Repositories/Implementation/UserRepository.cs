@@ -15,7 +15,7 @@ public class UserRepository : Repository<User>, IUserRepository
 
     public async Task<PagedResult<User>> GetAllAsync(int pageNum, int pageSize)
     {
-        var users = _context.Users.Include(x => x.WorkoutSessions);
+        var users = _context.Users.AsNoTracking().Include(x => x.WorkoutSessions);
 
         var count = await users.CountAsync();
         var items = await users.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
@@ -30,16 +30,16 @@ public class UserRepository : Repository<User>, IUserRepository
 
     public async Task<IEnumerable<User>> GetAllAuthorsAsync()
     {
-        return await _context.Users.Where(x => x.Author).ToListAsync(); // protected _context from base class 
+        return await _context.Users.AsNoTracking().Where(x => x.Author).ToListAsync(); // protected _context from base class 
     }
 
     public async Task<IEnumerable<User>> GetByFullNameAsync(string name, string lastname)
     {
-        return await _context.Users.Where(x => x.Name == name && x.Lastname == lastname).ToListAsync();
+        return await _context.Users.AsNoTracking().Where(x => x.Name == name && x.Lastname == lastname).ToListAsync();
     }
 
-    public async Task<User> GetUserByEmail(string email)
+    public async Task<User?> GetUserByEmail(string email)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+        return await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
     }
 }

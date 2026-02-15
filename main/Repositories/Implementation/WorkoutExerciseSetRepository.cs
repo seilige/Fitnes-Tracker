@@ -11,6 +11,7 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
     public async Task<PagedResult<WorkoutExerciseSet>> GetAllAsync(int pageNum, int pageSize)
     {
         var workoutExercises = _context.WorkoutExerciseSets
+            .AsNoTracking()
             .Include(x => x.Exercise)
             .Include(x => x.WorkoutSession);
 
@@ -27,6 +28,7 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
     public async Task<WorkoutExerciseSet?> GetSetByIdWithSessionAsync(int id)
     {
         return await _context.WorkoutExerciseSets
+        .AsNoTracking()
                     .Include(x => x.WorkoutSession)
                     .FirstAsync(x => x.Id == id);
     }
@@ -38,12 +40,12 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
 
     public async Task<WorkoutExerciseSet?> GetByIdAsync(int id)
     {
-        return await _context.WorkoutExerciseSets.FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.WorkoutExerciseSets.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<IEnumerable<WorkoutExerciseSet>> GetByWorkoutSessionIdAsync(int sessionId)
     {
-        return await _context.WorkoutExerciseSets.Where(x => x.WorkoutSessionId == sessionId).ToListAsync(); // cuz method returns IEnumerable
+        return await _context.WorkoutExerciseSets.AsNoTracking().Where(x => x.WorkoutSessionId == sessionId).ToListAsync(); // cuz method returns IEnumerable
     }
 
     public async Task UpdateAsync(WorkoutExerciseSet set)

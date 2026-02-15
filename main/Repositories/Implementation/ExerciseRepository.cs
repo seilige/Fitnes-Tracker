@@ -11,7 +11,7 @@ public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
 
     public async Task<PagedResult<Exercise>> GetAllAsync(int pageNum, int pageSize)
     {
-        var exercises = _context.Exercises.Include(x => x.WorkoutExerciseSets);
+        var exercises = _context.Exercises.AsNoTracking().Include(x => x.WorkoutExerciseSets);
 
         var count = await exercises.CountAsync();
         var items = await exercises.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
@@ -26,7 +26,7 @@ public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
 
     public async Task<PagedResult<Exercise>> GetFilteredExercisesAsync(ExerciseQueryParameters parameters)
     {
-        var query = _context.Exercises.AsQueryable();
+        var query = _context.Exercises.AsNoTracking().AsQueryable();
 
         // catch title if string != null so if string == null we may fillter exercise via muscle group 
         if (!string.IsNullOrEmpty(parameters.Title))
@@ -60,11 +60,11 @@ public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
 
     public async Task<Exercise?> GetByTitleAsync(string title)
     {
-        return await _context.Exercises.Where(x => x.Title == title).FirstOrDefaultAsync();
+        return await _context.Exercises.AsNoTracking().Where(x => x.Title == title).FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<Exercise>> GetByMuscleGroupAsync(MuscleGroup group)
     {
-        return await _context.Exercises.Where(x => x.MuscleGroup == group).ToListAsync();
+        return await _context.Exercises.AsNoTracking().Where(x => x.MuscleGroup == group).ToListAsync();
     }
 }

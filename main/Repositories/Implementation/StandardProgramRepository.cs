@@ -10,7 +10,7 @@ public class StandardProgramRepository : Repository<StandardProgram>, IStandardP
 
     public async Task<PagedResult<StandardProgram>> GetAllAsync(int pageNum, int pageSize)
     {
-        var stProgs = _context.StandardPrograms.Include(x => x.Exercises);
+        var stProgs = _context.StandardPrograms.AsNoTracking().Include(x => x.Exercises);
 
         var count = await stProgs.CountAsync();
         var items = await stProgs.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
@@ -38,6 +38,7 @@ public class StandardProgramRepository : Repository<StandardProgram>, IStandardP
     public async Task<IEnumerable<Exercise>> GetExercisesAsync(int standardProgramId)
     {
         return await _context.StandardProgramExercises
+                                .AsNoTracking()
                                 .Where(x => x.ProgId == standardProgramId)
                                 .Include(x => x.Exercise)
                                 .Select(x => x.Exercise).ToListAsync();
@@ -45,16 +46,16 @@ public class StandardProgramRepository : Repository<StandardProgram>, IStandardP
 
     public async Task<IEnumerable<StandardProgram>> GetByLevelAsync(Level level)
     {
-        return await _context.StandardPrograms.Where(x => x.Level == level).ToListAsync(); // potential n + 1 problem
+        return await _context.StandardPrograms.AsNoTracking().Where(x => x.Level == level).ToListAsync();
     }
 
     public async Task<IEnumerable<StandardProgram>> GetByWorkoutTypeAsync(WorkoutType workoutType)
     {
-        return await _context.StandardPrograms.Where(x => x.WorkoutType == workoutType).ToListAsync(); // potential n + 1 problem
+        return await _context.StandardPrograms.AsNoTracking().Where(x => x.WorkoutType == workoutType).ToListAsync();
     }
 
     public async Task<IEnumerable<StandardProgram>> GetByCategoryAsync(Category category)
     {
-        return await _context.StandardPrograms.Where(x => x.Category == category).ToListAsync();
+        return await _context.StandardPrograms.AsNoTracking().Where(x => x.Category == category).ToListAsync();
     }
 }
