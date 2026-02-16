@@ -12,7 +12,6 @@ public class ExerciseController : ControllerBase
         _service = service;
     }
 
-
     [HttpGet("all")]
     public async Task<ActionResult<PagedResult<UserResponseDTO>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {

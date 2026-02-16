@@ -14,6 +14,16 @@ public class CustomProgramService : ICustomProgramService
         _mapper = mapper;
         _logger = logger;
     }
+    public async Task<CustomProgramResponseDTO> CreateAsync(CustomProgramCreateV2DTO dto, int creatorId)
+    {
+        var program = _mapper.Map<CustomProgram>(dto);
+        program.CreatorId = creatorId;
+        await _repository.AddAsync(program);
+        await _repository.SaveChangesAsync();
+        _logger.LogInformation("Program already added through v2 route");
+        return _mapper.Map<CustomProgramResponseDTO>(program);
+    }
+
     public async Task<PagedResult<CustomProgramResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
     {
         var pagedUsers = await _repository.GetAllAsync(pageNumber, pageSize);

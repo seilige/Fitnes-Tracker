@@ -15,6 +15,7 @@ public class Mapper : Profile
         CreateMap<ExerciseRequestDTO, Exercise>();
         CreateMap<StandardProgram, StandardProgramResponseDTO>();
         CreateMap<CustomProgramCreateDTO, CustomProgram>();
+        CreateMap<CustomProgramCreateV2DTO, CustomProgram>();
 
         // Automapper can map Creator to CreatorId and Exercise to int, but it's incorrect
         CreateMap<CustomProgram, CustomProgramResponseDTO>()
