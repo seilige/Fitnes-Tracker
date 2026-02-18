@@ -61,6 +61,6 @@ public class WorkoutSessionRepository :  Repository<WorkoutSession>, IWorkoutSes
         .AsNoTracking()
             .Include(x => x.WorkoutExerciseSets)
                 .ThenInclude(set => set.Exercise)
-            .FirstOrDefaultAsync(x => x.SessionId == id);
+            .FirstOrDefaultAsync(x => x.WorkoutSessionId == id);
     }
 }

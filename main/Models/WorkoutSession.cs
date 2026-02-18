@@ -3,7 +3,7 @@ namespace FitnesTracker;
 // EF can't work directly with interfaces, so we will make another model
 public class WorkoutSession
 {
-    public int SessionId { get; set; }
+    public int WorkoutSessionId { get; set; }
     public DateTime Date { get; set; }
     public int UserId { get; set; }
     public User User { get; set; }

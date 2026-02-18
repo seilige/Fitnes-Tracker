@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace main.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260213175924_AddAuthFieldsToUser")]
-    partial class AddAuthFieldsToUser
+    [Migration("20260218035653_FixPrimaryKeyConventions")]
+    partial class FixPrimaryKeyConventions
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,16 +27,16 @@ namespace main.Migrations
 
             modelBuilder.Entity("FitnesTracker.CustomProgram", b =>
                 {
-                    b.Property<int>("CustProgId")
+                    b.Property<int>("CustomProgramId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CustProgId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CustomProgramId"));
 
                     b.Property<int?>("CreatorId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("CreatorIdUser")
+                    b.Property<int?>("CreatorUserId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
@@ -48,26 +48,26 @@ namespace main.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
-                    b.HasKey("CustProgId");
+                    b.HasKey("CustomProgramId");
 
                     b.HasIndex("CreatorId");
 
-                    b.HasIndex("CreatorIdUser");
+                    b.HasIndex("CreatorUserId");
 
                     b.ToTable("CustomPrograms");
                 });
 
             modelBuilder.Entity("FitnesTracker.CustomProgramExercise", b =>
                 {
-                    b.Property<int>("CustProgId")
+                    b.Property<int>("CustomProgramId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ExId")
+                    b.Property<int>("ExerciseId")
                         .HasColumnType("integer");
 
-                    b.HasKey("CustProgId", "ExId");
+                    b.HasKey("CustomProgramId", "ExerciseId");
 
-                    b.HasIndex("ExId");
+                    b.HasIndex("ExerciseId");
 
                     b.ToTable("CustomProgramExercises");
                 });
@@ -77,25 +77,25 @@ namespace main.Migrations
                     b.Property<int>("IdUser")
                         .HasColumnType("integer");
 
-                    b.Property<int>("CustProgId")
+                    b.Property<int>("CustomProgramId")
                         .HasColumnType("integer");
 
-                    b.HasKey("IdUser", "CustProgId");
+                    b.HasKey("IdUser", "CustomProgramId");
 
-                    b.HasIndex("CustProgId");
+                    b.HasIndex("CustomProgramId");
 
                     b.ToTable("CustomProgramUsers");
                 });
 
             modelBuilder.Entity("FitnesTracker.Exercise", b =>
                 {
-                    b.Property<int>("ExId")
+                    b.Property<int>("ExerciseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ExId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ExerciseId"));
 
-                    b.Property<int?>("CustomProgramCustProgId")
+                    b.Property<int?>("CustomProgramId")
                         .HasColumnType("integer");
 
                     b.Property<int>("MuscleGroup")
@@ -107,28 +107,28 @@ namespace main.Migrations
                     b.Property<int?>("Sets")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("StandardProgramProgId")
+                    b.Property<int?>("StandardProgramProgramId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
-                    b.HasKey("ExId");
+                    b.HasKey("ExerciseId");
 
-                    b.HasIndex("CustomProgramCustProgId");
+                    b.HasIndex("CustomProgramId");
 
-                    b.HasIndex("StandardProgramProgId");
+                    b.HasIndex("StandardProgramProgramId");
 
                     b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("FitnesTracker.StandardProgram", b =>
                 {
-                    b.Property<int>("ProgId")
+                    b.Property<int>("ProgramId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProgId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProgramId"));
 
                     b.Property<int>("Category")
                         .HasColumnType("integer");
@@ -147,33 +147,33 @@ namespace main.Migrations
                     b.Property<int>("WorkoutType")
                         .HasColumnType("integer");
 
-                    b.HasKey("ProgId");
+                    b.HasKey("ProgramId");
 
                     b.ToTable("StandardPrograms");
                 });
 
             modelBuilder.Entity("FitnesTracker.StandardProgramExercise", b =>
                 {
-                    b.Property<int>("ProgId")
+                    b.Property<int>("ProgramId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ExId")
+                    b.Property<int>("ExerciseId")
                         .HasColumnType("integer");
 
-                    b.HasKey("ProgId", "ExId");
+                    b.HasKey("ProgramId", "ExerciseId");
 
-                    b.HasIndex("ExId");
+                    b.HasIndex("ExerciseId");
 
                     b.ToTable("StandardProgramExercises");
                 });
 
             modelBuilder.Entity("FitnesTracker.User", b =>
                 {
-                    b.Property<int>("IdUser")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdUser"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
                     b.Property<bool>("Author")
                         .HasColumnType("boolean");
@@ -190,7 +190,7 @@ namespace main.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
-                    b.HasKey("IdUser");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
@@ -212,11 +212,11 @@ namespace main.Migrations
 
             modelBuilder.Entity("FitnesTracker.WorkoutExerciseSet", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("WorkoutExerciseSetId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("WorkoutExerciseSetId"));
 
                     b.Property<int>("ExerciseId")
                         .HasColumnType("integer");
@@ -233,7 +233,7 @@ namespace main.Migrations
                     b.Property<int>("WorkoutSessionId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("WorkoutExerciseSetId");
 
                     b.HasIndex("ExerciseId");
 
@@ -244,11 +244,11 @@ namespace main.Migrations
 
             modelBuilder.Entity("FitnesTracker.WorkoutSession", b =>
                 {
-                    b.Property<int>("SessionId")
+                    b.Property<int>("WorkoutSessionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SessionId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("WorkoutSessionId"));
 
                     b.Property<int?>("CustomProgramId")
                         .HasColumnType("integer");
@@ -265,7 +265,7 @@ namespace main.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasKey("SessionId");
+                    b.HasKey("WorkoutSessionId");
 
                     b.HasIndex("CustomProgramId");
 
@@ -284,7 +284,7 @@ namespace main.Migrations
 
                     b.HasOne("FitnesTracker.User", "Creator")
                         .WithMany()
-                        .HasForeignKey("CreatorIdUser");
+                        .HasForeignKey("CreatorUserId");
 
                     b.Navigation("Creator");
                 });
@@ -293,13 +293,13 @@ namespace main.Migrations
                 {
                     b.HasOne("FitnesTracker.CustomProgram", "CustomProgram")
                         .WithMany()
-                        .HasForeignKey("CustProgId")
+                        .HasForeignKey("CustomProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FitnesTracker.Exercise", "Exercise")
                         .WithMany()
-                        .HasForeignKey("ExId")
+                        .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -312,7 +312,7 @@ namespace main.Migrations
                 {
                     b.HasOne("FitnesTracker.CustomProgram", "CustomProgram")
                         .WithMany()
-                        .HasForeignKey("CustProgId")
+                        .HasForeignKey("CustomProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -331,24 +331,24 @@ namespace main.Migrations
                 {
                     b.HasOne("FitnesTracker.CustomProgram", null)
                         .WithMany("Exercises")
-                        .HasForeignKey("CustomProgramCustProgId");
+                        .HasForeignKey("CustomProgramId");
 
                     b.HasOne("FitnesTracker.StandardProgram", null)
                         .WithMany("Exercises")
-                        .HasForeignKey("StandardProgramProgId");
+                        .HasForeignKey("StandardProgramProgramId");
                 });
 
             modelBuilder.Entity("FitnesTracker.StandardProgramExercise", b =>
                 {
                     b.HasOne("FitnesTracker.Exercise", "Exercise")
                         .WithMany()
-                        .HasForeignKey("ExId")
+                        .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FitnesTracker.StandardProgram", "StandardProgram")
                         .WithMany()
-                        .HasForeignKey("ProgId")
+                        .HasForeignKey("ProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

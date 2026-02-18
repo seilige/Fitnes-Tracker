@@ -47,7 +47,7 @@ public class UserService : IUserService
     public async Task<UserResponseDTO> UpdateAsync(int id, UserUpdateDTO dto)
     {
         var user = _mapper.Map<User>(dto);
-        user.IdUser = id;
+        user.UserId = id;
         var updated = await _userRepository.UpdateAsync(user);
 
         if(updated == null)

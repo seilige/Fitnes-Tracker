@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace main.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAuthFieldsToUser : Migration
+    public partial class FixPrimaryKeyConventions : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace main.Migrations
                 name: "StandardPrograms",
                 columns: table => new
                 {
-                    ProgId = table.Column<int>(type: "integer", nullable: false)
+                    ProgramId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
@@ -26,14 +26,14 @@ namespace main.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StandardPrograms", x => x.ProgId);
+                    table.PrimaryKey("PK_StandardPrograms", x => x.ProgramId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    IdUser = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Lastname = table.Column<string>(type: "text", nullable: true),
@@ -43,34 +43,34 @@ namespace main.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.IdUser);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CustomPrograms",
                 columns: table => new
                 {
-                    CustProgId = table.Column<int>(type: "integer", nullable: false)
+                    CustomProgramId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatorId = table.Column<int>(type: "integer", nullable: true),
                     IsPublic = table.Column<bool>(type: "boolean", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    CreatorIdUser = table.Column<int>(type: "integer", nullable: true)
+                    CreatorUserId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomPrograms", x => x.CustProgId);
+                    table.PrimaryKey("PK_CustomPrograms", x => x.CustomProgramId);
                     table.ForeignKey(
                         name: "FK_CustomPrograms_Users_CreatorId",
                         column: x => x.CreatorId,
                         principalTable: "Users",
-                        principalColumn: "IdUser");
+                        principalColumn: "UserId");
                     table.ForeignKey(
-                        name: "FK_CustomPrograms_Users_CreatorIdUser",
-                        column: x => x.CreatorIdUser,
+                        name: "FK_CustomPrograms_Users_CreatorUserId",
+                        column: x => x.CreatorUserId,
                         principalTable: "Users",
-                        principalColumn: "IdUser");
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
@@ -87,13 +87,13 @@ namespace main.Migrations
                         name: "FK_UserStandardPrograms_StandardPrograms_ProgId",
                         column: x => x.ProgId,
                         principalTable: "StandardPrograms",
-                        principalColumn: "ProgId",
+                        principalColumn: "ProgramId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserStandardPrograms_Users_IdUser",
                         column: x => x.IdUser,
                         principalTable: "Users",
-                        principalColumn: "IdUser",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -102,22 +102,22 @@ namespace main.Migrations
                 columns: table => new
                 {
                     IdUser = table.Column<int>(type: "integer", nullable: false),
-                    CustProgId = table.Column<int>(type: "integer", nullable: false)
+                    CustomProgramId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomProgramUsers", x => new { x.IdUser, x.CustProgId });
+                    table.PrimaryKey("PK_CustomProgramUsers", x => new { x.IdUser, x.CustomProgramId });
                     table.ForeignKey(
-                        name: "FK_CustomProgramUsers_CustomPrograms_CustProgId",
-                        column: x => x.CustProgId,
+                        name: "FK_CustomProgramUsers_CustomPrograms_CustomProgramId",
+                        column: x => x.CustomProgramId,
                         principalTable: "CustomPrograms",
-                        principalColumn: "CustProgId",
+                        principalColumn: "CustomProgramId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CustomProgramUsers_Users_IdUser",
                         column: x => x.IdUser,
                         principalTable: "Users",
-                        principalColumn: "IdUser",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -125,35 +125,35 @@ namespace main.Migrations
                 name: "Exercises",
                 columns: table => new
                 {
-                    ExId = table.Column<int>(type: "integer", nullable: false)
+                    ExerciseId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: true),
                     Sets = table.Column<int>(type: "integer", nullable: true),
                     Reps = table.Column<int>(type: "integer", nullable: true),
                     MuscleGroup = table.Column<int>(type: "integer", nullable: false),
-                    CustomProgramCustProgId = table.Column<int>(type: "integer", nullable: true),
-                    StandardProgramProgId = table.Column<int>(type: "integer", nullable: true)
+                    CustomProgramId = table.Column<int>(type: "integer", nullable: true),
+                    StandardProgramProgramId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Exercises", x => x.ExId);
+                    table.PrimaryKey("PK_Exercises", x => x.ExerciseId);
                     table.ForeignKey(
-                        name: "FK_Exercises_CustomPrograms_CustomProgramCustProgId",
-                        column: x => x.CustomProgramCustProgId,
+                        name: "FK_Exercises_CustomPrograms_CustomProgramId",
+                        column: x => x.CustomProgramId,
                         principalTable: "CustomPrograms",
-                        principalColumn: "CustProgId");
+                        principalColumn: "CustomProgramId");
                     table.ForeignKey(
-                        name: "FK_Exercises_StandardPrograms_StandardProgramProgId",
-                        column: x => x.StandardProgramProgId,
+                        name: "FK_Exercises_StandardPrograms_StandardProgramProgramId",
+                        column: x => x.StandardProgramProgramId,
                         principalTable: "StandardPrograms",
-                        principalColumn: "ProgId");
+                        principalColumn: "ProgramId");
                 });
 
             migrationBuilder.CreateTable(
                 name: "WorkoutSessions",
                 columns: table => new
                 {
-                    SessionId = table.Column<int>(type: "integer", nullable: false)
+                    WorkoutSessionId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false),
@@ -163,24 +163,24 @@ namespace main.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkoutSessions", x => x.SessionId);
+                    table.PrimaryKey("PK_WorkoutSessions", x => x.WorkoutSessionId);
                     table.ForeignKey(
                         name: "FK_WorkoutSessions_CustomPrograms_CustomProgramId",
                         column: x => x.CustomProgramId,
                         principalTable: "CustomPrograms",
-                        principalColumn: "CustProgId",
+                        principalColumn: "CustomProgramId",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_WorkoutSessions_StandardPrograms_StandardProgramId",
                         column: x => x.StandardProgramId,
                         principalTable: "StandardPrograms",
-                        principalColumn: "ProgId",
+                        principalColumn: "ProgramId",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_WorkoutSessions_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "IdUser",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -188,23 +188,23 @@ namespace main.Migrations
                 name: "CustomProgramExercises",
                 columns: table => new
                 {
-                    CustProgId = table.Column<int>(type: "integer", nullable: false),
-                    ExId = table.Column<int>(type: "integer", nullable: false)
+                    CustomProgramId = table.Column<int>(type: "integer", nullable: false),
+                    ExerciseId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomProgramExercises", x => new { x.CustProgId, x.ExId });
+                    table.PrimaryKey("PK_CustomProgramExercises", x => new { x.CustomProgramId, x.ExerciseId });
                     table.ForeignKey(
-                        name: "FK_CustomProgramExercises_CustomPrograms_CustProgId",
-                        column: x => x.CustProgId,
+                        name: "FK_CustomProgramExercises_CustomPrograms_CustomProgramId",
+                        column: x => x.CustomProgramId,
                         principalTable: "CustomPrograms",
-                        principalColumn: "CustProgId",
+                        principalColumn: "CustomProgramId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CustomProgramExercises_Exercises_ExId",
-                        column: x => x.ExId,
+                        name: "FK_CustomProgramExercises_Exercises_ExerciseId",
+                        column: x => x.ExerciseId,
                         principalTable: "Exercises",
-                        principalColumn: "ExId",
+                        principalColumn: "ExerciseId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -212,23 +212,23 @@ namespace main.Migrations
                 name: "StandardProgramExercises",
                 columns: table => new
                 {
-                    ProgId = table.Column<int>(type: "integer", nullable: false),
-                    ExId = table.Column<int>(type: "integer", nullable: false)
+                    ProgramId = table.Column<int>(type: "integer", nullable: false),
+                    ExerciseId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StandardProgramExercises", x => new { x.ProgId, x.ExId });
+                    table.PrimaryKey("PK_StandardProgramExercises", x => new { x.ProgramId, x.ExerciseId });
                     table.ForeignKey(
-                        name: "FK_StandardProgramExercises_Exercises_ExId",
-                        column: x => x.ExId,
+                        name: "FK_StandardProgramExercises_Exercises_ExerciseId",
+                        column: x => x.ExerciseId,
                         principalTable: "Exercises",
-                        principalColumn: "ExId",
+                        principalColumn: "ExerciseId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StandardProgramExercises_StandardPrograms_ProgId",
-                        column: x => x.ProgId,
+                        name: "FK_StandardProgramExercises_StandardPrograms_ProgramId",
+                        column: x => x.ProgramId,
                         principalTable: "StandardPrograms",
-                        principalColumn: "ProgId",
+                        principalColumn: "ProgramId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -236,7 +236,7 @@ namespace main.Migrations
                 name: "WorkoutExerciseSets",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    WorkoutExerciseSetId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ExerciseId = table.Column<int>(type: "integer", nullable: false),
                     Sets = table.Column<int>(type: "integer", nullable: false),
@@ -246,25 +246,25 @@ namespace main.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkoutExerciseSets", x => x.Id);
+                    table.PrimaryKey("PK_WorkoutExerciseSets", x => x.WorkoutExerciseSetId);
                     table.ForeignKey(
                         name: "FK_WorkoutExerciseSets_Exercises_ExerciseId",
                         column: x => x.ExerciseId,
                         principalTable: "Exercises",
-                        principalColumn: "ExId",
+                        principalColumn: "ExerciseId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_WorkoutExerciseSets_WorkoutSessions_WorkoutSessionId",
                         column: x => x.WorkoutSessionId,
                         principalTable: "WorkoutSessions",
-                        principalColumn: "SessionId",
+                        principalColumn: "WorkoutSessionId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomProgramExercises_ExId",
+                name: "IX_CustomProgramExercises_ExerciseId",
                 table: "CustomProgramExercises",
-                column: "ExId");
+                column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CustomPrograms_CreatorId",
@@ -272,29 +272,29 @@ namespace main.Migrations
                 column: "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomPrograms_CreatorIdUser",
+                name: "IX_CustomPrograms_CreatorUserId",
                 table: "CustomPrograms",
-                column: "CreatorIdUser");
+                column: "CreatorUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomProgramUsers_CustProgId",
+                name: "IX_CustomProgramUsers_CustomProgramId",
                 table: "CustomProgramUsers",
-                column: "CustProgId");
+                column: "CustomProgramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Exercises_CustomProgramCustProgId",
+                name: "IX_Exercises_CustomProgramId",
                 table: "Exercises",
-                column: "CustomProgramCustProgId");
+                column: "CustomProgramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Exercises_StandardProgramProgId",
+                name: "IX_Exercises_StandardProgramProgramId",
                 table: "Exercises",
-                column: "StandardProgramProgId");
+                column: "StandardProgramProgramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StandardProgramExercises_ExId",
+                name: "IX_StandardProgramExercises_ExerciseId",
                 table: "StandardProgramExercises",
-                column: "ExId");
+                column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserStandardPrograms_ProgId",

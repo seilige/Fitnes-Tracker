@@ -25,7 +25,7 @@ public class CustomProgramRepository : Repository<CustomProgram>, ICustomProgram
 
     public async Task<User?> GetCreatorAsync(int custProgId)
     {
-        var prog = await _context.CustomPrograms.AsNoTracking().Include(x => x.Creator).Where(x => x.CustProgId == custProgId).FirstOrDefaultAsync();
+        var prog = await _context.CustomPrograms.AsNoTracking().Include(x => x.Creator).Where(x => x.CustomProgramId == custProgId).FirstOrDefaultAsync();
 
         return prog?.Creator;
     }
@@ -33,7 +33,7 @@ public class CustomProgramRepository : Repository<CustomProgram>, ICustomProgram
     public async Task<IEnumerable<Exercise>> GetExercisesAsync(int custProgId)
     {
         // We take all programs with linked Exercises, find required id and take first program
-        var prog = await _context.CustomPrograms.AsNoTracking().Include(x => x.Exercises).Where(x => x.CustProgId == custProgId).FirstOrDefaultAsync();
+        var prog = await _context.CustomPrograms.AsNoTracking().Include(x => x.Exercises).Where(x => x.CustomProgramId == custProgId).FirstOrDefaultAsync();
 
         return prog?.Exercises ?? Enumerable.Empty<Exercise>();
     }

@@ -86,7 +86,7 @@ public class WorkoutSessionService : IWorkoutSessionService
         {
             var set = new WorkoutExerciseSet
             {
-                WorkoutSessionId = entity.SessionId,
+                WorkoutSessionId = entity.WorkoutSessionId,
                 ExerciseId = exer.ExerciseId,
                 Reps = exer.Reps,
                 Weight = exer.Weight

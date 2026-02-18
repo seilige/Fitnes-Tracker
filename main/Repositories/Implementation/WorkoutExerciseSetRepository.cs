@@ -30,7 +30,7 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
         return await _context.WorkoutExerciseSets
         .AsNoTracking()
                     .Include(x => x.WorkoutSession)
-                    .FirstAsync(x => x.Id == id);
+                    .FirstAsync(x => x.WorkoutExerciseSetId == id);
     }
     public new async Task<WorkoutExerciseSet> AddAsync(WorkoutExerciseSet set)
     {
@@ -40,7 +40,7 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
 
     public async Task<WorkoutExerciseSet?> GetByIdAsync(int id)
     {
-        return await _context.WorkoutExerciseSets.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.WorkoutExerciseSets.AsNoTracking().FirstOrDefaultAsync(x => x.WorkoutExerciseSetId == id);
     }
 
     public async Task<IEnumerable<WorkoutExerciseSet>> GetByWorkoutSessionIdAsync(int sessionId)
@@ -55,7 +55,7 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
 
     public async Task DeleteAsync(int id)
     {
-        var item = await _context.WorkoutExerciseSets.FirstOrDefaultAsync(x => x.Id == id);
+        var item = await _context.WorkoutExerciseSets.FirstOrDefaultAsync(x => x.WorkoutExerciseSetId == id);
         _context.WorkoutExerciseSets.Remove(item);
     }
 }

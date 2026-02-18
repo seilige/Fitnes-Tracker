@@ -19,8 +19,8 @@ public class Mapper : Profile
 
         // Automapper can map Creator to CreatorId and Exercise to int, but it's incorrect
         CreateMap<CustomProgram, CustomProgramResponseDTO>()
-            .ForMember(dest => dest.ExerciseIDs, opt => opt.MapFrom(src => src.Exercises.Select(x => x.ExId)))
-            .ForMember(dest => dest.CreatorId, opt => opt.MapFrom(src => src.Creator != null ? src.Creator.IdUser : (int?)null));
+            .ForMember(dest => dest.ExerciseIDs, opt => opt.MapFrom(src => src.Exercises.Select(x => x.ExerciseId)))
+            .ForMember(dest => dest.CreatorId, opt => opt.MapFrom(src => src.Creator != null ? src.Creator.UserId : (int?)null));
 
         CreateMap<CustomProgramUpdateDTO, CustomProgram>();
         CreateMap<WorkoutExerciseSetCreateDTO, WorkoutExerciseSet>();
@@ -34,10 +34,10 @@ public class Mapper : Profile
         CreateMap<WorkoutExerciseSet, SetUpdateDTO>();
     
         CreateMap<WorkoutSession, WorkoutSessionResponseDTO>()
-            .ForMember(dest => dest.SessionId, opt => opt.MapFrom(x => x.SessionId));
+            .ForMember(dest => dest.SessionId, opt => opt.MapFrom(x => x.WorkoutSessionId));
 
         CreateMap<WorkoutExerciseSet, ExerciseSetDTO>()
-            .ForMember(dest => dest.SetId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.SetId, opt => opt.MapFrom(src => src.WorkoutExerciseSetId))
             .ForMember(dest => dest.ExerciseName, opt => opt.MapFrom(src => src.Exercise.Title));
     }
 }

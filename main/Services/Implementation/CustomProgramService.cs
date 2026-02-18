@@ -63,7 +63,7 @@ public class CustomProgramService : ICustomProgramService
     public async Task<CustomProgramResponseDTO> UpdateAsync(int id, CustomProgramUpdateDTO dto)
     {
         var program = _mapper.Map<CustomProgram>(dto);
-        program.CustProgId = id;
+        program.CustomProgramId = id;
         var updated = await _repository.UpdateAsync(program);
 
         if(updated == null)

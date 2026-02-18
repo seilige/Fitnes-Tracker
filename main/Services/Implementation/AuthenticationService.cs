@@ -69,7 +69,7 @@ public class Authentication : IAuthentication
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.IdUser.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
             new Claim(ClaimTypes.Email, user.Email)
         };
 

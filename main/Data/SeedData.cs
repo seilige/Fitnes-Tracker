@@ -48,8 +48,8 @@ public static class SeedData
         {
             new UserStandardProgram 
             { 
-                IdUser = users[0].IdUser,
-                ProgId = programs[0].ProgId
+                IdUser = users[0].UserId,
+                ProgId = programs[0].ProgramId
             }
         };
         context.UserStandardPrograms.AddRange(userPrograms);
@@ -59,13 +59,13 @@ public static class SeedData
         {
             new StandardProgramExercise 
             { 
-                ProgId = programs[0].ProgId,
-                ExId = exercises[0].ExId 
+                ProgramId = programs[0].ProgramId,
+                ExerciseId = exercises[0].ExerciseId
             },
             new StandardProgramExercise 
             { 
-                ProgId = programs[0].ProgId,
-                ExId = exercises[1].ExId 
+                ProgramId = programs[0].ProgramId,
+                ExerciseId = exercises[1].ExerciseId
             }
         };
         context.StandardProgramExercises.AddRange(programExercises);
@@ -76,8 +76,8 @@ public static class SeedData
         {
             new WorkoutSession 
             { 
-                UserId = users[0].IdUser,
-                StandardProgramId = programs[0].ProgId,
+                UserId = users[0].UserId,
+                StandardProgramId = programs[0].ProgramId,
                 Date = DateTime.UtcNow,
                 Status = WorkoutStatus.InProgress
             }
@@ -89,8 +89,8 @@ public static class SeedData
         {
             new WorkoutExerciseSet 
             { 
-                WorkoutSessionId = sessions[0].SessionId,
-                ExerciseId = exercises[0].ExId,
+                WorkoutSessionId = sessions[0].WorkoutSessionId,
+                ExerciseId = exercises[0].ExerciseId,
                 Sets = 3,
                 Reps = 10,
                 Weight = 60

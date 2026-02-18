@@ -118,7 +118,7 @@ public class ExerciseService : IExerciseService
     public async Task<ExerciseResponseDTO> UpdateAsync(int id, ExerciseRequestDTO dto)
     {
         var item = _mapper.Map<Exercise>(dto);
-        item.ExId = id;
+        item.ExerciseId = id;
         var entity = await _repository.UpdateAsync(item);
         await _repository.SaveChangesAsync();
         return _mapper.Map<ExerciseResponseDTO>(entity);

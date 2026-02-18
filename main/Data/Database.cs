@@ -26,28 +26,28 @@ public class ApplicationDbContext : DbContext
     {
         // Configure primary keys
         modelBuilder.Entity<User>()
-            .HasKey(x => x.IdUser);
+            .HasKey(x => x.UserId);
 
         modelBuilder.Entity<StandardProgram>()
-            .HasKey(x => x.ProgId);
+            .HasKey(x => x.ProgramId);
 
         modelBuilder.Entity<CustomProgram>()
-            .HasKey(x => x.CustProgId);
+            .HasKey(x => x.CustomProgramId);
 
         modelBuilder.Entity<Exercise>()
-            .HasKey(x => x.ExId);
+            .HasKey(x => x.ExerciseId);
 
         modelBuilder.Entity<UserStandardProgram>()
             .HasKey(x => new {x.IdUser, x.ProgId});
 
         modelBuilder.Entity<CustomProgramUser>()
-            .HasKey(x => new {x.IdUser, x.CustProgId});
+            .HasKey(x => new {x.IdUser, x.CustomProgramId});
 
         modelBuilder.Entity<StandardProgramExercise>()
-            .HasKey(x => new {x.ProgId, x.ExId});
+            .HasKey(x => new {x.ProgramId, x.ExerciseId});
 
         modelBuilder.Entity<CustomProgramExercise>()
-            .HasKey(x => new {x.CustProgId, x.ExId});
+            .HasKey(x => new {x.CustomProgramId, x.ExerciseId});
 
         // Connection between objects configuration
         modelBuilder.Entity<CustomProgram>()
@@ -73,27 +73,27 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<CustomProgramUser>()
             .HasOne(x => x.CustomProgram)
             .WithMany()
-            .HasForeignKey(x => x.CustProgId);
+            .HasForeignKey(x => x.CustomProgramId);
 
         modelBuilder.Entity<StandardProgramExercise>()
             .HasOne(x => x.StandardProgram)
             .WithMany()
-            .HasForeignKey(x => x.ProgId);
+            .HasForeignKey(x => x.ProgramId);
 
         modelBuilder.Entity<StandardProgramExercise>()
             .HasOne(x => x.Exercise)
             .WithMany()
-            .HasForeignKey(x => x.ExId);
+            .HasForeignKey(x => x.ExerciseId);
 
         modelBuilder.Entity<CustomProgramExercise>()
             .HasOne(x => x.CustomProgram)
             .WithMany()
-            .HasForeignKey(x => x.CustProgId);
+            .HasForeignKey(x => x.CustomProgramId);
 
         modelBuilder.Entity<CustomProgramExercise>()
             .HasOne(x => x.Exercise)
             .WithMany()
-            .HasForeignKey(x => x.ExId);
+            .HasForeignKey(x => x.ExerciseId);
 
         // Workout session and exercise conntection:
         modelBuilder.Entity<WorkoutExerciseSet>()
@@ -112,7 +112,7 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(x => x.UserId);
         
         modelBuilder.Entity<WorkoutSession>()
-            .Property(w => w.SessionId)
+            .Property(w => w.WorkoutSessionId)
             .ValueGeneratedOnAdd();
 
         modelBuilder.Entity<WorkoutSession>()
@@ -133,6 +133,6 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<WorkoutSession>()
-            .HasKey(x => x.SessionId);
+            .HasKey(x => x.WorkoutSessionId);
     }
 }

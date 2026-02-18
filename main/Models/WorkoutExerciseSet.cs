@@ -2,7 +2,7 @@ namespace FitnesTracker;
 
 public class WorkoutExerciseSet
 {
-    public int Id { get; set; }
+    public int WorkoutExerciseSetId { get; set; }
     public int ExerciseId { get; set; }
     public int Sets { get; set; }
     public int Reps { get; set; }

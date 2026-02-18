@@ -39,7 +39,7 @@ public class StandardProgramRepository : Repository<StandardProgram>, IStandardP
     {
         return await _context.StandardProgramExercises
                                 .AsNoTracking()
-                                .Where(x => x.ProgId == standardProgramId)
+                                .Where(x => x.ProgramId == standardProgramId)
                                 .Include(x => x.Exercise)
                                 .Select(x => x.Exercise).ToListAsync();
     }
