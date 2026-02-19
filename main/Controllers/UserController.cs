@@ -7,10 +7,26 @@ namespace FitnesTracker;
 public class UserController : ControllerBase
 {
     private IUserService _service;
+    private IEmailService _emailService;
 
-    public UserController(IUserService service)
+    public UserController(IUserService service, IEmailService emailService)
     {
         _service = service;
+        _emailService = emailService;
+    }
+
+    /// <summary>
+    /// Checking user authorization.
+    /// </summary>
+    /// <param name="token">User uniq token.</param>
+    /// <returns>Info about user authorization.</returns>
+    /// <response code="200">User authorize successfuly.</response>
+    /// <response code="401">Email not confirmed.</response>
+    [HttpGet("confirm-email")]
+    public async Task<ActionResult> ConfirmEmail([FromQuery] string token)
+    {
+        await _emailService.ConfirmEmailAsync(token);
+        return Ok("Email confirmed successfully");
     }
 
     /// <summary>

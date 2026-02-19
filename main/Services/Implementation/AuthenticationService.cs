@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Net;
 using AutoMapper;
 
 namespace FitnesTracker;
@@ -12,13 +13,15 @@ public class Authentication : IAuthentication
     private readonly IConfiguration _configuration;
     private readonly ILogger<ExerciseService> _logger;
     private readonly IMapper _mapper;
+    private readonly IEmailService _email;
 
-    public Authentication(IUserRepository repository, IConfiguration configuration, ILogger<ExerciseService> logger, IMapper mapper)
+    public Authentication(IUserRepository repository, IConfiguration configuration, ILogger<ExerciseService> logger, IMapper mapper, IEmailService email)
     {
         _repository = repository;
         _configuration = configuration;
         _logger = logger;
         _mapper = mapper;
+        _email = email; 
     }
 
     public async Task<PagedResult<UserResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
@@ -43,8 +46,18 @@ public class Authentication : IAuthentication
             Email = email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
             Name = name,
-            Lastname = lastname
+            Lastname = lastname,
+            EmailConfirmationToken = _email.GenerateTokenEmail(),
+            EmailTokenExpiry = DateTime.UtcNow.AddHours(24),
+            IsEmailConfirmed = false
         };
+
+        var confirmLink = $"http://localhost:5000/api/auth/confirm-email?token={WebUtility.UrlEncode(newUser.EmailConfirmationToken)}";
+        await _email.SendEmailAsync(
+            newUser.Email,
+            "Confirm your email",
+            $"<a href='{confirmLink}'>Click here to confirm</a>"
+        );
 
         await _repository.AddUser(newUser);
         await _repository.SaveChangesAsync();
@@ -70,7 +83,7 @@ public class Authentication : IAuthentication
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Email, user.Email)
+            new Claim(ClaimTypes.Email, user.Email),
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));

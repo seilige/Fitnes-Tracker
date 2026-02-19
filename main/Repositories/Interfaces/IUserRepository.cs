@@ -7,4 +7,5 @@ public interface IUserRepository : IRepository<User>
     Task<User> GetUserByEmail(string email);
     Task AddUser(User user);
     Task<PagedResult<User>> GetAllAsync(int pageNum, int pageSize);
+    Task<User?> GetByEmailConfirmationTokenAsync(string token);
 }

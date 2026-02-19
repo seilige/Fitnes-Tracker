@@ -7,12 +7,14 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<ExerciseService> _logger;
+    private readonly IEmailService _email;
 
-    public UserService(IUserRepository userRepository, IMapper mapper, ILogger<ExerciseService> logger)
+    public UserService(IUserRepository userRepository, IMapper mapper, ILogger<ExerciseService> logger, IEmailService email)
     {
         _userRepository = userRepository;
         _mapper = mapper;
         _logger = logger;
+        // _email = email;
     }
 
     public async Task<PagedResult<UserResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
@@ -25,6 +27,11 @@ public class UserService : IUserService
     public async Task<UserResponseDTO> CreateAsync(UserCreateDTO dto)
     {
         var user = _mapper.Map<User>(dto);
+
+        // user.EmailConfirmationToken = _email.GenerateTokenEmail();
+        // user.EmailTokenExpiry = DateTime.UtcNow.AddHours(24);
+        // _email.SendConfirmationEmail(user.Email, user.EmailConfirmationToken);
+
         await _userRepository.AddAsync(user);
         await _userRepository.SaveChangesAsync();
         _logger.LogInformation("User already added");

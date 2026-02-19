@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Net.Http.Headers;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.RateLimiting;
-using HealthChecks.NpgSql;
-
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.OpenApi.Models;
 
 namespace FitnesTracker;
 
@@ -41,6 +41,9 @@ public class Program
         builder.Services.AddScoped<IWorkoutSessionService, WorkoutSessionService>();
         builder.Services.AddScoped<IWorkoutExerciseService, WorkoutExerciseService>();
         builder.Services.AddScoped<IAuthentication, Authentication>();
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         builder.Services.AddAutoMapper(typeof(FitnesTracker.Mapper).Assembly);
 
@@ -52,8 +55,31 @@ public class Program
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             c.IncludeXmlComments(xmlPath);
+            
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header
+            });
+            
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference 
+                        { 
+                            Type = ReferenceType.SecurityScheme, 
+                            Id = "Bearer" 
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
         });
-
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -125,6 +151,9 @@ public class Program
         app.UseSwaggerUI();
     
         app.UseAuthentication();
+
+        app.UseMiddleware<EmailConfirmationMiddleware>();
+
         app.UseAuthorization();
         app.MapControllers();
 

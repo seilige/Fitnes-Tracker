@@ -13,6 +13,11 @@ public class UserRepository : Repository<User>, IUserRepository
         await _context.Users.AddAsync(user);
     }
 
+    public async Task<User?> GetByEmailConfirmationTokenAsync(string token)
+    {
+        return await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.EmailConfirmationToken == token);
+    }
+
     public async Task<PagedResult<User>> GetAllAsync(int pageNum, int pageSize)
     {
         var users = _context.Users.AsNoTracking().Include(x => x.WorkoutSessions);

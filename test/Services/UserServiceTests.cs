@@ -10,6 +10,7 @@ public class UserServiceTests
     private Mock<IUserRepository> _mockRepo;
     private Mock<IMapper> _mockMapper;
     private readonly UserService _service;
+    private readonly Mock<IEmailService> _emailService;
     private readonly Mock<ILogger<ExerciseService>> _mockLogger;
 
     public UserServiceTests()
@@ -17,13 +18,14 @@ public class UserServiceTests
         _mockLogger = new Mock<ILogger<ExerciseService>>();
         _mockRepo = new Mock<IUserRepository>();
         _mockMapper = new Mock<IMapper>();
-        _service = new UserService(_mockRepo.Object, _mockMapper.Object, _mockLogger.Object);
+        _emailService = new Mock<IEmailService>();
+        _service = new UserService(_mockRepo.Object, _mockMapper.Object, _mockLogger.Object, _emailService.Object);
     }
  
     [Fact]
     public async Task GetUserByIdTest()
     {
-        var user = new User { IdUser = 1, Name = "Test User" };
+        var user = new User { UserId = 1, Name = "Test User" };
         var userDto = new UserResponseDTO { IdUser = 1, Name = "Test User" };
         
         _mockRepo.Setup(r => r.GetByIDAsync(1)).ReturnsAsync(user);
@@ -50,7 +52,7 @@ public class UserServiceTests
     public async Task UserUpdateSuccessTest()
     {
         var userDto = new UserUpdateDTO { Name = "New name" };
-        var user = new User { IdUser = 1, Name = "Test User" };
+        var user = new User { UserId = 1, Name = "Test User" };
         var resultDto = new UserResponseDTO { IdUser = 1, Name = "Updated" };
 
         _mockMapper.Setup(m => m.Map<User>(userDto)).Returns(new User { Name = "Updated" });
