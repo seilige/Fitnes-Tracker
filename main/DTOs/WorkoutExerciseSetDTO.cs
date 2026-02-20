@@ -2,7 +2,7 @@ namespace FitnesTracker;
 
 public class WorkoutExerciseSetCreateDTO
 {
-    public int ExerciseId { get; set; }
+    public int WorkoutExerciseSetId { get; set; }
     public int Reps { get; set; }
     public double Weight { get; set; }
     public int WorkoutSessionId { get; set; }
@@ -11,7 +11,7 @@ public class WorkoutExerciseSetCreateDTO
 // What user gets
 public class WorkoutExerciseSetResponseDTO
 {
-    public int Id { get; set; }
+    public int WorkoutExerciseSetId { get; set; }
     public Exercise Exercise { get; set; }
     public int Sets { get; set; }
     public int Reps { get; set; }
@@ -20,14 +20,14 @@ public class WorkoutExerciseSetResponseDTO
 
 public class WorkoutExerciseSetUpdateDTO
 {
-    public int Id { get; set; }
+    public int WorkoutExerciseSetId { get; set; }
     public int Reps { get; set; }
     public double Weight { get; set; }
 }
 
 public class ExerciseSetDTO
 {
-    public int SetId { get; set; }
+    public int ExerciseSetId { get; set; }
     public string ExerciseName { get; set; }
     public int Reps { get; set; }
     public decimal Weight { get; set; }

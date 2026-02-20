@@ -23,7 +23,7 @@ public class UserUpdateDTOValidator : AbstractValidator<UserUpdateDTO>
 {
     public UserUpdateDTOValidator()
     {
-        RuleFor(x => x.IdUser)
+        RuleFor(x => x.UserId)
             .NotEmpty()
             .GreaterThan(0)
             .WithMessage("Id is incorrect");

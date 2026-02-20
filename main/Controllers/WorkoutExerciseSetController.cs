@@ -25,7 +25,7 @@ public class WorkoutExerciseSetController : ControllerBase
     {
         var res = await _service.AddSetAsync(dto);
 
-        return CreatedAtAction(nameof(GetById), new { id = res.Id }, res);
+        return CreatedAtAction(nameof(GetById), new { id = res.WorkoutExerciseSetId }, res);
     }
 
     [HttpGet("{id:int}")]

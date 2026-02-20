@@ -37,7 +37,7 @@ public class Mapper : Profile
             .ForMember(dest => dest.SessionId, opt => opt.MapFrom(x => x.WorkoutSessionId));
 
         CreateMap<WorkoutExerciseSet, ExerciseSetDTO>()
-            .ForMember(dest => dest.SetId, opt => opt.MapFrom(src => src.WorkoutExerciseSetId))
+            .ForMember(dest => dest.ExerciseSetId, opt => opt.MapFrom(src => src.WorkoutExerciseSetId))
             .ForMember(dest => dest.ExerciseName, opt => opt.MapFrom(src => src.Exercise.Title));
     }
 }

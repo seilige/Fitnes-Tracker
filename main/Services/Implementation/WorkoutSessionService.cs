@@ -61,16 +61,16 @@ public class WorkoutSessionService : IWorkoutSessionService
     public async Task<SetUpdateDTO> UpdateSetAsync(SetUpdateDTO dto)
     {
         // get session
-        var set = await _setRepository.GetSetByIdWithSessionAsync(dto.Id);
+        var set = await _setRepository.GetSetByIdWithSessionAsync(dto.SetId);
  
-        if(set == null) throw new KeyNotFoundException($"Set with id: {dto.Id} not found");
+        if(set == null) throw new KeyNotFoundException($"Set with id: {dto.SetId} not found");
 
         set.Reps = dto.Reps;
         set.Weight = dto.Weight;
 
         await _setRepository.UpdateAsync(set);
         await _repository.SaveChangesAsync();
-        _logger.LogInformation($"Set with id: {dto.Id} already updated");
+        _logger.LogInformation($"Set with id: {dto.SetId} already updated");
 
         return _mapper.Map<SetUpdateDTO>(set);
     }
@@ -87,7 +87,7 @@ public class WorkoutSessionService : IWorkoutSessionService
             var set = new WorkoutExerciseSet
             {
                 WorkoutSessionId = entity.WorkoutSessionId,
-                ExerciseId = exer.ExerciseId,
+                ExerciseId = exer.WorkoutExerciseSetId,
                 Reps = exer.Reps,
                 Weight = exer.Weight
             };

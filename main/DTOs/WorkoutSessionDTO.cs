@@ -28,7 +28,7 @@ public class WorkoutSessionUpdateDTO // update all session
 
 public class SetUpdateDTO // update data in session
 {
-    public int Id { get; set; }
+    public int SetId { get; set; }
     public double Weight { get; set; }
     public int Reps { get; set; }
 }

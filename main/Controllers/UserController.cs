@@ -96,6 +96,6 @@ public class UserController : ControllerBase
     {
         var res = await _service.CreateAsync(dto);
 
-        return CreatedAtAction(nameof(GetByIdAsync), new { id = res.IdUser }, res);
+        return CreatedAtAction(nameof(GetByIdAsync), new { id = res.UserId }, res);
     }
 }

@@ -60,6 +60,6 @@ public class ExerciseController : ControllerBase
     public async Task<ActionResult> CreateAsync([FromBody] ExerciseRequestDTO dto)
     {
         var result = await _service.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetByIdAsync), new { id = result.ExId }, result);
+        return CreatedAtAction(nameof(GetByIdAsync), new { id = result.ExerciseId }, result);
     }
 }
