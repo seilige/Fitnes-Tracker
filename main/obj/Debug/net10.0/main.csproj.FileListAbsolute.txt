@@ -274,3 +274,12 @@ C:\Users\Acer\Desktop\solution\main\obj\Debug\net10.0\ref\main.dll
 C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\BouncyCastle.Cryptography.dll
 C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\MailKit.dll
 C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\MimeKit.dll
+C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Serilog.dll
+C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Serilog.AspNetCore.dll
+C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Serilog.Extensions.Hosting.dll
+C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Serilog.Extensions.Logging.dll
+C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Serilog.Formatting.Compact.dll
+C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Serilog.Settings.Configuration.dll
+C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Serilog.Sinks.Console.dll
+C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Serilog.Sinks.Debug.dll
+C:\Users\Acer\Desktop\solution\main\bin\Debug\net10.0\Serilog.Sinks.File.dll

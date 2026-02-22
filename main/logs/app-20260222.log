@@ -1,0 +1,4 @@
+2026-02-22 19:55:32.158 +04:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-02-22 19:55:44.516 +04:00 [WRN] Failed to determine the https port for redirect.
+2026-02-22 19:55:44.690 +04:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 174.6966 ms
+2026-02-22 19:56:07.295 +04:00 [INF] HTTP POST /api/Authentication/register responded 200 in 745.7088 ms

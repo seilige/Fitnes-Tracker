@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitnesTracker;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ExerciseController : ControllerBase
 {
     private IExerciseService _service;
@@ -12,6 +14,7 @@ public class ExerciseController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpGet("all")]
     public async Task<ActionResult<PagedResult<UserResponseDTO>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
@@ -19,6 +22,7 @@ public class ExerciseController : ControllerBase
         return Ok(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("filter")]
     public async Task<ActionResult<PagedResult<ExerciseResponseDTO>>> GetFilteredExercises([FromQuery] ExerciseQueryParameters parameters)
     {
@@ -26,12 +30,14 @@ public class ExerciseController : ControllerBase
         return Ok(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("muscle_group/{group}")]
     public async Task<ActionResult> GetByMuscleGroupAsync(MuscleGroup group)
     {
         return Ok(await _service.GetByMuscleGroupAsync(group));
     }
 
+    [AllowAnonymous]
     [HttpGet("{title:alpha}")]
     public async Task<ActionResult> GetExerciseAsync(string title)
     {
@@ -57,6 +63,7 @@ public class ExerciseController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Author")]
     public async Task<ActionResult> CreateAsync([FromBody] ExerciseRequestDTO dto)
     {
         var result = await _service.CreateAsync(dto);

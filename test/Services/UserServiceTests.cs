@@ -26,7 +26,7 @@ public class UserServiceTests
     public async Task GetUserByIdTest()
     {
         var user = new User { UserId = 1, Name = "Test User" };
-        var userDto = new UserResponseDTO { IdUser = 1, Name = "Test User" };
+        var userDto = new UserResponseDTO { UserId = 1, Name = "Test User" };
         
         _mockRepo.Setup(r => r.GetByIDAsync(1)).ReturnsAsync(user);
         _mockMapper.Setup(m => m.Map<UserResponseDTO?>(user)).Returns(userDto);
@@ -34,7 +34,7 @@ public class UserServiceTests
         var result = await _service.GetByIdAsync(1);
         
         result.Should().NotBeNull();
-        result.IdUser.Should().Be(1);
+        result.UserId.Should().Be(1);
     }
 
     [Fact]
@@ -53,7 +53,7 @@ public class UserServiceTests
     {
         var userDto = new UserUpdateDTO { Name = "New name" };
         var user = new User { UserId = 1, Name = "Test User" };
-        var resultDto = new UserResponseDTO { IdUser = 1, Name = "Updated" };
+        var resultDto = new UserResponseDTO { UserId = 1, Name = "Updated" };
 
         _mockMapper.Setup(m => m.Map<User>(userDto)).Returns(new User { Name = "Updated" });
         _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<User>())).ReturnsAsync(user);

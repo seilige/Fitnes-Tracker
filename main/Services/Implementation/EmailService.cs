@@ -24,6 +24,9 @@ public class EmailService : IEmailService
 
     public async Task SendEmailAsync(string to, string subject, string body)
     {
+        var skip = bool.TryParse(_config["EmailSettings:SkipEmailSending"], out var s) && s; // skip confirm email
+        if (skip) return;
+
         var smtp = _config["EmailSettings:SmtpServer"];
         var port = int.Parse(_config["EmailSettings:Port"]);
         var sender = _config["EmailSettings:SenderEmail"];
