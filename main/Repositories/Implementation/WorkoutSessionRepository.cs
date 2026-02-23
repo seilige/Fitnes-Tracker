@@ -58,9 +58,9 @@ public class WorkoutSessionRepository :  Repository<WorkoutSession>, IWorkoutSes
     public async Task<WorkoutSession?> GetByIdWithDetailsAsync(int id)
     {
         return await _context.WorkoutSessions
-        .AsNoTracking()
+            .AsNoTracking()
             .Include(x => x.WorkoutExerciseSets)
-                .ThenInclude(set => set.Exercise)
+            .ThenInclude(set => set.Exercise)
             .FirstOrDefaultAsync(x => x.WorkoutSessionId == id);
     }
 }

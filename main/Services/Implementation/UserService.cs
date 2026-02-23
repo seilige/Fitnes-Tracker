@@ -74,7 +74,6 @@ public class UserService : IUserService
         if(entity == null)
         {
             _logger.LogInformation($"User with id: {id} not found");
-
             throw new KeyNotFoundException("Not found");
         }
 

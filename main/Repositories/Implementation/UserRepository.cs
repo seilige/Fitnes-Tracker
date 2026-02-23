@@ -5,7 +5,7 @@ namespace FitnesTracker;
 public class UserRepository : Repository<User>, IUserRepository
 {
     public UserRepository(ApplicationDbContext context) : base(context) 
-    { // User gets context and provide to base class
+    {
     }
 
     public async Task AddUser(User user)
