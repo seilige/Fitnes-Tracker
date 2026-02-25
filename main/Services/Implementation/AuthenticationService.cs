@@ -4,6 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Net;
 using AutoMapper;
+using Org.BouncyCastle.Bcpg;
+using Microsoft.EntityFrameworkCore.Design.Internal;
 
 namespace FitnesTracker;
 
@@ -31,7 +33,40 @@ public class Authentication : IAuthentication
         return new PagedResult<UserResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
     }
 
-    public async Task<string> Register(string email, string password, string name, string lastname)
+    public async Task<AuthResponseDTO> GetTokenAaync(RefreshRequestDTO dto)
+    {
+        var token = await _repository.GetActiveToken(dto.Token);
+
+        if (token == null || token.ExpiresAt <= DateTime.UtcNow || token.IsRevoked)
+            throw new UnauthorizedAccessException("Invalid refresh token");
+
+        token.IsRevoked = true;
+        await _repository.SaveChangesAsync();
+
+        var user = token.User;
+
+        if (user == null)
+            throw new KeyNotFoundException("User not found");
+
+        RefreshToken rToken = new RefreshToken
+        {
+            Token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()),
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
+            IsRevoked = false,
+            UserId = user.UserId
+        };
+
+        await _repository.SaveRefreshToken(rToken);
+
+        return new AuthResponseDTO
+        {
+            AccessToken = GenerateToken(user),
+            RefreshToken = rToken.Token,
+            ExpiresAt = rToken.ExpiresAt
+        };
+    }
+
+    public async Task<AuthResponseDTO> Register(string email, string password, string name, string lastname)
     {
         var existUser = await _repository.GetUserByEmail(email);
 
@@ -62,10 +97,26 @@ public class Authentication : IAuthentication
         await _repository.AddUser(newUser);
         await _repository.SaveChangesAsync();
 
-        return GenerateToken(newUser);
+        RefreshToken rToken = new RefreshToken
+        {
+            Token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()),
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
+            IsRevoked = false,
+            UserId = newUser.UserId
+        };
+
+        await _repository.SaveRefreshToken(rToken);
+        await _repository.SaveChangesAsync();
+
+        return new AuthResponseDTO
+        {
+            AccessToken = GenerateToken(newUser),
+            RefreshToken = rToken.Token,
+            ExpiresAt = rToken.ExpiresAt
+        };
     }
 
-    public async Task<string> Login(string email, string password)
+    public async Task<AuthResponseDTO> Login(string email, string password)
     {
         var user = await _repository.GetUserByEmail(email);
 
@@ -74,8 +125,42 @@ public class Authentication : IAuthentication
         if(!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             throw new UnauthorizedAccessException("Invalid password");
 
+        var token = await _repository.GetUsersActiveToken(user);
 
-        return GenerateToken(user);
+        if(token != null)
+        {
+            token.IsRevoked = true;
+        }
+
+        RefreshToken rToken = new RefreshToken
+        {
+            Token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()),
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
+            IsRevoked = false,
+            UserId = user.UserId
+        };
+
+        await _repository.SaveRefreshToken(rToken);
+        await _repository.SaveChangesAsync();
+
+        return new AuthResponseDTO
+        {
+            AccessToken = GenerateToken(user),
+            RefreshToken = rToken.Token,
+            ExpiresAt = rToken.ExpiresAt
+        };
+    }
+
+    public async Task Logout(string token)
+    {
+        var tokenExist = await _repository.GetActiveToken(token);
+
+        if(tokenExist == null || tokenExist.ExpiresAt <= DateTime.UtcNow || tokenExist.IsRevoked)
+            throw new KeyNotFoundException("Token not found");
+
+        tokenExist.IsRevoked = true;
+
+        await _repository.SaveChangesAsync();
     }
 
     private string GenerateToken(User user)

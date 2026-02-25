@@ -19,17 +19,17 @@ build_property.TargetFrameworkIdentifier = .NETCoreApp
 build_property.TargetFrameworkVersion = v10.0
 build_property.RootNamespace = test
 build_property.RootNamespace = test
-build_property.ProjectDir = C:\Users\Acer\Desktop\solution\test\
+build_property.ProjectDir = c:\Users\Acer\Desktop\solution\test\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Acer\Desktop\solution\test
+build_property.MSBuildProjectDirectory = c:\Users\Acer\Desktop\solution\test
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/Acer/Desktop/solution/main/bin/Debug/net10.0/main.xml]
+[c:/Users/Acer/Desktop/solution/main/bin/Debug/net10.0/main.xml]
 build_metadata.AdditionalFiles.TargetPath = 
 build_metadata.AdditionalFiles.CssScope = 

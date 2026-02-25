@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg;
 
 namespace FitnesTracker;
 
@@ -46,5 +47,32 @@ public class UserRepository : Repository<User>, IUserRepository
     public async Task<User?> GetUserByEmail(string email)
     {
         return await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
+    }
+
+    public async Task SaveRefreshToken(RefreshToken token)
+    {
+        await _context.RefreshTokens.AddAsync(token);
+    }
+
+    public async Task<RefreshToken?> GetUsersActiveToken(User user)
+    {
+        return await _context.RefreshTokens.Where(x => x.UserId == user.UserId && x.IsRevoked == false && x.ExpiresAt > DateTime.UtcNow).FirstOrDefaultAsync();
+    }
+
+    public async Task<User?> GetUserByToken(string token)
+    {
+        var refreshToken = await _context.RefreshTokens
+                                            .Include(rt => rt.User)
+                                            .FirstOrDefaultAsync(rt => rt.Token == token && !rt.IsRevoked && rt.ExpiresAt > DateTime.UtcNow);
+
+        return refreshToken?.User;
+    }
+
+    public async Task<RefreshToken?> GetActiveToken(string token)
+    {
+        return await _context.RefreshTokens
+            .Include(rt => rt.User)
+            .Where(x => x.Token == token)
+            .FirstOrDefaultAsync();
     }
 }

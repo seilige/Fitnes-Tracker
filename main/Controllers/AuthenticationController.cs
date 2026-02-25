@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.RateLimiting;
 namespace FitnesTracker;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/auth")]
 [EnableRateLimiting("Fixed")]
 public class AuthenticationController : ControllerBase
 {
@@ -13,6 +13,26 @@ public class AuthenticationController : ControllerBase
     public AuthenticationController(IAuthentication auth)
     {
         _auth = auth;
+    }
+
+    [HttpPost("refresh")]
+    public async Task<ActionResult> RefreshToken([FromBody] RefreshRequestDTO dto)
+    {
+        var result = await _auth.GetTokenAaync(dto);
+        return Ok(result);
+    }
+
+    [HttpPost("logout")]
+    public async Task<ActionResult> Logout([FromBody] RefreshRequestDTO dto)
+    {
+        var token = dto.Token;
+    
+        if (string.IsNullOrEmpty(token))
+            return Unauthorized("Token is required");
+
+        await _auth.Logout(token);
+
+        return Ok("Successfully logged out");
     }
 
     [HttpGet("all")]

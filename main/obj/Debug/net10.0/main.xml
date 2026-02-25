@@ -84,5 +84,17 @@
         <member name="M:main.Migrations.AddEmailConfirmation.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:main.Migrations.AddRefreshToken">
+            <inheritdoc />
+        </member>
+        <member name="M:main.Migrations.AddRefreshToken.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:main.Migrations.AddRefreshToken.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:main.Migrations.AddRefreshToken.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

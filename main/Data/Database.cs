@@ -9,7 +9,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<StandardProgram> StandardPrograms { get; set; }
     public DbSet<CustomProgram> CustomPrograms { get; set; }
     public DbSet<Exercise> Exercises { get; set; }
-    
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     // Linking models
     public DbSet<UserStandardProgram> UserStandardPrograms { get; set; }
     public DbSet<CustomProgramUser> CustomProgramUsers { get; set; }
