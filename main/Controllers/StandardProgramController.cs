@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FitnesTracker;
 
 [ApiController]
+[Produces("application/json")]
 [Route("api/[controller]")]
 public class StandardProgramController : ControllerBase
 {

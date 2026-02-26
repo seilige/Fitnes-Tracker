@@ -5,6 +5,7 @@ namespace FitnesTracker;
 
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 [Authorize]
 public class ExerciseController : ControllerBase
 {

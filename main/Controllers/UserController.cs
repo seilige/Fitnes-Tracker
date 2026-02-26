@@ -4,6 +4,7 @@ namespace FitnesTracker;
 
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 public class UserController : ControllerBase
 {
     private IUserService _service;

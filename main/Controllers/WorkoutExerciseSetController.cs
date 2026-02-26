@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace FitnesTracker;
 
 [ApiController]
+[Produces("application/json")]
 [Route("api/[controller]")]
+
 public class WorkoutExerciseSetController : ControllerBase
 {
     private IWorkoutExerciseService _service;

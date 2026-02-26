@@ -4,6 +4,7 @@ namespace FitnesTracker;
 
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 public class WorkoutSessionController : ControllerBase
 {
     private IWorkoutSessionService _service;

@@ -68,7 +68,19 @@ public class Program
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
-                
+
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Fitness Tracker API",
+                    Version = "v1",
+                    Description = "API for managing fitness programs, exercises and users",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "N",
+                        Email = "N@email.com"
+                    }
+                });
+
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",

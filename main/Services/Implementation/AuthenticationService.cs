@@ -4,8 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Net;
 using AutoMapper;
-using Org.BouncyCastle.Bcpg;
-using Microsoft.EntityFrameworkCore.Design.Internal;
 
 namespace FitnesTracker;
 
@@ -33,7 +31,7 @@ public class Authentication : IAuthentication
         return new PagedResult<UserResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
     }
 
-    public async Task<AuthResponseDTO> GetTokenAaync(RefreshRequestDTO dto)
+    public async Task<AuthResponseDTO> GetTokenAsync(RefreshRequestDTO dto)
     {
         var token = await _repository.GetActiveToken(dto.Token);
 
