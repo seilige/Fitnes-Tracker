@@ -4,6 +4,136 @@
         <name>main</name>
     </assembly>
     <members>
+        <member name="M:FitnesTracker.AuthenticationController.RefreshToken(FitnesTracker.RefreshRequestDTO)">
+            <summary>
+            Refresh token.
+            </summary>
+            <param name="dto">Refresh request dto.</param>
+            <response code="200">Token refreshs successfuly.</response>
+            <response code="401">Invalid token.</response>
+            <response code="404">User not found.</response>
+        </member>
+        <member name="M:FitnesTracker.AuthenticationController.Logout(FitnesTracker.RefreshRequestDTO)">
+            <summary>
+            Logout user and invalidate refresh token.
+            </summary>
+            <param name="dto">Refresh request dto containing the token to invalidate.</param>
+            <response code="200">Successfully logged out.</response>
+            <response code="401">Token is missing or invalid.</response>
+        </member>
+        <member name="M:FitnesTracker.AuthenticationController.GetAll(System.Int32,System.Int32)">
+            <summary>
+            Get paginated list of all users.
+            </summary>
+            <param name="pageNumber">Page number (default: 1).</param>
+            <param name="pageSize">Number of items per page (default: 10).</param>
+            <response code="200">Returns paginated list of users.</response>
+        </member>
+        <member name="M:FitnesTracker.AuthenticationController.Login(FitnesTracker.UserLoginDTO)">
+            <summary>
+            Authenticate user and return access token.
+            </summary>
+            <param name="dto">User login credentials.</param>
+            <response code="200">Returns auth token.</response>
+            <response code="401">Invalid email or password.</response>
+            <response code="404">User not found.</response>
+        </member>
+        <member name="M:FitnesTracker.AuthenticationController.Register(FitnesTracker.UserRegisterDTO)">
+            <summary>
+            Register a new user and return access token.
+            </summary>
+            <param name="dto">User registration data.</param>
+            <response code="200">User registered successfully, returns auth token.</response>
+            <response code="400">Invalid registration data or user already exists.</response>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramController.GetAll(System.Int32,System.Int32)">
+            <summary>
+            Get paginated list of all custom programs.
+            </summary>
+            <param name="pageNumber">Page number (default: 1).</param>
+            <param name="pageSize">Number of items per page (default: 10).</param>
+            <response code="200">Returns paginated list of custom programs.</response>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramController.CreateAsync(FitnesTracker.CustomProgramCreateDTO,System.Int32)">
+            <summary>
+            Create a new custom program.
+            </summary>
+            <param name="dto">Custom program creation data.</param>
+            <param name="creatorId">ID of the user creating the program.</param>
+            <response code="201">Custom program created successfully.</response>
+            <response code="400">Invalid creation data.</response>
+            <response code="404">Creator not found.</response>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramController.GetByIdAsync(System.Int32)">
+            <summary>
+            Get custom program by ID.
+            </summary>
+            <param name="id">Custom program ID.</param>
+            <response code="200">Returns custom program.</response>
+            <response code="404">Custom program not found.</response>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramController.UpdateAsync(System.Int32,FitnesTracker.CustomProgramUpdateDTO)">
+            <summary>
+            Update custom program by ID.
+            </summary>
+            <param name="id">Custom program ID.</param>
+            <param name="dto">Custom program update data.</param>
+            <response code="200">Custom program updated successfully.</response>
+            <response code="400">Invalid update data.</response>
+            <response code="404">Custom program not found.</response>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramController.DeleteAsync(System.Int32)">
+            <summary>
+            Delete custom program by ID.
+            </summary>
+            <param name="id">Custom program ID.</param>
+            <response code="200">Custom program deleted successfully.</response>
+            <response code="404">Custom program not found.</response>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramV2Controller.GetAll(System.Int32,System.Int32)">
+            <summary>
+            Get paginated list of all custom programs.
+            </summary>
+            <param name="pageNumber">Page number (default: 1).</param>
+            <param name="pageSize">Number of items per page (default: 10).</param>
+            <response code="200">Returns paginated list of custom programs.</response>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramV2Controller.CreateAsync(FitnesTracker.CustomProgramCreateV2DTO,System.Int32)">
+            <summary>
+            Create a new custom program (V2).
+            </summary>
+            <param name="dto">Custom program creation data.</param>
+            <param name="creatorId">ID of the user creating the program.</param>
+            <response code="201">Custom program created successfully.</response>
+            <response code="400">Invalid creation data.</response>
+            <response code="404">Creator not found.</response>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramV2Controller.GetByIdAsync(System.Int32)">
+            <summary>
+            Get custom program by ID.
+            </summary>
+            <param name="id">Custom program ID.</param>
+            <response code="200">Returns custom program.</response>
+            <response code="404">Custom program not found.</response>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramV2Controller.UpdateAsync(System.Int32,FitnesTracker.CustomProgramUpdateDTO)">
+            <summary>
+            Update custom program by ID.
+            </summary>
+            <param name="id">Custom program ID.</param>
+            <param name="dto">Custom program update data.</param>
+            <response code="200">Custom program updated successfully.</response>
+            <response code="400">Invalid update data.</response>
+            <response code="404">Custom program not found.</response>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramV2Controller.DeleteAsync(System.Int32)">
+            <summary>
+            Delete custom program by ID.
+            </summary>
+            <param name="id">Custom program ID.</param>
+            <response code="200">Custom program deleted successfully.</response>
+            <response code="404">Custom program not found.</response>
+        </member>
         <member name="M:FitnesTracker.UserController.ConfirmEmail(System.String)">
             <summary>
             Checking user authorization.
@@ -82,6 +212,18 @@
             <inheritdoc />
         </member>
         <member name="M:main.Migrations.AddEmailConfirmation.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:main.Migrations.AddRefreshToken">
+            <inheritdoc />
+        </member>
+        <member name="M:main.Migrations.AddRefreshToken.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:main.Migrations.AddRefreshToken.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:main.Migrations.AddRefreshToken.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>
