@@ -190,6 +190,136 @@
             <response code="200">User found.</response>
             <response code="404">User not found.</response>
         </member>
+        <member name="M:FitnesTracker.Authentication.GetAllAsync(System.Int32,System.Int32)">
+            <summary>
+            Returns a paged list of all users.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.Authentication.GetTokenAsync(FitnesTracker.RefreshRequestDTO)">
+            <summary>
+            Validates the refresh token, revokes it, and issues a new access and refresh token pair.
+            Throws UnauthorizedAccessException if the token is invalid or expired.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.Authentication.Register(System.String,System.String,System.String,System.String)">
+            <summary>
+            Registers a new user, sends a confirmation email, and returns an access and refresh token pair.
+            Throws KeyNotFoundException if the email is already taken.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.Authentication.Login(System.String,System.String)">
+            <summary>
+            Logs in a user by email and password, revokes any existing refresh token, and returns a new token pair.
+            Throws KeyNotFoundException if user not found, UnauthorizedAccessException if password is wrong.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.Authentication.Logout(System.String)">
+            <summary>
+            Revokes the given refresh token to log the user out.
+            Throws KeyNotFoundException if the token is invalid or already revoked.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.Authentication.GenerateToken(FitnesTracker.User)">
+            <summary>
+            Generates a signed JWT access token for the given user. Expires in 60 minutes.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramService.CreateAsync(FitnesTracker.CustomProgramCreateV2DTO,System.Int32)">
+            <summary>
+            Creates a new custom program from the provided DTO and assigns the creator.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramService.GetAllAsync(System.Int32,System.Int32)">
+            <summary>
+            Returns a paged list of all custom programs.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramService.GetAllAsync">
+            <summary>
+            Returns all custom programs. May return an empty list.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramService.CreateAsync(FitnesTracker.CustomProgramCreateDTO,System.Int32)">
+            <summary>
+            Creates a new custom program (v1) from the provided DTO and assigns the creator.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramService.GetByIdAsync(System.Int32)">
+            <summary>
+            Gets a custom program by ID. Throws KeyNotFoundException if not found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramService.UpdateAsync(System.Int32,FitnesTracker.CustomProgramUpdateDTO)">
+            <summary>
+            Updates a custom program by ID. Throws KeyNotFoundException if not found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.CustomProgramService.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes a custom program by ID. Throws KeyNotFoundException if not found. Returns true on success.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.EmailService.SendEmailAsync(System.String,System.String,System.String)">
+            <summary>
+            Sends an HTML email via SMTP. Skips sending if SkipEmailSending is set to true in config.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.EmailService.ConfirmEmailAsync(System.String)">
+            <summary>
+            Confirms a user's email using the provided token.
+            Throws KeyNotFoundException if the token doesn't match any user, SecurityTokenExpiredException if the token is expired.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.ExerciseService.GetAllAsync(System.Int32,System.Int32)">
+            <summary>
+            Returns a paged list of all exercises.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.ExerciseService.GetPagedAsync(FitnesTracker.PaginationParams)">
+            <summary>
+            Returns a paged list of exercises using pagination params. Throws KeyNotFoundException if nothing is found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.ExerciseService.GetFilteredExercisesAsync(FitnesTracker.ExerciseQueryParameters)">
+            <summary>
+            Returns a filtered paged list of exercises based on query parameters. Throws KeyNotFoundException if nothing is found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.ExerciseService.GetByTitleAsync(System.String)">
+            <summary>
+            Gets an exercise by title. Throws KeyNotFoundException if not found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.ExerciseService.GetByMuscleGroupAsync(FitnesTracker.MuscleGroup)">
+            <summary>
+            Gets all exercises by muscle group. Throws KeyNotFoundException if none found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.ExerciseService.GetAllAsync">
+            <summary>
+            Returns all exercises. May return an empty list.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.ExerciseService.CreateAsync(FitnesTracker.ExerciseRequestDTO)">
+            <summary>
+            Creates a new exercise from the provided DTO.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.ExerciseService.GetByIdAsync(System.Int32)">
+            <summary>
+            Gets an exercise by ID. Throws KeyNotFoundException if not found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.ExerciseService.UpdateAsync(System.Int32,FitnesTracker.ExerciseRequestDTO)">
+            <summary>
+            Updates an exercise by ID. Throws KeyNotFoundException if not found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.ExerciseService.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes an exercise by ID. Throws KeyNotFoundException if not found. Returns true on success.
+            </summary>
+        </member>
         <member name="T:main.Migrations.FixPrimaryKeyConventions">
             <inheritdoc />
         </member>

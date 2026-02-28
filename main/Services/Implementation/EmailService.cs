@@ -20,8 +20,12 @@ public class EmailService : IEmailService
     public string GenerateTokenEmail()
     {
         return Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+
     }
 
+    /// <summary>
+    /// Sends an HTML email via SMTP. Skips sending if SkipEmailSending is set to true in config.
+    /// </summary>
     public async Task SendEmailAsync(string to, string subject, string body)
     {
         var skip = bool.TryParse(_config["EmailSettings:SkipEmailSending"], out var s) && s; // skip confirm email
@@ -46,6 +50,10 @@ public class EmailService : IEmailService
             await client.DisconnectAsync(true);
     }
 
+    /// <summary>
+    /// Confirms a user's email using the provided token.
+    /// Throws KeyNotFoundException if the token doesn't match any user, SecurityTokenExpiredException if the token is expired.
+    /// </summary>
     public async Task ConfirmEmailAsync(string token)
     {
         var user = await _repo.GetByEmailConfirmationTokenAsync(token);

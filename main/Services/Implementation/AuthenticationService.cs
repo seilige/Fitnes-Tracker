@@ -24,6 +24,9 @@ public class Authentication : IAuthentication
         _email = email; 
     }
 
+    /// <summary>
+    /// Returns a paged list of all users.
+    /// </summary>
     public async Task<PagedResult<UserResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
     {
         var pagedUsers = await _repository.GetAllAsync(pageNumber, pageSize);
@@ -31,6 +34,10 @@ public class Authentication : IAuthentication
         return new PagedResult<UserResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
     }
 
+    /// <summary>
+    /// Validates the refresh token, revokes it, and issues a new access and refresh token pair.
+    /// Throws UnauthorizedAccessException if the token is invalid or expired.
+    /// </summary>
     public async Task<AuthResponseDTO> GetTokenAsync(RefreshRequestDTO dto)
     {
         var token = await _repository.GetActiveToken(dto.Token);
@@ -64,6 +71,10 @@ public class Authentication : IAuthentication
         };
     }
 
+    /// <summary>
+    /// Registers a new user, sends a confirmation email, and returns an access and refresh token pair.
+    /// Throws KeyNotFoundException if the email is already taken.
+    /// </summary>
     public async Task<AuthResponseDTO> Register(string email, string password, string name, string lastname)
     {
         var existUser = await _repository.GetUserByEmail(email);
@@ -114,6 +125,10 @@ public class Authentication : IAuthentication
         };
     }
 
+    /// <summary>
+    /// Logs in a user by email and password, revokes any existing refresh token, and returns a new token pair.
+    /// Throws KeyNotFoundException if user not found, UnauthorizedAccessException if password is wrong.
+    /// </summary>
     public async Task<AuthResponseDTO> Login(string email, string password)
     {
         var user = await _repository.GetUserByEmail(email);
@@ -149,6 +164,10 @@ public class Authentication : IAuthentication
         };
     }
 
+    /// <summary>
+    /// Revokes the given refresh token to log the user out.
+    /// Throws KeyNotFoundException if the token is invalid or already revoked.
+    /// </summary>
     public async Task Logout(string token)
     {
         var tokenExist = await _repository.GetActiveToken(token);
@@ -161,6 +180,9 @@ public class Authentication : IAuthentication
         await _repository.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Generates a signed JWT access token for the given user. Expires in 60 minutes.
+    /// </summary>
     private string GenerateToken(User user)
     {
         var claims = new[]

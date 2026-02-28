@@ -128,7 +128,6 @@ public class Program
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors());
 
-
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowClient", policy =>
