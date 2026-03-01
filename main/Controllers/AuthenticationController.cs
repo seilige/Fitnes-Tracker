@@ -93,5 +93,4 @@ public class AuthenticationController : ControllerBase
         var token = await _auth.Register(dto.Email, dto.Password, dto.Name, dto.Lastname);
         return Ok(token);
     }
-
 }

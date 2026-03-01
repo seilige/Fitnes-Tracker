@@ -15,6 +15,9 @@ public class StandardProgramService : IStandardProgramService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Returns a paged list of standard programs by page number and page size.
+    /// </summary>
     public async Task<PagedResult<StandardProgramResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
     {
         var pagedUsers = await _repository.GetAllAsync(pageNumber, pageSize);
@@ -22,6 +25,9 @@ public class StandardProgramService : IStandardProgramService
         return new PagedResult<StandardProgramResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
     }
 
+    /// <summary>
+    /// Returns a paged list of standard programs based on pagination params. Throws KeyNotFoundException if page is not found.
+    /// </summary>
     public async Task<PagedResult<StandardProgramResponseDTO>> GetPagedAsync(PaginationParams paginationParams)
     {
         var result = await _repository.GetPagedAsync(paginationParams);
@@ -38,12 +44,18 @@ public class StandardProgramService : IStandardProgramService
         );
     }
 
+    /// <summary>
+    /// Returns all standard programs without pagination.
+    /// </summary>
     public async Task<IEnumerable<StandardProgramResponseDTO>> GetAllAsync()
     {
         var programs = await _repository.GetAllAsync();
         return _mapper.Map<IEnumerable<StandardProgramResponseDTO>>(programs);
     }
 
+    /// <summary>
+    /// Returns a standard program by ID. Throws KeyNotFoundException if the program is not found.
+    /// </summary>
     public async Task<StandardProgramResponseDTO?> GetByIdAsync(int id)
     {
         var program = await _repository.GetByIDAsync(id);

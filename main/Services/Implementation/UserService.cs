@@ -17,6 +17,9 @@ public class UserService : IUserService
         // _email = email;
     }
 
+    /// <summary>
+    /// Returns a paged list of users by page number and page size.
+    /// </summary>
     public async Task<PagedResult<UserResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
     {
         var pagedUsers = await _userRepository.GetAllAsync(pageNumber, pageSize);
@@ -24,6 +27,9 @@ public class UserService : IUserService
         return new PagedResult<UserResponseDTO>(dtos, pagedUsers.TotalCount, pageNumber, pageSize);
     }
 
+    /// <summary>
+    /// Creates a new user and saves it to the database. Returns the created user.
+    /// </summary>
     public async Task<UserResponseDTO> CreateAsync(UserCreateDTO dto)
     {
         var user = _mapper.Map<User>(dto);
@@ -38,6 +44,9 @@ public class UserService : IUserService
         return _mapper.Map<UserResponseDTO>(user);
     }
 
+    /// <summary>
+    /// Returns a user by ID. Throws KeyNotFoundException if the user is not found.
+    /// </summary>
     public async Task<UserResponseDTO?> GetByIdAsync(int id)
     {
         var user = await _userRepository.GetByIDAsync(id);
@@ -51,6 +60,9 @@ public class UserService : IUserService
         return _mapper.Map<UserResponseDTO?>(user);
     }
 
+    /// <summary>
+    /// Updates an existing user by ID. Throws KeyNotFoundException if the user is not found.
+    /// </summary>
     public async Task<UserResponseDTO> UpdateAsync(int id, UserUpdateDTO dto)
     {
         var user = _mapper.Map<User>(dto);
@@ -67,6 +79,9 @@ public class UserService : IUserService
         return _mapper.Map<UserResponseDTO>(updated);
     }
 
+    /// <summary>
+    /// Deletes a user by ID. Throws KeyNotFoundException if the user is not found. Returns true on success.
+    /// </summary>
     public async Task<bool> DeleteAsync(int id)
     {
         var entity = await _userRepository.GetByIDAsync(id);
