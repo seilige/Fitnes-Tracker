@@ -13,7 +13,7 @@ public class StandardProgramRepository : Repository<StandardProgram>, IStandardP
         var stProgs = _context.StandardPrograms.AsNoTracking().Include(x => x.Exercises);
 
         var count = await stProgs.CountAsync();
-        var items = await stProgs.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+        var items = await stProgs.OrderBy(x => x.ProgramId).Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedResult<StandardProgram>(
             items: items,

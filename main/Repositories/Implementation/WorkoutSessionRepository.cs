@@ -14,7 +14,7 @@ public class WorkoutSessionRepository :  Repository<WorkoutSession>, IWorkoutSes
         var workoutSessions = _context.WorkoutSessions.AsNoTracking().Include(x => x.WorkoutExerciseSets);
 
         var count = await workoutSessions.CountAsync();
-        var sessions = await workoutSessions.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+        var sessions = await workoutSessions.OrderBy(x => x.UserId).Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedResult<WorkoutSession>(
             items: sessions,

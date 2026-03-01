@@ -35,3 +35,4 @@
 2026-03-01 20:01:16.304 +04:00 [INF] HTTP GET /swagger/index.js responded 200 in 1.2027 ms
 2026-03-01 20:01:16.495 +04:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 142.5969 ms
 2026-03-01 20:01:28.460 +04:00 [INF] HTTP POST /api/auth/register responded 401 in 28.6159 ms
+2026-03-01 21:10:01.921 +04:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.

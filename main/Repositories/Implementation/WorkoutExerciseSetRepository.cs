@@ -16,7 +16,7 @@ public class WorkoutExerciseSetRepository : Repository<WorkoutExerciseSet>, IWor
             .Include(x => x.WorkoutSession);
 
         var count = await workoutExercises.CountAsync();
-        var exercises = await workoutExercises.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+        var exercises = await workoutExercises.OrderBy(x => x.ExerciseId).Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedResult<WorkoutExerciseSet>(
             items: exercises,

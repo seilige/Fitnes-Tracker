@@ -14,7 +14,7 @@ public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
         var exercises = _context.Exercises.AsNoTracking().Include(x => x.WorkoutExerciseSets);
 
         var count = await exercises.CountAsync();
-        var items = await exercises.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+        var items = await exercises.OrderBy(x => x.ExerciseId).Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedResult<Exercise>(
             items: items,

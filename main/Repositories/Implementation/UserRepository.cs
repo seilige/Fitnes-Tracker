@@ -24,7 +24,7 @@ public class UserRepository : Repository<User>, IUserRepository
         var users = _context.Users.AsNoTracking().Include(x => x.WorkoutSessions);
 
         var count = await users.CountAsync();
-        var items = await users.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+        var items = await users.OrderBy(x => x.UserId).Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedResult<User>(
             items: items,
