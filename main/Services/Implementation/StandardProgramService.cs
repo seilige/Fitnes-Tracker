@@ -28,9 +28,9 @@ public class StandardProgramService : IStandardProgramService
     /// <summary>
     /// Returns a paged list of standard programs based on pagination params. Throws KeyNotFoundException if page is not found.
     /// </summary>
-    public async Task<PagedResult<StandardProgramResponseDTO>> GetPagedAsync(PaginationParams paginationParams)
+    public async Task<PagedResult<StandardProgramResponseDTO>> GetPagedAsync(ExerciseQueryParameters queryParameters)
     {
-        var result = await _repository.GetPagedAsync(paginationParams);
+        var result = await _repository.GetPagedAsync(queryParameters);
 
         if(result == null) throw new KeyNotFoundException("Page not found");
 

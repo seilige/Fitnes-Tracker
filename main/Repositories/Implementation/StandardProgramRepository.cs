@@ -23,16 +23,21 @@ public class StandardProgramRepository : Repository<StandardProgram>, IStandardP
         );
     }
 
-    public async Task<PagedResult<StandardProgram>> GetPagedAsync(PaginationParams paginationParams)
+    public async Task<PagedResult<StandardProgram>> GetPagedAsync(ExerciseQueryParameters queryParameters)
     {
-        var count = await _context.StandardPrograms.CountAsync();
+        var query = _context.Exercises
+            .Where(x => queryParameters.MuscleGroup == null || x.MuscleGroup == queryParameters.MuscleGroup)
+            .Where(x => queryParameters.Title == null || x.Title == queryParameters.Title);
+
+        var count = await query.CountAsync();
+
         var standardProg = await _context.StandardPrograms
-            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
-            .Take(paginationParams.PageSize)
+            .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+            .Take(queryParameters.PageSize)
             .ToListAsync();
 
         return new PagedResult<StandardProgram>(
-            standardProg, count, paginationParams.PageNumber, paginationParams.PageSize);
+            standardProg, count, queryParameters.PageNumber, queryParameters.PageSize);
     }
 
     public async Task<IEnumerable<Exercise>> GetExercisesAsync(int standardProgramId)

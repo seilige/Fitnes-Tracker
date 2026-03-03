@@ -275,7 +275,7 @@
             Returns a paged list of all exercises.
             </summary>
         </member>
-        <member name="M:FitnesTracker.ExerciseService.GetPagedAsync(FitnesTracker.PaginationParams)">
+        <member name="M:FitnesTracker.ExerciseService.GetPagedAsync(FitnesTracker.ExerciseQueryParameters)">
             <summary>
             Returns a paged list of exercises using pagination params. Throws KeyNotFoundException if nothing is found.
             </summary>
@@ -325,7 +325,7 @@
             Returns a paged list of standard programs by page number and page size.
             </summary>
         </member>
-        <member name="M:FitnesTracker.StandardProgramService.GetPagedAsync(FitnesTracker.PaginationParams)">
+        <member name="M:FitnesTracker.StandardProgramService.GetPagedAsync(FitnesTracker.ExerciseQueryParameters)">
             <summary>
             Returns a paged list of standard programs based on pagination params. Throws KeyNotFoundException if page is not found.
             </summary>

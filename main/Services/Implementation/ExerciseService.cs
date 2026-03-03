@@ -28,9 +28,9 @@ public class ExerciseService : IExerciseService
     /// <summary>
     /// Returns a paged list of exercises using pagination params. Throws KeyNotFoundException if nothing is found.
     /// </summary>
-    public async Task<PagedResult<ExerciseResponseDTO>> GetPagedAsync(PaginationParams paginationParams)
+    public async Task<PagedResult<ExerciseResponseDTO>> GetPagedAsync(ExerciseQueryParameters queryParameters)
     {
-        var result = await _repository.GetPagedAsync(paginationParams);
+        var result = await _repository.GetPagedAsync(queryParameters);
 
         if(result == null)
         {

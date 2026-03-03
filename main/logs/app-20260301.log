@@ -36,3 +36,9 @@
 2026-03-01 20:01:16.495 +04:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 142.5969 ms
 2026-03-01 20:01:28.460 +04:00 [INF] HTTP POST /api/auth/register responded 401 in 28.6159 ms
 2026-03-01 21:10:01.921 +04:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-03-01 21:13:46.552 +04:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2026-03-01 21:14:00.062 +04:00 [WRN] Failed to determine the https port for redirect.
+2026-03-01 21:14:00.124 +04:00 [INF] HTTP GET /swagger/index.html responded 200 in 63.5437 ms
+2026-03-01 21:14:00.139 +04:00 [INF] HTTP GET /swagger/index.js responded 200 in 1.1878 ms
+2026-03-01 21:14:00.491 +04:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 198.6155 ms
+2026-03-01 21:14:07.269 +04:00 [INF] HTTP GET /api/auth/all responded 200 in 372.5410 ms

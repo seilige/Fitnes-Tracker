@@ -23,7 +23,7 @@ public class StandardProgramController : ControllerBase
     }
 
     [HttpGet("paged")]
-    public async Task<ActionResult<PagedResult<StandardProgramResponseDTO>>> GetPaged([FromQuery] PaginationParams paginationParams)
+    public async Task<ActionResult<PagedResult<StandardProgramResponseDTO>>> GetPaged([FromQuery] ExerciseQueryParameters paginationParams)
     {
         var result = await _service.GetPagedAsync(paginationParams);
         return Ok(result);

@@ -46,16 +46,21 @@ public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
     }
 
     // base logic of paginaiton - skip pages
-    public async Task<PagedResult<Exercise>> GetPagedAsync(PaginationParams paginationParams)
+    public async Task<PagedResult<Exercise>> GetPagedAsync(ExerciseQueryParameters queryParameters)
     {
-        var count = await _context.Exercises.CountAsync();
-        var exercise = await _context.Exercises
-            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
-            .Take(paginationParams.PageSize)
+        var query = _context.Exercises
+            .Where(x => queryParameters.MuscleGroup == null || x.MuscleGroup == queryParameters.MuscleGroup)
+            .Where(x => queryParameters.Title == null || x.Title == queryParameters.Title);
+
+        var count = await query.CountAsync();
+
+        var exercises = await query
+            .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+            .Take(queryParameters.PageSize)
             .ToListAsync();
 
         return new PagedResult<Exercise>(
-            exercise, count, paginationParams.PageNumber, paginationParams.PageSize);
+            exercises, count, queryParameters.PageNumber, queryParameters.PageSize);
     }
 
     public async Task<Exercise?> GetByTitleAsync(string title)

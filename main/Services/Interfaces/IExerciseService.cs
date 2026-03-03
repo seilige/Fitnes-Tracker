@@ -9,5 +9,5 @@ public interface IExerciseService
     Task<ExerciseResponseDTO> UpdateAsync(int id, ExerciseRequestDTO dto);
     Task<bool> DeleteAsync(int id);
     Task<ExerciseResponseDTO?> GetByIdAsync(int id);
-    Task<PagedResult<ExerciseResponseDTO>> GetPagedAsync(PaginationParams paginationParams);
+    Task<PagedResult<ExerciseResponseDTO>> GetPagedAsync(ExerciseQueryParameters queryParameters);
 }
