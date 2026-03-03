@@ -20,30 +20,6 @@ A REST API for tracking workouts. Built with ASP.NET Core (.NET 10) and PostgreS
 - PostgreSQL
 - (optional) SMTP server for email confirmation
 
-## Configuration
-
-Edit `appsettings.json`:
-
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Database=fitness_tracker;Username=postgres;Password=your_password"
-  },
-  "Jwt": {
-    "Key": "your_secret_key",
-    "Issuer": "FitnessTracker",
-    "Audience": "FitnessTracker"
-  },
-  "EmailSettings": {
-    "SmtpServer": "smtp.gmail.com",
-    "Port": 587,
-    "SenderEmail": "@gmail.com",
-    "SenderPassword": "",
-    "SkipEmailSending": false
-  }
-}
-```
-
 To skip email sending during development, set `SkipEmailSending: true`.
 
 ## Running
@@ -72,6 +48,7 @@ proj/
     Migrations/     — EF Core migrations
     Middleware/     — error handling, email confirmation
     Data/           — DB context, seed data
+    Options/        — Rate limiter and CORS
   test/         — test project
   client/       — simple HTML client for manual testing
 ```
