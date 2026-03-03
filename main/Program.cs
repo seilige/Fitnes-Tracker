@@ -29,6 +29,9 @@ public class Program
         try
         {
             var builder = WebApplication.CreateBuilder(args);
+            var corsOpts = builder.Configuration.GetSection("Cors").Get<CorsOptions>()!;
+            var rateLimiterOpts = builder.Configuration.GetSection("RateLimiter").Get<RateLimiterOptions>()!;
+
             builder.Host.UseSerilog();
 
             builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -130,28 +133,27 @@ public class Program
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowClient", policy =>
+                options.AddPolicy(corsOpts.PolicyName, policy =>
                 {
-                    policy.WithOrigins("http://127.0.0.1:5501") // allow the client from this port read servers responce
-                        .WithMethods("GET", "POST", "PUT", "DELETE") // allow this http methods
-                        .WithHeaders(HeaderNames.ContentType, "x-custom-header");
-                    policy.WithOrigins("http://127.0.0.1:5501", "http://localhost:5501");
+                    policy.WithOrigins(corsOpts.AllowedOrigins)
+                        .WithMethods(corsOpts.AllowedMethods)
+                        .WithHeaders(corsOpts.AllowedHeaders);
                 });
             });
 
             builder.Services.AddRateLimiter(options =>
             {
-                options.AddFixedWindowLimiter("Fixed", opt => // in each windows client can request N times
+                options.AddFixedWindowLimiter(rateLimiterOpts.PolicyName, opt =>
                 {
-                    opt.Window = TimeSpan.FromMinutes(1);
-                    opt.PermitLimit = 2;
-                    opt.QueueLimit = 0;
+                    opt.Window = TimeSpan.FromMinutes(rateLimiterOpts.WindowMinutes);
+                    opt.PermitLimit = rateLimiterOpts.PermitLimit;
+                    opt.QueueLimit = rateLimiterOpts.QueueLimit;
                 });
 
                 options.OnRejected = async (context, token) =>
                 {
                     context.HttpContext.Response.StatusCode = 429;
-                    await context.HttpContext.Response.WriteAsync("To many requests, please wait.");
+                    await context.HttpContext.Response.WriteAsync("Too many requests, please wait.");
                 };
             });
 
