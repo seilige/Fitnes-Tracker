@@ -275,7 +275,7 @@
             Returns a paged list of all exercises.
             </summary>
         </member>
-        <member name="M:FitnesTracker.ExerciseService.GetPagedAsync(FitnesTracker.PaginationParams)">
+        <member name="M:FitnesTracker.ExerciseService.GetPagedAsync(FitnesTracker.ExerciseQueryParameters)">
             <summary>
             Returns a paged list of exercises using pagination params. Throws KeyNotFoundException if nothing is found.
             </summary>
@@ -318,6 +318,51 @@
         <member name="M:FitnesTracker.ExerciseService.DeleteAsync(System.Int32)">
             <summary>
             Deletes an exercise by ID. Throws KeyNotFoundException if not found. Returns true on success.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.StandardProgramService.GetAllAsync(System.Int32,System.Int32)">
+            <summary>
+            Returns a paged list of standard programs by page number and page size.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.StandardProgramService.GetPagedAsync(FitnesTracker.ExerciseQueryParameters)">
+            <summary>
+            Returns a paged list of standard programs based on pagination params. Throws KeyNotFoundException if page is not found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.StandardProgramService.GetAllAsync">
+            <summary>
+            Returns all standard programs without pagination.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.StandardProgramService.GetByIdAsync(System.Int32)">
+            <summary>
+            Returns a standard program by ID. Throws KeyNotFoundException if the program is not found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.UserService.GetAllAsync(System.Int32,System.Int32)">
+            <summary>
+            Returns a paged list of users by page number and page size.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.UserService.CreateAsync(FitnesTracker.UserCreateDTO)">
+            <summary>
+            Creates a new user and saves it to the database. Returns the created user.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.UserService.GetByIdAsync(System.Int32)">
+            <summary>
+            Returns a user by ID. Throws KeyNotFoundException if the user is not found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.UserService.UpdateAsync(System.Int32,FitnesTracker.UserUpdateDTO)">
+            <summary>
+            Updates an existing user by ID. Throws KeyNotFoundException if the user is not found.
+            </summary>
+        </member>
+        <member name="M:FitnesTracker.UserService.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes a user by ID. Throws KeyNotFoundException if the user is not found. Returns true on success.
             </summary>
         </member>
         <member name="T:main.Migrations.FixPrimaryKeyConventions">

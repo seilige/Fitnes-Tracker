@@ -2,6 +2,7 @@ using Xunit;
 using Moq;
 using FluentAssertions;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace FitnesTracker;
 
@@ -40,7 +41,7 @@ public class StandardProgramServiceTests
     [Fact]
     public async Task GetPagedAsync_ReturnsPagedResult()
     {
-        var paginationParams = new PaginationParams { PageNumber = 1, PageSize = 5 };
+        var paginationParams = new ExerciseQueryParameters { PageNumber = 1, PageSize = 5 };
         var programs = new List<StandardProgram> { new StandardProgram { ProgramId = 1, Title = "Program 1" } };
         var dtos = new List<StandardProgramResponseDTO> { new StandardProgramResponseDTO { StandardProgramId = 1, Title = "Program 1" } };
         var pagedResult = new PagedResult<StandardProgram>(programs, 1, 1, 5);
@@ -60,7 +61,7 @@ public class StandardProgramServiceTests
     [Fact]
     public async Task GetPagedAsync_ThrowsKeyNotFoundException_WhenResultIsNull()
     {
-        var paginationParams = new PaginationParams { PageNumber = 99, PageSize = 5 };
+        var paginationParams = new ExerciseQueryParameters { PageNumber = 99, PageSize = 5 };
 
         _mockRepo.Setup(r => r.GetPagedAsync(paginationParams)).ReturnsAsync((PagedResult<StandardProgram>?)null);
 
