@@ -7,12 +7,14 @@ public class CustomProgramService : ICustomProgramService
     private readonly ICustomProgramRepository _repository;
     private readonly IMapper _mapper;
     private readonly ILogger<ExerciseService> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CustomProgramService(ICustomProgramRepository repository, IMapper mapper, ILogger<ExerciseService> logger)
+    public CustomProgramService(ICustomProgramRepository repository, IMapper mapper, ILogger<ExerciseService> logger, IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _mapper = mapper;
         _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     /// <summary>
@@ -23,7 +25,7 @@ public class CustomProgramService : ICustomProgramService
         var program = _mapper.Map<CustomProgram>(dto);
         program.CreatorId = creatorId;
         await _repository.AddAsync(program);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         _logger.LogInformation("Program already added through v2 route");
         return _mapper.Map<CustomProgramResponseDTO>(program);
     }
@@ -55,7 +57,7 @@ public class CustomProgramService : ICustomProgramService
         var program = _mapper.Map<CustomProgram>(dto);
         program.CreatorId = creatorId;
         await _repository.AddAsync(program);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         _logger.LogInformation("Program already added");
         return _mapper.Map<CustomProgramResponseDTO>(program);
     }
@@ -91,7 +93,7 @@ public class CustomProgramService : ICustomProgramService
             throw new KeyNotFoundException("Updated program not found");
         }
 
-        await _repository.SaveChangesAsync(); // on every transaction
+        await _unitOfWork.SaveChangesAsync(); // on every transaction
         return _mapper.Map<CustomProgramResponseDTO>(updated);
     }
 
@@ -109,7 +111,7 @@ public class CustomProgramService : ICustomProgramService
         }
 
         await _repository.DeleteByIDAsync(id);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return true;
     }
 }

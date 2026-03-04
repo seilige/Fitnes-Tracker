@@ -7,12 +7,15 @@ public class ExerciseService : IExerciseService
     private readonly IExerciseRepository _repository;
     private readonly IMapper _mapper;
     private readonly ILogger<ExerciseService> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public ExerciseService(IExerciseRepository repository, IMapper mapper, ILogger<ExerciseService> logger)
+
+    public ExerciseService(IExerciseRepository repository, IMapper mapper, ILogger<ExerciseService> logger, IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _mapper = mapper;
         _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     /// <summary>
@@ -120,7 +123,7 @@ public class ExerciseService : IExerciseService
     {
         var item = _mapper.Map<Exercise>(dto);
         await _repository.AddAsync(item);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         _logger.LogInformation("Exercise already added");
         return _mapper.Map<ExerciseResponseDTO>(item);
     }
@@ -149,7 +152,7 @@ public class ExerciseService : IExerciseService
         var item = _mapper.Map<Exercise>(dto);
         item.ExerciseId = id;
         var entity = await _repository.UpdateAsync(item);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return _mapper.Map<ExerciseResponseDTO>(entity);
     }
 
@@ -167,7 +170,7 @@ public class ExerciseService : IExerciseService
         }
 
         await _repository.DeleteByIDAsync(id);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return true;
     }
 }

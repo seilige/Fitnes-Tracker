@@ -9,17 +9,18 @@ public class EmailService : IEmailService
 {
     private readonly IUserRepository _repo;
     private readonly IConfiguration _config;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public EmailService(IUserRepository repo, IConfiguration config)
+    public EmailService(IUserRepository repo, IConfiguration config, IUnitOfWork unitOfWork)
     {
         _repo = repo;
         _config = config;
+        _unitOfWork = unitOfWork;
     }
 
     public string GenerateTokenEmail()
     {
         return Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-
     }
 
     /// <summary>
@@ -67,6 +68,6 @@ public class EmailService : IEmailService
         user.IsEmailConfirmed = true;
         user.EmailConfirmationToken = null;
         user.EmailTokenExpiry = null;
-        await _repo.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
     }
 }

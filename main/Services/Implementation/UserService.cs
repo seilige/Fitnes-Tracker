@@ -8,12 +8,14 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
     private readonly ILogger<ExerciseService> _logger;
     private readonly IEmailService _email;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UserService(IUserRepository userRepository, IMapper mapper, ILogger<ExerciseService> logger, IEmailService email)
+    public UserService(IUserRepository userRepository, IMapper mapper, ILogger<ExerciseService> logger, IEmailService email, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _mapper = mapper;
         _logger = logger;
+        _unitOfWork = unitOfWork;
         // _email = email;
     }
 
@@ -39,7 +41,7 @@ public class UserService : IUserService
         // _email.SendConfirmationEmail(user.Email, user.EmailConfirmationToken);
 
         await _userRepository.AddAsync(user);
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         _logger.LogInformation("User already added");
         return _mapper.Map<UserResponseDTO>(user);
     }
@@ -75,7 +77,7 @@ public class UserService : IUserService
             throw new KeyNotFoundException($"User with id: {id} not found");
         }
 
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return _mapper.Map<UserResponseDTO>(updated);
     }
 
@@ -93,7 +95,7 @@ public class UserService : IUserService
         }
 
         await _userRepository.DeleteByIDAsync(id);
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return true;
     }
 }

@@ -14,14 +14,16 @@ public class Authentication : IAuthentication
     private readonly ILogger<ExerciseService> _logger;
     private readonly IMapper _mapper;
     private readonly IEmailService _email;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public Authentication(IUserRepository repository, IConfiguration configuration, ILogger<ExerciseService> logger, IMapper mapper, IEmailService email)
+    public Authentication(IUserRepository repository, IConfiguration configuration, ILogger<ExerciseService> logger, IMapper mapper, IEmailService email, IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _configuration = configuration;
         _logger = logger;
         _mapper = mapper;
         _email = email; 
+        _unitOfWork = unitOfWork;
     }
 
     /// <summary>
@@ -46,7 +48,7 @@ public class Authentication : IAuthentication
             throw new UnauthorizedAccessException("Invalid refresh token");
 
         token.IsRevoked = true;
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         var user = token.User;
 
@@ -104,7 +106,6 @@ public class Authentication : IAuthentication
         );
 
         await _repository.AddUser(newUser);
-        await _repository.SaveChangesAsync();
 
         RefreshToken rToken = new RefreshToken
         {
@@ -115,7 +116,7 @@ public class Authentication : IAuthentication
         };
 
         await _repository.SaveRefreshToken(rToken);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         return new AuthResponseDTO
         {
@@ -157,7 +158,7 @@ public class Authentication : IAuthentication
         };
 
         await _repository.SaveRefreshToken(rToken);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         return new AuthResponseDTO
         {
@@ -180,7 +181,7 @@ public class Authentication : IAuthentication
 
         tokenExist.IsRevoked = true;
 
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
     }
 
     /// <summary>

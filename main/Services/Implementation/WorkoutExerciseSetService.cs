@@ -7,13 +7,14 @@ public class WorkoutExerciseService : IWorkoutExerciseService
     private readonly IWorkoutExerciseSetRepository _repository;
     private readonly IMapper _mapper;
     private readonly ILogger<ExerciseService> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
-
-    public WorkoutExerciseService(IWorkoutExerciseSetRepository repository, IMapper mapper, ILogger<ExerciseService> logger)
+    public WorkoutExerciseService(IWorkoutExerciseSetRepository repository, IMapper mapper, ILogger<ExerciseService> logger, IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _mapper = mapper;
         _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<PagedResult<WorkoutExerciseSetResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
@@ -27,7 +28,7 @@ public class WorkoutExerciseService : IWorkoutExerciseService
     {
         var entity = _mapper.Map<WorkoutExerciseSet>(dto);
         var result = await _repository.AddAsync(entity);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         _logger.LogInformation("Set already added");
 
         return _mapper.Map<WorkoutExerciseSetResponseDTO>(result);
@@ -68,7 +69,7 @@ public class WorkoutExerciseService : IWorkoutExerciseService
         entity.Reps = dto.Reps;
 
         await _repository.UpdateAsync(entity);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         _logger.LogInformation($"Exercise with id: {id} already updated");
 
         return _mapper.Map<WorkoutExerciseSetResponseDTO>(entity);
@@ -85,7 +86,7 @@ public class WorkoutExerciseService : IWorkoutExerciseService
         }
 
         await _repository.DeleteByIDAsync(id);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         
         _logger.LogInformation($"Exercise with id: {id} already deleted");
         

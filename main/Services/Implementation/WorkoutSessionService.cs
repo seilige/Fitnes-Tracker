@@ -9,18 +9,21 @@ public class WorkoutSessionService : IWorkoutSessionService
     private readonly IWorkoutExerciseSetRepository _setRepository;
     private readonly IUserRepository _userRepository;
     private readonly ILogger<ExerciseService> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public WorkoutSessionService(IWorkoutSessionRepository repository,
                                 IWorkoutExerciseSetRepository setRepository,
                                 IUserRepository userRepository,
                                 IMapper mapper,
-                                ILogger<ExerciseService> logger)
+                                ILogger<ExerciseService> logger,
+                                IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _repository = repository;
         _setRepository = setRepository;
         _mapper = mapper;
         _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<PagedResult<WorkoutSessionResponseDTO>> GetAllAsync(int pageNumber, int pageSize)
@@ -53,7 +56,7 @@ public class WorkoutSessionService : IWorkoutSessionService
         session.Status = WorkoutStatus.Completed;
 
         await _repository.UpdateAsync(session);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         return _mapper.Map<WorkoutSessionResponseDTO>(session);
     }
@@ -69,7 +72,7 @@ public class WorkoutSessionService : IWorkoutSessionService
         set.Weight = dto.Weight;
 
         await _setRepository.UpdateAsync(set);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         _logger.LogInformation($"Set with id: {dto.SetId} already updated");
 
         return _mapper.Map<SetUpdateDTO>(set);
@@ -95,7 +98,7 @@ public class WorkoutSessionService : IWorkoutSessionService
             await _setRepository.AddAsync(set);
         }
 
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         return _mapper.Map<WorkoutSessionResponseDTO>(entity);
     }
@@ -121,7 +124,7 @@ public class WorkoutSessionService : IWorkoutSessionService
 
         session.Status = status;
         await _repository.UpdateAsync(session);
-        await _repository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         _logger.LogInformation($"Session status with id: {id} already updated");
 
         return _mapper.Map<WorkoutSessionResponseDTO>(session);
