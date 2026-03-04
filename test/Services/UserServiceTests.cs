@@ -58,6 +58,14 @@ public class UserServiceTests
         _mockMapper.Setup(m => m.Map<User>(userDto)).Returns(new User { Name = "Updated" });
         _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<User>())).ReturnsAsync(user);
         _mockMapper.Setup(m => m.Map<UserResponseDTO>(user)).Returns(resultDto);
+
+        var result = await _service.UpdateAsync(1, userDto);
+
+        Assert.NotNull(result);
+        Assert.Equal("Updated", result.Name);
+        Assert.Equal(1, result.UserId);
+
+        _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<User>()), Times.Once);
     }
 
     [Fact]

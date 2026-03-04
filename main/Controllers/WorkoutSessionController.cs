@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitnesTracker;
 
@@ -14,6 +15,7 @@ public class WorkoutSessionController : ControllerBase
         _service = service;
     }
 
+    [Authorize]
     [HttpGet("all")]
     public async Task<ActionResult<PagedResult<UserResponseDTO>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {

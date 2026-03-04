@@ -138,6 +138,9 @@ public class Authentication : IAuthentication
         if(!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             throw new UnauthorizedAccessException("Invalid password");
 
+        if (!user.IsEmailConfirmed)
+            throw new UnauthorizedAccessException("Email not confirmed");
+
         var token = await _repository.GetUsersActiveToken(user);
 
         if(token != null)

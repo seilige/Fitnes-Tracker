@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Microsoft.IdentityModel.Tokens;
 using MailKit.Net.Smtp;
 using MailKit.Security;
