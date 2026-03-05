@@ -2,6 +2,7 @@ using Xunit;
 using Moq;
 using FluentAssertions;
 using AutoMapper;
+using System.Threading.Tasks.Dataflow;
 
 namespace FitnesTracker;
 
@@ -12,6 +13,7 @@ public class UserServiceTests
     private readonly UserService _service;
     private readonly Mock<IEmailService> _emailService;
     private readonly Mock<ILogger<ExerciseService>> _mockLogger;
+    private readonly Mock<IUnitOfWork> _UoW;
 
     public UserServiceTests()
     {
@@ -19,7 +21,9 @@ public class UserServiceTests
         _mockRepo = new Mock<IUserRepository>();
         _mockMapper = new Mock<IMapper>();
         _emailService = new Mock<IEmailService>();
-        _service = new UserService(_mockRepo.Object, _mockMapper.Object, _mockLogger.Object, _emailService.Object);
+        _UoW = new Mock<IUnitOfWork>();
+
+        _service = new UserService(_mockRepo.Object, _mockMapper.Object, _mockLogger.Object, _emailService.Object, _UoW.Object);
     }
  
     [Fact]

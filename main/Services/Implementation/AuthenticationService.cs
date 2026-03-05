@@ -107,9 +107,11 @@ public class Authentication : IAuthentication
 
         await _repository.AddUser(newUser);
 
+        var rawToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+
         RefreshToken rToken = new RefreshToken
         {
-            Token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()),
+            Token = BCrypt.Net.BCrypt.HashPassword(rawToken),
             ExpiresAt = DateTime.UtcNow.AddDays(7),
             IsRevoked = false,
             UserId = newUser.UserId
@@ -121,7 +123,7 @@ public class Authentication : IAuthentication
         return new AuthResponseDTO
         {
             AccessToken = GenerateToken(newUser),
-            RefreshToken = rToken.Token,
+            RefreshToken = rawToken,
             ExpiresAt = rToken.ExpiresAt
         };
     }
@@ -149,9 +151,11 @@ public class Authentication : IAuthentication
             token.IsRevoked = true;
         }
 
+        var rawToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+
         RefreshToken rToken = new RefreshToken
         {
-            Token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()),
+            Token = BCrypt.Net.BCrypt.HashPassword(rawToken),
             ExpiresAt = DateTime.UtcNow.AddDays(7),
             IsRevoked = false,
             UserId = user.UserId
@@ -163,7 +167,7 @@ public class Authentication : IAuthentication
         return new AuthResponseDTO
         {
             AccessToken = GenerateToken(user),
-            RefreshToken = rToken.Token,
+            RefreshToken = rawToken,
             ExpiresAt = rToken.ExpiresAt
         };
     }

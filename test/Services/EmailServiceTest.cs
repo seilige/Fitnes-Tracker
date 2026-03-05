@@ -9,15 +9,17 @@ public class EmailServiceTests
     private readonly Mock<IUserRepository> _repoMock;
     private readonly Mock<IConfiguration> _configMock;
     private readonly EmailService _service;
+    private readonly Mock<IUnitOfWork> _UoW;
 
     public EmailServiceTests()
     {
         _repoMock = new Mock<IUserRepository>();
         _configMock = new Mock<IConfiguration>();
+        _UoW = new Mock<IUnitOfWork>();
 
         _configMock.Setup(c => c["EmailSettings:SkipEmailSending"]).Returns("true");
 
-        _service = new EmailService(_repoMock.Object, _configMock.Object);
+        _service = new EmailService(_repoMock.Object, _configMock.Object, _UoW.Object);
     }
 
     [Fact]
@@ -106,12 +108,10 @@ public class EmailServiceTests
             IsEmailConfirmed = false
         };
 
-        _repoMock
-            .Setup(r => r.GetByEmailConfirmationTokenAsync("valid-token"))
+        _repoMock.Setup(r => r.GetByEmailConfirmationTokenAsync("valid-token"))
             .ReturnsAsync(user);
 
-        _repoMock
-            .Setup(r => r.SaveChangesAsync())
+        _UoW.Setup(r => r.SaveChangesAsync())
             .Returns(Task.CompletedTask);
 
         await _service.ConfirmEmailAsync("valid-token");
@@ -131,16 +131,14 @@ public class EmailServiceTests
             IsEmailConfirmed = false
         };
 
-        _repoMock
-            .Setup(r => r.GetByEmailConfirmationTokenAsync("valid-token"))
+        _repoMock.Setup(r => r.GetByEmailConfirmationTokenAsync("valid-token"))
             .ReturnsAsync(user);
 
-        _repoMock
-            .Setup(r => r.SaveChangesAsync())
+        _UoW.Setup(r => r.SaveChangesAsync())
             .Returns(Task.CompletedTask);
 
         await _service.ConfirmEmailAsync("valid-token");
 
-        _repoMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+        _UoW.Verify(r => r.SaveChangesAsync(), Times.Once);
     }
 }

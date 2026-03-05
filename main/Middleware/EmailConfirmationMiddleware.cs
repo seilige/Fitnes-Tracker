@@ -1,5 +1,3 @@
-using FluentValidation;
-using System.Text.Json;
 using System.Security.Claims;
 
 namespace FitnesTracker;

@@ -68,11 +68,13 @@ public class UserRepository : Repository<User>, IUserRepository
         return refreshToken?.User;
     }
 
-    public async Task<RefreshToken?> GetActiveToken(string token)
+    public async Task<RefreshToken?> GetActiveToken(string rawToken)
     {
-        return await _context.RefreshTokens
-            .Include(rt => rt.User)
-            .Where(x => x.Token == token)
-            .FirstOrDefaultAsync();
+        var tokens = await _context.RefreshTokens
+            .Include(t => t.User)
+            .Where(t => !t.IsRevoked && t.ExpiresAt > DateTime.UtcNow)
+            .ToListAsync();
+
+        return tokens.FirstOrDefault(t => BCrypt.Net.BCrypt.Verify(rawToken, t.Token));
     }
 }

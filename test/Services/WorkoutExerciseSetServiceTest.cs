@@ -10,17 +10,20 @@ public class WorkoutExerciseServiceTests
     private readonly Mock<IMapper> _mapperMock;
     private readonly Mock<ILogger<ExerciseService>> _loggerMock;
     private readonly WorkoutExerciseService _service;
+    private readonly Mock<IUnitOfWork> _UoW;
 
     public WorkoutExerciseServiceTests()
     {
         _repositoryMock = new Mock<IWorkoutExerciseSetRepository>();
         _mapperMock = new Mock<IMapper>();
         _loggerMock = new Mock<ILogger<ExerciseService>>();
+        _UoW = new Mock<IUnitOfWork>();
 
         _service = new WorkoutExerciseService(
             _repositoryMock.Object,
             _mapperMock.Object,
-            _loggerMock.Object
+            _loggerMock.Object,
+            _UoW.Object
         );
     }
 
@@ -55,7 +58,7 @@ public class WorkoutExerciseServiceTests
         var result = await _service.AddSetAsync(createDto);
 
         Assert.Equal(responseDto, result);
-        _repositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+        _UoW.Verify(r => r.SaveChangesAsync(), Times.Once);
     }
 
     [Fact]
@@ -120,7 +123,7 @@ public class WorkoutExerciseServiceTests
         Assert.Equal(80, entity.Weight);
         Assert.Equal(12, entity.Reps);
         _repositoryMock.Verify(r => r.UpdateAsync(entity), Times.Once);
-        _repositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+        _UoW.Verify(r => r.SaveChangesAsync(), Times.Once);
         Assert.Equal(responseDto, result);
     }
 
@@ -143,7 +146,7 @@ public class WorkoutExerciseServiceTests
 
         Assert.True(result);
         _repositoryMock.Verify(r => r.DeleteByIDAsync(1), Times.Once);
-        _repositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+        _UoW.Verify(r => r.SaveChangesAsync(), Times.Once);
     }
 
     [Fact]
