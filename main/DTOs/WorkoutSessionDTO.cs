@@ -6,7 +6,6 @@ public class WorkoutSessionCreateDTO
     public DateTime Date { get; set; }
     public int? StandardProgramId { get; set; }
     public int? CustomProgramId { get; set; }
-
     public ICollection<WorkoutExerciseSetCreateDTO> WorkoutExerciseSets { get; set; }
 }
 
@@ -31,4 +30,9 @@ public class SetUpdateDTO // update data in session
     public int SetId { get; set; }
     public double Weight { get; set; }
     public int Reps { get; set; }
+}
+
+public class UpdateStatusDTO
+{ 
+    public WorkoutStatus Status { get; set; }
 }

@@ -116,13 +116,13 @@ public class WorkoutSessionService : IWorkoutSessionService
         return _mapper.Map<IEnumerable<WorkoutSessionResponseDTO>>(sessions);
     }
 
-    public async Task<WorkoutSessionResponseDTO> UpdateSessionStatusAsync(int id, WorkoutStatus status)
+    public async Task<WorkoutSessionResponseDTO> UpdateSessionStatusAsync(int id, UpdateStatusDTO status)
     {
         var session = await _repository.GetByIDAsync(id);
         
         if(session == null) throw new KeyNotFoundException($"Session with id: {id} not found");
 
-        session.Status = status;
+        session.Status = status.Status;
         await _repository.UpdateAsync(session);
         await _unitOfWork.SaveChangesAsync();
         _logger.LogInformation($"Session status with id: {id} already updated");

@@ -54,7 +54,7 @@ public class WorkoutSessionController : ControllerBase
     public async Task<ActionResult> SessionCreate(WorkoutSessionCreateDTO dto)
     {
         var result = await _service.CreateSessionAsync(dto);
-        return CreatedAtAction(nameof(GetSessionId), new { id = result.UserId }, result);
+        return CreatedAtAction(nameof(GetSessionId), new { id = result.SessionId }, result);
     }
 
     [HttpGet("session/{id}")]
@@ -70,7 +70,7 @@ public class WorkoutSessionController : ControllerBase
     }
 
     [HttpPatch("session/{id}/status")]
-    public async Task<ActionResult> UpdateSessionStatus(int id, [FromBody] WorkoutStatus status)
+    public async Task<ActionResult> UpdateSessionStatus(int id, [FromBody] UpdateStatusDTO status)
     {
         return Ok(await _service.UpdateSessionStatusAsync(id, status));
     }

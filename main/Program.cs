@@ -55,7 +55,7 @@ public class Program
             builder.Services.AddScoped<IExerciseService, ExerciseService>();
             builder.Services.AddScoped<IWorkoutSessionService, WorkoutSessionService>();
             builder.Services.AddScoped<IWorkoutExerciseService, WorkoutExerciseService>();
-            builder.Services.AddScoped<IAuthentication, Authentication>();
+            builder.Services.AddScoped<IAuthentication, AuthenticationService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

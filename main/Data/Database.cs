@@ -117,11 +117,6 @@ public class ApplicationDbContext : DbContext
             .ValueGeneratedOnAdd();
 
         modelBuilder.Entity<WorkoutSession>()
-            .HasOne(x => x.User)
-            .WithMany(x => x.WorkoutSessions)
-            .HasForeignKey(x => x.UserId);
-
-        modelBuilder.Entity<WorkoutSession>()
             .HasOne(x => x.StandardProgram)
             .WithMany()
             .HasForeignKey(x => x.StandardProgramId)

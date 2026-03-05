@@ -190,36 +190,36 @@
             <response code="200">User found.</response>
             <response code="404">User not found.</response>
         </member>
-        <member name="M:FitnesTracker.Authentication.GetAllAsync(System.Int32,System.Int32)">
+        <member name="M:FitnesTracker.AuthenticationService.GetAllAsync(System.Int32,System.Int32)">
             <summary>
             Returns a paged list of all users.
             </summary>
         </member>
-        <member name="M:FitnesTracker.Authentication.GetTokenAsync(FitnesTracker.RefreshRequestDTO)">
+        <member name="M:FitnesTracker.AuthenticationService.GetTokenAsync(FitnesTracker.RefreshRequestDTO)">
             <summary>
             Validates the refresh token, revokes it, and issues a new access and refresh token pair.
             Throws UnauthorizedAccessException if the token is invalid or expired.
             </summary>
         </member>
-        <member name="M:FitnesTracker.Authentication.Register(System.String,System.String,System.String,System.String)">
+        <member name="M:FitnesTracker.AuthenticationService.Register(System.String,System.String,System.String,System.String)">
             <summary>
             Registers a new user, sends a confirmation email, and returns an access and refresh token pair.
             Throws KeyNotFoundException if the email is already taken.
             </summary>
         </member>
-        <member name="M:FitnesTracker.Authentication.Login(System.String,System.String)">
+        <member name="M:FitnesTracker.AuthenticationService.Login(System.String,System.String)">
             <summary>
             Logs in a user by email and password, revokes any existing refresh token, and returns a new token pair.
             Throws KeyNotFoundException if user not found, UnauthorizedAccessException if password is wrong.
             </summary>
         </member>
-        <member name="M:FitnesTracker.Authentication.Logout(System.String)">
+        <member name="M:FitnesTracker.AuthenticationService.Logout(System.String)">
             <summary>
             Revokes the given refresh token to log the user out.
             Throws KeyNotFoundException if the token is invalid or already revoked.
             </summary>
         </member>
-        <member name="M:FitnesTracker.Authentication.GenerateToken(FitnesTracker.User)">
+        <member name="M:FitnesTracker.AuthenticationService.GenerateToken(FitnesTracker.User)">
             <summary>
             Generates a signed JWT access token for the given user. Expires in 60 minutes.
             </summary>

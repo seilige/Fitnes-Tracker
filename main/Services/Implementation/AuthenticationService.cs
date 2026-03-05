@@ -7,7 +7,7 @@ using AutoMapper;
 
 namespace FitnesTracker;
 
-public class Authentication : IAuthentication
+public class AuthenticationService : IAuthentication
 {
     private readonly IUserRepository _repository;
     private readonly IConfiguration _configuration;
@@ -16,7 +16,7 @@ public class Authentication : IAuthentication
     private readonly IEmailService _email;
     private readonly IUnitOfWork _unitOfWork;
 
-    public Authentication(IUserRepository repository, IConfiguration configuration, ILogger<ExerciseService> logger, IMapper mapper, IEmailService email, IUnitOfWork unitOfWork)
+    public AuthenticationService(IUserRepository repository, IConfiguration configuration, ILogger<ExerciseService> logger, IMapper mapper, IEmailService email, IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _configuration = configuration;
