@@ -17,7 +17,7 @@ public class EmailConfirmationMiddleware
     {
         if(context.User.Identity.IsAuthenticated)
         {
-            var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // измени
+            var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             
             if(userId != null)
             {

@@ -60,7 +60,6 @@ public class Program
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
             builder.Services.AddAutoMapper(typeof(FitnesTracker.Mapper).Assembly);
 
             builder.Services.AddFluentValidationAutoValidation();
@@ -160,7 +159,7 @@ public class Program
             var app = builder.Build();
             app.UseSerilogRequestLogging();
 
-            app.UseCors("AllowClient");
+            app.UseCors(corsOpts.PolicyName);
 
             // custom data seed
             using (var scope = app.Services.CreateScope())

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitnesTracker;
 
@@ -7,6 +8,7 @@ namespace FitnesTracker;
 [Route("api/auth")]
 [EnableRateLimiting("Fixed")]
 [Produces("application/json")]
+[Authorize]
 public class AuthenticationController : ControllerBase
 {
     private readonly IAuthentication _auth;
@@ -41,6 +43,7 @@ public class AuthenticationController : ControllerBase
     /// <response code="401">Token is missing or invalid.</response>
     [ProducesResponseType(200)]
     [ProducesResponseType(401)]
+    [AllowAnonymous] // не проверяет access токен.
     [HttpPost("logout")]
     public async Task<ActionResult> Logout([FromBody] RefreshRequestDTO dto)
     {
@@ -74,6 +77,7 @@ public class AuthenticationController : ControllerBase
     /// <response code="200">Returns auth token.</response>
     /// <response code="401">Invalid email or password.</response>
     /// <response code="404">User not found.</response>
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody] UserLoginDTO dto)
     {
@@ -87,6 +91,7 @@ public class AuthenticationController : ControllerBase
     /// <param name="dto">User registration data.</param>
     /// <response code="200">User registered successfully, returns auth token.</response>
     /// <response code="400">Invalid registration data or user already exists.</response>
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult> Register([FromBody] UserRegisterDTO dto)
     {
